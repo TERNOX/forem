@@ -6,10 +6,10 @@ class Reaction < ApplicationRecord
   }.freeze
 
   # The union of public and privileged categories
-  CATEGORIES = %w[like readinglist unicorn thinking hands thumbsup thumbsdown vomit].freeze
+  CATEGORIES = %w[like readinglist thumbsup thumbsdown vomit].freeze
 
   # These are the general category of reactions that anyone can choose
-  PUBLIC_CATEGORIES = %w[like readinglist unicorn thinking hands].freeze
+  PUBLIC_CATEGORIES = %w[like readinglist].freeze
 
   # These are categories of reactions that administrators can select
   PRIVILEGED_CATEGORIES = %w[thumbsup thumbsdown vomit].freeze
@@ -71,7 +71,7 @@ class Reaction < ApplicationRecord
         reactions = Reaction.where(reactable_id: id, reactable_type: "Article")
         counts = reactions.group(:category).count
 
-        %w[like readinglist unicorn].map do |type|
+        %w[like readinglist].map do |type|
           { category: type, count: counts.fetch(type, 0) }
         end
       end
