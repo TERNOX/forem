@@ -688,7 +688,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_16_132930) do
   create_table "organizations", force: :cascade do |t|
     t.integer "articles_count", default: 0, null: false
     t.string "bg_color_hex"
-    t.string "company_size"
     t.datetime "created_at", precision: nil, null: false
     t.integer "credits_count", default: 0, null: false
     t.text "cta_body_markdown"
@@ -1277,11 +1276,11 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_16_132930) do
     t.boolean "email_comment_notifications", default: true, null: false
     t.boolean "email_community_mod_newsletter", default: false, null: false
     t.boolean "email_connect_messages", default: true, null: false
-    t.boolean "email_digest_periodic", default: false, null: false
+    t.boolean "email_digest_periodic", default: true, null: false
     t.boolean "email_follower_notifications", default: true, null: false
     t.boolean "email_membership_newsletter", default: false, null: false
     t.boolean "email_mention_notifications", default: true, null: false
-    t.boolean "email_newsletter", default: false, null: false
+    t.boolean "email_newsletter", default: true, null: false
     t.boolean "email_tag_mod_newsletter", default: false, null: false
     t.boolean "email_unread_notifications", default: true, null: false
     t.boolean "mobile_comment_notifications", default: true, null: false

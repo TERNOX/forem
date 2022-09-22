@@ -15,7 +15,9 @@
     --content-font-size: var(--fs-xl);
   }
 }
-
+#podcast_main_color_hex{
+    height:50px;
+}
 @font-face {
   font-family: OpenDyslexic;
   @include font-src('OpenDyslexic-Regular.otf');
@@ -98,7 +100,7 @@ body {
   }
 
   a {
-    text-decoration: underline;
+    border-bottom: 1px solid var(--base-20);;
     color: var(--link-branded-color);
 
     &:hover {
@@ -240,7 +242,7 @@ body {
 
   blockquote {
     border-left: 4px solid var(--base-20);
-    padding: 0 0 0 var(--content-rhythm);
+    padding: 15px 0 1px var(--content-rhythm);
     margin: 0 0 var(--content-rhythm) 0;
 
     &.twitter-tweet {

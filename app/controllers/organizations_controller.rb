@@ -12,7 +12,6 @@ class OrganizationsController < ApplicationController
     proof
     profile_image
     location
-    company_size
     tech_stack
     email
     story

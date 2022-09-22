@@ -26,6 +26,21 @@
   --base-10: #242424;
   --base-0: #090909;
 
+
+.site-logo__img, .site-logo svg{
+    max-width: 100%;
+    width: auto;
+    height: calc(
+      var(--header-height) - var(--su-2) * 2
+    ); // making calculations instead of setting fixed value so should be smooth change if we ever decide to change header's height.
+    object-fit: contain;
+    vertical-align: middle;
+    display: inline-block;
+    outline: 0;
+
+}
+
+
   /* Brand */
   --accent-brand-lighter: rgb(var(--indigo-400));
   --accent-brand: rgb(var(--indigo-500));
@@ -360,4 +375,13 @@
   --shadow-2: 0 20px 25px -5px rgba(var(--black), 0.5),
     0 10px 10px -5px rgba(var(--black), 0.25),
     inset 0 0 0 1px rgba(var(--white), 0.1);
+	
+	
+	
+	#toggle-comments-sort-dropdown svg { filter: invert(1); }
+	
+	
+	
+	
+	
 }

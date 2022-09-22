@@ -19,7 +19,7 @@ function addRelevantButtonsToArticle(user) {
 
     if (parseInt(articleContainer.dataset.authorId, 10) === user.id) {
       actions.push(
-        `<a class="crayons-btn crayons-btn--s crayons-btn--ghost px-2" href="${articleContainer.dataset.path}/edit" rel="nofollow">Edit</a>`,
+        `<a class="crayons-btn crayons-btn--s crayons-btn--ghost px-2" href="${articleContainer.dataset.path}/edit" rel="nofollow">Редагувати</a>`,
       );
 
       let clickToEditButton = document.getElementById('author-click-to-edit');
@@ -27,14 +27,10 @@ function addRelevantButtonsToArticle(user) {
         clickToEditButton.style.display = 'inline-block';
       }
 
-      if (published === true && !scheduled) {
-        actions.push(
-          `<a class="crayons-btn crayons-btn--s crayons-btn--ghost px-2" id ="article-action-space-manage" href="${articleContainer.dataset.path}/manage" rel="nofollow">Manage</a>`,
-        );
-      }
+
 
       actions.push(
-        `<a class="crayons-btn crayons-btn--s crayons-btn--ghost px-2" href="${articleContainer.dataset.path}/stats" rel="nofollow">Stats</a>`,
+        `<a class="crayons-btn crayons-btn--s crayons-btn--ghost px-2" href="${articleContainer.dataset.path}/stats" rel="nofollow">Статистика</a>`,
       );
     }
 
@@ -44,7 +40,7 @@ function addRelevantButtonsToArticle(user) {
     // if there's already a pinned post different from the current one
     if (user.admin) {
       actions.push(
-        `<a class="crayons-btn crayons-btn--s crayons-btn--ghost px-2" href="/admin/content_manager/articles/${articleId}" data-no-instant>Admin</a>`,
+        `<a class="crayons-btn crayons-btn--s crayons-btn--ghost px-2" href="/admin/content_manager/articles/${articleId}" data-no-instant>Адмін</a>`,
       );
     }
 
@@ -65,7 +61,7 @@ function addRelevantButtonsToComments(user) {
         butt.innerHTML =
           '<a href="' +
           butt.dataset.path +
-          '" rel="nofollow" class="crayons-link crayons-link--block" data-no-instant>Settings</a>';
+          '" rel="nofollow" class="crayons-link crayons-link--block" data-no-instant>Налаштування</a>';
         butt.classList.remove('hidden');
         butt.classList.add('block');
       }
@@ -87,7 +83,7 @@ function addRelevantButtonsToComments(user) {
           butt.innerHTML =
             '<a href="' +
             butt.dataset.path +
-            '" rel="nofollow" class="crayons-link crayons-link--block">Moderate</a>';
+            '" rel="nofollow" class="crayons-link crayons-link--block">Модерувати</a>';
         }
         butt.className = 'mod-actions';
         butt.classList.remove('hidden');

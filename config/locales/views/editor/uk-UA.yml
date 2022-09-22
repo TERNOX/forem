@@ -1,12 +1,12 @@
 ---
-ua:
+uk-UA:
   views:
     editor:
       meta:
-        title: Редагувати допис
+        title: Редагувати пост
       heading:
-        new: Новий допис
-      create: Створити допис
+        new: Новий пост
+      create: Створити пост
       close:
         icon: Закрити
         title: Закрити редактор

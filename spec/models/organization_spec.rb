@@ -18,14 +18,12 @@ RSpec.describe Organization do
       it { is_expected.to have_many(:unspent_credits).class_name("Credit") }
       it { is_expected.to have_many(:users).through(:organization_memberships) }
 
-      it { is_expected.to validate_length_of(:company_size).is_at_most(7) }
       it { is_expected.to validate_length_of(:cta_body_markdown).is_at_most(256) }
       it { is_expected.to validate_length_of(:cta_button_text).is_at_most(20) }
       it { is_expected.to validate_length_of(:email).is_at_most(64) }
       it { is_expected.to validate_length_of(:github_username).is_at_most(50) }
       it { is_expected.to validate_length_of(:location).is_at_most(64) }
       it { is_expected.to validate_length_of(:name).is_at_most(50) }
-      it { is_expected.to validate_length_of(:proof).is_at_most(1500) }
       it { is_expected.to validate_length_of(:secret).is_equal_to(100) }
       it { is_expected.to validate_length_of(:slug).is_at_least(2).is_at_most(30) }
       it { is_expected.to validate_length_of(:story).is_at_most(640) }
@@ -51,8 +49,6 @@ RSpec.describe Organization do
       it { is_expected.to allow_value("#aabbcc").for(:text_color_hex) }
       it { is_expected.to allow_value("#abc").for(:bg_color_hex) }
       it { is_expected.to allow_value("#abc").for(:text_color_hex) }
-      it { is_expected.not_to allow_value("3.0").for(:company_size) }
-      it { is_expected.to allow_value("3").for(:company_size) }
     end
   end
 

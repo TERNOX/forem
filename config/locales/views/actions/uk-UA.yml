@@ -20,5 +20,5 @@ ua:
         twitter:
           text: Поширити на Twitter
           query: '"%{article}" від %{author}'
-        link: Поширити допис через...
+        link: Поширити пост через...
         report: Скарга

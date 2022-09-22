@@ -29,13 +29,10 @@ export const CommentsCount = ({ count, articlePath, articleTitle }) => {
         aria-label={commentsAriaLabelText}
       >
         <span title="Number of comments">
-          {count}
+          
           <span className="hidden s:inline">
-            &nbsp;
-            {`${
-              count > 1 ? `${locale('core.comment')}s` : locale('core.comment')
-            }`}
-          </span>
+			Коментарі:
+          </span>&nbsp;{count}
         </span>
       </Button>
     );

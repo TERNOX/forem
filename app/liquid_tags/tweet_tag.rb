@@ -47,6 +47,10 @@ class TweetTag < LiquidTagBase
     });
   JAVASCRIPT
 
+  def self.script
+    SCRIPT
+  end
+
   def initialize(_tag_name, id, _parse_context)
     super
     input = CGI.unescape_html(strip_tags(id))
@@ -60,10 +64,6 @@ class TweetTag < LiquidTagBase
         id: @id,
       },
     )
-  end
-
-  def self.script
-    SCRIPT
   end
 
   private

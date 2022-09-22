@@ -21,7 +21,7 @@ RSpec.describe "Registrations" do
 
         get sign_up_path
 
-        expect(response.body).not_to include("Have a password? Log in")
+        expect(response.body).not_to include("Маєте акаунт? Заходьте!")
       end
     end
 
@@ -33,7 +33,7 @@ RSpec.describe "Registrations" do
       it "shows the sign in text for password based authentication" do
         get sign_up_path
 
-        expect(response.body).to include("Have a password? Continue with your email address")
+        expect(response.body).to include("Маєте акаунт? Заходьте!")
       end
     end
 
@@ -45,7 +45,7 @@ RSpec.describe "Registrations" do
       it "does not show the sign in text for password based authentication" do
         get sign_up_path
 
-        expect(response.body).not_to include("Have a password? Log in")
+        expect(response.body).not_to include("Маєте акаунт? Заходьте!")
       end
     end
 
@@ -76,7 +76,7 @@ RSpec.describe "Registrations" do
       it "shows the sign in text for password based authentication" do
         get sign_up_path, params: { state: "new-user" }
 
-        expect(response.body).to include("Already have an account? <a href=\"/enter\">Log in</a>")
+        expect(response.body).to include("Вже маєте акаунт? <a href=\"/enter\">Увійдіть</a>")
       end
 
       it "persists uploaded image" do
@@ -86,7 +86,7 @@ RSpec.describe "Registrations" do
           user: {
             name: name,
             username: "username",
-            email: "yo@whatup.com",
+            email: "yo@whatup.ua",
             password: "password",
             password_confirmation: "password",
             profile_image: Rack::Test::UploadedFile.new(image_path, "image/jpeg")

@@ -105,7 +105,7 @@ function buildTagsHTML(tag) {
   var antifollow = '';
   if (tag.points < 0) {
     antifollow =
-      '<span class="c-indicator c-indicator--danger" title="This tag has negative follow weight">Anti-follow</span>';
+      '<span class="c-indicator c-indicator--danger" title="This tag has negative follow weight">Ігнор</span>';
   }
 
   return `<div class="crayons-card p-4 m:p-6 flex flex-col single-article" id="follows-${tag.id}" style="border: 1px solid ${tag.color}; box-shadow: 3px 3px 0 ${tag.color}">
@@ -174,6 +174,10 @@ function buildVideoArticleHTML(videoArticle) {
   </a>`;
 }
 
+
+
+
+
 function insertVideos(videoArticles) {
   var list = document.getElementById('subvideos');
   var newVideosHTML = '';
@@ -225,7 +229,8 @@ function insertArticles(articles) {
       ].includes(window.location.pathname) &&
       existingEl &&
       existingEl.parentElement &&
-      existingEl.parentElement.classList.contains('crayons-story') &&
+      existingEl.parentElement.classList.contains('crayons-article__cover') &&
+	  existingEl.parentElement.classList.contains('crayons-story') &&
       !document.getElementById('video-player-' + article.id)
     ) {
       existingEl.parentElement.outerHTML = buildArticleHTML(
@@ -256,6 +261,7 @@ function insertArticles(articles) {
       classList.contains('crayons-story__indention') ||
       classList.contains('crayons-story__title') ||
       classList.contains('crayons-story__tags') ||
+	  classList.contains('crayons-article__cover') ||
       classList.contains('crayons-story__bottom')
     ) {
       let element = event.target;

@@ -24,6 +24,11 @@ module Admin
       @tag = Tag.new
     end
 
+    def edit
+      @tag = Tag.find(params[:id])
+      @tag_moderators = User.with_role(:tag_moderator, @tag).select(:id, :username)
+    end
+
     def create
       @tag = Tag.new(tag_params)
       @tag.name = params[:tag][:name].downcase
@@ -35,11 +40,6 @@ module Admin
         flash[:danger] = @tag.errors_as_sentence
         render :new
       end
-    end
-
-    def edit
-      @tag = Tag.find(params[:id])
-      @tag_moderators = User.with_role(:tag_moderator, @tag).select(:id, :username)
     end
 
     def update

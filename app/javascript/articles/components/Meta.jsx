@@ -68,7 +68,7 @@ export const Meta = ({ article, organization }) => {
             !document.getElementById('organization-article-index') && (
               <span>
                 <span className="crayons-story__tertiary fw-normal">
-                  {' for '}
+                  {' для '}
                 </span>
                 <a
                   href={`/${organization.slug}`}
@@ -89,7 +89,6 @@ export const Meta = ({ article, organization }) => {
           <PublishDate
             readablePublishDate={article.readable_publish_date}
             publishedTimestamp={article.published_timestamp}
-            publishedAtInt={article.published_at_int}
           />
         </a>)}
       </div>

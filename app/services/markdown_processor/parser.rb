@@ -84,7 +84,7 @@ module MarkdownProcessor
     end
 
     def calculate_reading_time
-      word_count = @content.split(/\W+/).count
+      word_count = @content.split(/\W+/).length
       (word_count / WORDS_READ_PER_MINUTE).ceil
     end
 
@@ -151,7 +151,7 @@ module MarkdownProcessor
       return content unless /^<code>$/.match?(content)
 
       # return content if there is a <pre> and <code> tag
-      return content if /<code>/.match?(content) && /<pre>/.match?(content)
+      return content if content.include?("<code>") && content.include?("<pre>")
 
       # Convert all multiline code tags to triple backticks
       content.gsub(%r{^</?code>$}, "\n```\n")

@@ -14,7 +14,7 @@ RSpec.describe Homepage::FetchArticles, type: :service do
         class_name cloudinary_video_url comments_count flare_tag id path
         public_reactions_count public_reaction_categories
         published_at_int readable_publish_date reading_time tag_list title
-        user user_id video_duration_string
+        user user_id video_duration_string main_image
       ]
       expect(result.keys.sort).to match_array(keys)
 
@@ -34,6 +34,7 @@ RSpec.describe Homepage::FetchArticles, type: :service do
 
       expect(result[:user_id]).to eq(article.user_id)
       expect(result[:video_duration_string]).to eq(article.video_duration_in_minutes)
+	  
     end
 
     it "returns the user object in the correct format", :aggregate_failures do

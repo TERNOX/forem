@@ -12,8 +12,8 @@ export class EmailPreferencesForm extends Component {
     this.onSubmit = this.onSubmit.bind(this);
 
     this.state = {
-      email_newsletter: false,
-      email_digest_periodic: false,
+      email_newsletter: true,
+      email_digest_periodic: true,
     };
   }
 
@@ -71,16 +71,16 @@ export class EmailPreferencesForm extends Component {
           <div className="onboarding-content terms-and-conditions-wrapper">
             <header className="onboarding-content-header">
               <h1 id="title" className="title">
-                Almost there!
+                Майже все!
               </h1>
               <h2 id="subtitle" className="subtitle">
-                Review your email preferences before we continue.
+                Перегляньте свої налаштування електронної пошти, перш ніж ми продовжимо.
               </h2>
             </header>
 
             <form>
               <fieldset>
-                <legend>Email preferences</legend>
+                <legend>Email налаштування</legend>
                 <ul>
                   <li className="checkbox-item">
                     <label htmlFor="email_newsletter">
@@ -91,7 +91,7 @@ export class EmailPreferencesForm extends Component {
                         checked={email_newsletter}
                         onChange={this.handleChange}
                       />
-                      I want to receive weekly newsletter emails.
+                      Я хочу отримувати (не)регулярну розсилку на електронну пошту.
                     </label>
                   </li>
                   <li className="checkbox-item">
@@ -103,8 +103,7 @@ export class EmailPreferencesForm extends Component {
                         checked={email_digest_periodic}
                         onChange={this.handleChange}
                       />
-                      I want to receive a periodic digest of top posts from my
-                      tags.
+                      Я хочу отримувати найкращі дописи згідно моїх теґів.
                     </label>
                   </li>
                 </ul>

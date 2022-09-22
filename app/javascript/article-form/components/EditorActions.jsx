@@ -83,7 +83,7 @@ export const EditorActions = ({
           disabled={previewLoading}
           onFocus={(event) => switchHelpContext(event, 'editor-actions')}
         >
-          Save <span className="hidden s:inline">draft</span>
+          Зберегти <span className="hidden s:inline">чернетку</span>
         </Button>
       )}
 
@@ -105,7 +105,7 @@ export const EditorActions = ({
           disabled={previewLoading}
           onFocus={(event) => switchHelpContext(event, 'editor-actions')}
         >
-          Revert <span className="hidden s:inline">new changes</span>
+          Відкатити <span className="hidden s:inline">нові зміни</span>
         </Button>
       )}
     </div>

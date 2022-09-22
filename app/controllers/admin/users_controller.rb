@@ -56,13 +56,6 @@ module Admin
       end
     end
 
-    def edit
-      @user = User.find(params[:id])
-      @notes = @user.notes.order(created_at: :desc).limit(10).load
-      set_feedback_messages
-      set_related_reactions
-    end
-
     def show
       @user = User.find(params[:id])
       set_current_tab(params[:tab])
@@ -74,6 +67,13 @@ module Admin
       # Remove the .includes(:commentable)
       @comments = @user.comments.order(created_at: :desc)
       set_user_details
+    end
+
+    def edit
+      @user = User.find(params[:id])
+      @notes = @user.notes.order(created_at: :desc).limit(10).load
+      set_feedback_messages
+      set_related_reactions
     end
 
     def update

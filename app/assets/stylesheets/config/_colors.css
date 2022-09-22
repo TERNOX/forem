@@ -16,6 +16,7 @@
   --base-0: #f9f9f9;
 
   /* Brand */
+  --accent-brand-lighter2: rgb(var(--accent-brand-lighter-rgb2));
   --accent-brand-lighter: rgb(var(--accent-brand-lighter-rgb));
   --accent-brand: rgb(var(--accent-brand-rgb));
   --accent-brand-darker: rgb(var(--accent-brand-darker-rgb));
@@ -59,6 +60,7 @@
 
   /* Header */
   --header-bg: rgb(var(--white));
+  --header-logo-invert: 0.00001;
   --header-shadow: rgba(var(--black), 0.1);
 
   /* Footer */
@@ -68,8 +70,8 @@
   /* Links */
   --link-bg-hover-alt: var(--base-inverted);
   --link-color-current: var(--base-100);
-  --link-color-secondary: var(--base-60);
-  --link-color-secondary-hover: var(--base-70);
+  --link-color-secondary: var(--base-50);
+  --link-color-secondary-hover: var(--base-60);
   --link-bg-current: var(--base-inverted);
 
   /* Primary buttons */
@@ -367,4 +369,9 @@
     0 4px 6px -2px rgba(var(--black), 0.05), 0 0 0 1px rgba(var(--black), 0.1);
   --shadow-2: 0 20px 25px -5px rgba(var(--black), 0.1),
     0 10px 10px -5px rgba(var(--black), 0.05), 0 0 0 1px rgba(var(--black), 0.1);
+}
+
+
+a:hover .color-accent-brand {
+    color: var(--base-70);
 }

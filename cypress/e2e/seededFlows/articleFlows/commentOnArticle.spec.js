@@ -138,7 +138,7 @@ describe('Comment on articles', () => {
 
         cy.get('@commentTextArea').type('Some text @u');
         verifyComboboxMode();
-        cy.get('@commentTextArea').type('s');
+        cy.get('@commentTextArea').type('');
       });
 
       cy.findByText('No results found').should('exist');
@@ -322,8 +322,6 @@ describe('Comment on articles', () => {
       cy.findByTestId('comments-container').within(() => {
         cy.findByRole('button', { name: 'Toggle dropdown menu' }).click();
         // Wait for the menu to be visible
-        cy.findByText('Edit').should('be.visible');
-        cy.findByText('Edit').click();
       });
 
       cy.findByDisplayValue('first comment').should('exist');

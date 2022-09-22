@@ -1,5 +1,5 @@
 ---
-en:
+uk-UA:
   contact_prompts:
     if_any_questions_html: <a href="/contact">Зв'яжіться з нами</a>, якщо маєте питання.
     if_continued_trouble_html: <a href="/contact">Зв'яжіться з нами</a>, якщо у вас є проблеми з сайтом.
@@ -12,11 +12,11 @@ en:
     edit_profile: Редагувати профіль
     follow: Підписатися
     follow_back: Взаємно підписатися
-    following: Підписки
-    like: Подобається
+    following: Ви підписані
+    like: Лайки
     loading: завантаження...
     reaction: Реакції
-    report_abuse: Поскраржитись
+    report_abuse: Поскаржитись
     search: Пошук
     success_settings: Налаштування успішно оновлені.
   date:
@@ -35,9 +35,9 @@ en:
     - лис
     - гру
     formats:
-    full: "%-d %B, %Y - %A"
+    full: "%-d %B, %H:%M, %Y - %A"
     full_month: "%B, %Y"
-    full_day: "%-d %B, %Y"
+    full_day: "%-d %B, %H:%M, %Y"
     week_abbr: "%a"
     month_names_with_day:
     -
@@ -71,13 +71,13 @@ en:
     distance_in_words_ago: # https://github.com/openstreetmap/openstreetmap-website/issues/2255
       about_x_hours:
         one: годину тому
-        other: %{count} годин тому
+        other: "%{count} годин тому"
       about_x_months:
         one: місяць тому
-        other: %{count} місяців тому
+        other: "%{count} місяців тому"
       about_x_years:
         one: рік  тому
-        other: %{count} років тому
+        other: "%{count} років тому"
       almost_x_years:
         one: майже рік тому
         other: майже %{count} років тому
@@ -182,6 +182,13 @@ en:
       x_years:
         one: Expires in 1 year
         other: Expires in %{count} years
+  display_ad:
+    promoted: Реклама
+    menu:
+      aria_label: Перемикання випадаючого меню
+      icon: Випадаюче меню
+      manage_preferences: Керувати вподобаннями
+      what_is_a_billboard: Що таке рекламний щит?
   errors:
     messages:
       accepted: має бути прийнятно
@@ -192,42 +199,42 @@ en:
       contains_prohibited_characters: містить заборонені символи
       empty: не може бути пустим
       equal_to: має дорівнювати %{count}
-      even: must be even
-      exclusion: is reserved
+      even: повинні бути рівними
+      exclusion: зайняято
       general: 'Помилка: %{errors}'
       greater_than: має бути більше ніж %{count}
       greater_than_or_equal_to: має бути  більше або рівним %{count}
-      inclusion: is not included in the list
-      invalid: is invalid
-      less_than: must be less than %{count}
-      less_than_or_equal_to: must be less than or equal to %{count}
-      model_invalid: 'Validation failed: %{errors}'
-      not_a_number: is not a number
-      not_an_integer: must be an integer
+      inclusion: не включено до переліку
+      invalid: є неправильним
+      less_than: має бути менше, ніж %{count}
+      less_than_or_equal_to: має бути менше або дорівнювати %{count}
+      model_invalid: 'Валідація не пройшла: %{errors}'
+      not_a_number: не є числом
+      not_an_integer: має бути цілим числом
       odd: must be odd
-      other_than: must be other than %{count}
+      other_than: має бути іншим, ніж %{count}
       present: має бути пустим
-      required: must exist
-      taken: has already been taken
+      required: має існувати
+      taken: вже зайнято
       too_long:
-        one: is too long (maximum is 1 character)
-        other: is too long (maximum is %{count} characters)
+        one: занадто довгий (maximum is 1 character)
+        other: занадто довге (максимум %{count} символів)
       too_short:
         one: is too short (minimum is 1 character)
-        other: is too short (minimum is %{count} characters)
-      try_again_email: 'An error occurred. Please try again or send an email to: %{email}'
+        other: занадто коротке (мінімум %{count} символів)
+      try_again_email: 'Виникла  помилка. Спробуйте ще раз, або напишіть про це сюди: %{email}'
       wrong_length:
-        one: is the wrong length (should be 1 character)
-        other: is the wrong length (should be %{count} characters)
+        one: має неправильну довжину (should be 1 character)
+        other: має неправильну довжину (має мати %{count} символів)
   time:
     formats:
-      comment: "%B %d, %Y"
+      comment: "%H:%M %B %d, %Y"
       github: "%b %d, %Y"
       json: "%b %e, %Y"
       medium: "%b %-d, %Y"
       reddit: "%b %e '%y"
-      short: "%b %-e"
-      short_with_yy: "%b %-d '%y"
-      short_with_year: "%b %-e, %Y"
-      stackexchange: "%b %e '%y"
+      short: "%b %-e, %H:%M"
+      short_with_yy: "%b %-d, %H:%M '%y"
+      short_with_year: "%b %-e, %H:%M, %Y"
+      stackexchange: "%H:%M %b %e '%y"
       tweet: "%H:%M %p - %d %b %Y"
