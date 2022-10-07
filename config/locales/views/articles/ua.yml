@@ -1,0 +1,99 @@
+---
+ua:
+  views:
+    articles:
+      meta:
+        description: Стаття від спільноти
+      actions:
+        aria_label: Стаття
+      comments:
+        aria_label: Залишити коментар - %{title}
+        sort_button:
+          aria_label: Сортувати коментарі
+        subtitle:
+          top_html: Top comments %{num}
+          latest_html: Latest comments %{num}
+          oldest_html: Oldest comments %{num}
+        num: "(%{num})"
+        subscribe: Subscribe
+      conduct:
+        aria_label: Conduct controls
+        code: Норми поведінки
+        report: Поскаржитися
+      delete:
+        heading: Ви впевнені що хочете видалити цю статтю?
+        desc:
+          text_html: Ви не можете це зробити, можливо ви хотіли %{action}?
+          edit: редагувати
+          unpublish: сховати
+        action:
+          button: Видалити
+          cancel: Відмінити
+          edit: Редагувати
+          unpublish: Сховати
+      lock:
+        meta:
+          title: Confirm Discussion Lock
+        heading: Are you sure you want to lock the discussion on this post?
+        desc_html: Users will not be able to add new comments. This will <em class="fw-bold">not</em> remove existing comments. You can unlock the discussion at any time to allow users to leave comments again.
+        cancel: Cancel
+        notes:
+          label: Notes (optional) - this is only visible to you and admins
+          placeholder: More details as to why you locked the discussion.
+        reason:
+          label: Reason for locking the discussion (optional) - this will be publicly displayed
+          placeholder: The reason why you're locking this discussion.
+        submit: Lock discussion
+      preview_discuss_html:
+        zero: New Discussion!
+        one: '#discuss <img src="%{image}" />%{count}'
+        other: '#discuss <img src="%{image}" />%{count}'
+      save:
+        title: Додати до збереженого 
+        aria_label: Додати до збереженого 
+        initial: Зберегти
+        success: Збережено
+      scheduled:
+        subtitle: Запланований допис.
+        text: " Ця URL-адреса є публічною, але секретною, тож діліться нею на власний розсуд"
+        edit: Натисніть, щоб змінити
+      series:
+        subtitle: "%{slug} (%{size})"
+        size:
+          one: "%{count} частина серії"
+          other: "%{count} частина серії"
+        published: Published %{date}
+        inbetween:
+          num: "..."
+          text:
+            one: ще одна частина...
+            other: "%{count} частин..."
+          title: View more
+      unlock:
+        meta:
+          title: Confirm Discussion Unlock
+        heading: Ви впевнені, що хочете розблокувати обговорення цього допису?
+        desc: Користувачі зможуть додавати нові коментарі. Ви можете будь-коли заблокувати обговорення, щоб користувачі більше не могли залишати коментарі.
+        cancel: Відмінити
+        notes: 'Notes from when this discussion was locked (only visible to you and admins):'
+        reason: 'Reason this discussion was locked (publicly visible):'
+        submit: Unlock discussion
+      unpublished:
+        subtitle: Неопублікований допис.
+        text: " Ця URL-адреса є публічною, але секретною, тож діліться нею на власний розсуд."
+        edit: Натисніть, щоб змінити
+      co_authors_html: with %{names}
+      crossposted:
+        text_html: Спочатку опубліковано на %{url} %{on}
+        on_html: о %{date}
+      edited: Оновлено %{date}
+      edited_html: Оновлено %{date}
+      for_org_html: "%{start} for %{end}%{org}"
+      missing: Article No Longer Available
+      published_html: Додано %{date}
+      scheduled_html: Заплановано на %{date}
+      read_next: Читати далі
+      reading_time:
+        one: "1 хв. читати"
+        other: "%{count} хв. читати"
+      right_nav: Про автора

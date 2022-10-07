@@ -19,6 +19,54 @@ en:
     report_abuse: Поскраржитись
     search: Пошук
     success_settings: Налаштування успішно оновлені.
+  date:
+    abbr_month_names:
+    - 
+    - січ
+    - лют
+    - бер
+    - кві
+    - тра
+    - чер
+    - лип
+    - сер
+    - вер
+    - жов
+    - лис
+    - гру
+    formats:
+    full: "%-d %B, %Y - %A"
+    full_month: "%B, %Y"
+    full_day: "%-d %B, %Y"
+    week_abbr: "%a"
+    month_names_with_day:
+    -
+    - січня
+    - лютого
+    - березня
+    - квітня
+    - травня
+    - червня
+    - липня
+    - серпня
+    - вересня
+    - жовтня
+    - листопада
+    - грудня
+    month_names_standalone:
+    -
+    - Січень
+    - Лютий
+    - Березень
+    - Квітень
+    - Травень
+    - Червень
+    - Липень
+    - Серпень
+    - Вересень
+    - Жовтень
+    - Листопад
+    - Грудень
   datetime:
     distance_in_words_ago: # https://github.com/openstreetmap/openstreetmap-website/issues/2255
       about_x_hours:
@@ -36,42 +84,42 @@ en:
       half_a_minute: 30 секунд тому
       less_than_x_seconds:
         one: тільки що
-        other: менше %{count} секунд тому
+        other: менше %{count} сек. тому
       less_than_x_minutes:
         one: менше хвилини тому
-        other: менше %{count} хвилин тому
+        other: менше %{count} хв. тому
       over_x_years:
-        one: більше  року тому
+        one: більше року тому
         other: більше %{count} років тому
       x_seconds:
-        one: 1 секунду тому
-        other: "%{count} секунди тому"
+        one: секунду тому
+        other: "%{count} сек. тому"
       x_minutes:
-        one: 1 minute ago
-        other: "%{count} minutes ago"
+        one: хв. тому
+        other: "%{count} хв. тому"
       x_days:
-        one: 1 day ago
-        other: "%{count} days ago"
+        one: 1 день тому
+        other: "%{count} дн. тому"
       x_months:
-        one: 1 month ago
-        other: "%{count} months ago"
+        one: місяць тому
+        other: "%{count} місяців тому"
       x_years:
-        one: 1 year ago
-        other: "%{count} years ago"
+        one: рік тому
+        other: "%{count} років тому"
     expired_ago:
       about_x_hours:
-        one: Expired about 1 hour ago
-        other: Expired about %{count} hours ago
+        one: Десь годину тому
+        other: "%{count} годин тому"
       about_x_months:
-        one: Expired about 1 month ago
-        other: Expired about %{count} months ago
+        one: місяць тому
+        other: "%{count} місяців тому"
       about_x_years:
-        one: Expired about 1 year ago
-        other: Expired about %{count} years ago
+        one: рік тому
+        other: "%{count} років тому"
       almost_x_years:
-        one: Expired almost 1 year ago
-        other: Expired almost %{count} years ago
-      half_a_minute: Expired half a minute ago
+        one: майже рік тому
+        other: майже %{count} років тому
+      half_a_minute: півхвилини тому
       less_than_x_seconds:
         one: Expired less than 1 second ago
         other: Expired less than %{count} seconds ago
@@ -136,19 +184,19 @@ en:
         other: Expires in %{count} years
   errors:
     messages:
-      accepted: must be accepted
-      bad_protocol: must start with %{protocols}
-      bad_uri: is an invalid url
-      blank: can't be blank
-      confirmation: doesn't match %{attribute}
-      contains_prohibited_characters: contains non-alphanumeric or prohibited unicode characters
-      empty: can't be empty
-      equal_to: must be equal to %{count}
+      accepted: має бути прийнятно
+      bad_protocol: має починатися з %{protocols}
+      bad_uri: не правильне url
+      blank: не може бути пустим
+      confirmation: не відповідає %{attribute}
+      contains_prohibited_characters: містить заборонені символи
+      empty: не може бути пустим
+      equal_to: має дорівнювати %{count}
       even: must be even
       exclusion: is reserved
-      general: 'Error: %{errors}'
-      greater_than: must be greater than %{count}
-      greater_than_or_equal_to: must be greater than or equal to %{count}
+      general: 'Помилка: %{errors}'
+      greater_than: має бути більше ніж %{count}
+      greater_than_or_equal_to: має бути  більше або рівним %{count}
       inclusion: is not included in the list
       invalid: is invalid
       less_than: must be less than %{count}
@@ -158,7 +206,7 @@ en:
       not_an_integer: must be an integer
       odd: must be odd
       other_than: must be other than %{count}
-      present: must be blank
+      present: має бути пустим
       required: must exist
       taken: has already been taken
       too_long:

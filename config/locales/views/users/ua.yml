@@ -1,0 +1,90 @@
+---
+ua:
+  views:
+    users:
+      meta:
+        og:
+          title: "%{user} — %{community} профіль"
+      comments:
+        all:
+          one: Усі коментарі (%{count})
+          other: Усі коментарі (%{count})
+        last:
+          one: Останні коментарі (%{count})
+          other: Останні коментарі (%{count})
+        recent: Останні коментарі
+        view: Переглянути всю активність
+        view_all:
+          one: Подивитися усі коментарі (%{count})
+          other: Подивитися усі коментарі (%{count})
+        view_last:
+          one: Подивитися останній коментар
+          other: Подивитися останні коментарі (%{count})
+      github:
+        heading: GitHub Repositories
+        fork: Fork
+        stars:
+          one: 1 зірка
+          other: "%{count} зірок"
+      pin_icon: Прикріпити
+      pinned: Прикріплено
+      profile_fields:
+        bio:
+          label: Біо
+          placeholder: Коротка інформація про вас...
+        display_email_on_profile: Відображати email у профілі
+        location:
+          label: Місцезнаходження
+          placeholder: Запоріжжя
+        website:
+          label: Сайт
+          placeholder: https://yoursite.com.ua
+        education: Освіта
+        currently learning: Currently learning
+        currently hacking on: Currently hacking on
+        available for: Available for
+        skills/languages: Skills/Languages
+        work: Work
+      side:
+        comment:
+          icon: Comment
+          text:
+            one: 1 comment written
+            other: "%{count} comments written"
+        org: Проєкти
+        post:
+          icon: Допис
+          text:
+            one: автор 1 допису
+            other: "автор %{count} дописів"
+        tag:
+          icon: Tag
+          text:
+            one: слідкує за одним тегом
+            other: "слідкує за %{count} тегами"
+      signout:
+        meta:
+          title: Confirm Signout - %{community}
+        heading: Are you sure you want to sign out?
+        'yes': Yes, sign out
+      block: Block @%{user}
+      details: "%{user} profile details"
+      dropdown: User actions
+      email_icon: Email address
+      empty: 404 bio not found
+      flag: Flag @%{user}
+      follow: Підписатися
+      joined:
+        icon: Доєднався
+        text_html: "У спільності з \_%{date}"
+      location_icon: Location
+      logo: "%{user} зображення профілю"
+      more: More info about @%{user}
+      send_pm:
+        code: норми поведінки
+        notice_html: All private interactions <b>must</b> abide by the %{code}.
+        placeholder: Пишіть сюди...
+        submit: Відправити
+      social: "%{service} сайт"
+      unflag: Unflag @%{user}
+      website: Особистий сайт

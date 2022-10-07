@@ -37,6 +37,7 @@ class Tag < ActsAsTaggableOn::Tag
   belongs_to :badge, optional: true
 
   has_many :articles, through: :taggings, source: :taggable, source_type: "Article"
+  has_many :display_ads, through: :taggings, source: :taggable, source_type: "DisplayAd"
 
   mount_uploader :profile_image, ProfileImageUploader
   mount_uploader :social_image, ProfileImageUploader
@@ -120,7 +121,7 @@ class Tag < ActsAsTaggableOn::Tag
     # [:alnum:] is not used here because it supports diacritical characters.
     # If we decide to allow diacritics in the future, we should replace the
     # following regex with [:alnum:].
-    errors.add(:name, I18n.t("errors.messages.contains_prohibited_characters")) unless name.match?(/\A[[:alnum:]]+\z/i)
+    errors.add(:name, I18n.t("errors.messages.contains_prohibited_characters")) unless name.match?(/\A[[а-яА-ЯїЇєЄґҐіІa-zA-Z0-9-]]+\z/i)
   end
 
   # While this non-end user facing flag is "in play", our goal is to say that when it's "false"
