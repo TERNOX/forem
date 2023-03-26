@@ -199,7 +199,7 @@ export class ProfileForm extends Component {
                 data-testid="onboarding-profile-subtitle"
                 className="subtitle"
               >
-                Розкажіть про себе трохи більше нашій спільності! Ви завжди можете змінити цю інформацію пізніше у налаштуваннях.
+                Розкажіть про себе трохи більше нашій спільноті! Ви завжди можете змінити цю інформацію пізніше у налаштуваннях.
               </h2>
             </header>
             <div className="current-user-info">
@@ -215,7 +215,7 @@ export class ProfileForm extends Component {
             <div className="onboarding-profile-sub-section">
               <TextInput
                 field={{
-                  attribute_name: 'юзернейм',
+                  attribute_name: 'username',
                   label: 'Юзернейм',
                   default_value: username,
                   required: true,
@@ -229,7 +229,7 @@ export class ProfileForm extends Component {
                 field={{
                   attribute_name: 'summary',
                   label: 'Про вас',
-                  placeholder_text: 'Розкашіть щось про себе',
+                  placeholder_text: 'Розкажіть щось про себе',
                   required: false,
                   maxLength: SUMMARY_MAXLENGTH,
                 }}

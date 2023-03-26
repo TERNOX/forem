@@ -40,12 +40,10 @@ export const Article = ({
     'crayons-story__tertiary',
   ];
 
-  let showCover =
-    (isFeatured || (feedStyle === 'rich' && article.main_image)) &&
-    !article.cloudinary_video_url;
+  let showCover = (article.main_image && !article.cloudinary_video_url);
 
   // pinned article can have a cover image
-  showCover = showCover || (article.pinned && article.main_image);
+ // showCover = showCover || (article.pinned && article.main_image);
 
   return (
     <article
@@ -54,6 +52,7 @@ export const Article = ({
       }`}
       id={isFeatured ? 'featured-story-marker' : `article-${article.id}`}
       data-content-user-id={article.user_id}
+	  style="margin-bottom: 22px;"
     >
       <a
         href={article.path}
@@ -100,8 +99,7 @@ export const Article = ({
                 >
                   <path d="M22.314 10.172l-1.415 1.414-.707-.707-4.242 4.242-.707 3.536-1.415 1.414-4.242-4.243-4.95 4.95-1.414-1.414 4.95-4.95-4.243-4.242 1.414-1.415L8.88 8.05l4.242-4.242-.707-.707 1.414-1.415z" />
                 </svg>
-                Pinned
-                <span class="hidden s:inline">&nbsp;post</span>
+                Закріплено
               </div>
             )}
           </div>
@@ -128,7 +126,7 @@ export const Article = ({
               )}
 
               <div className="crayons-story__save">
-                <ReadingTime readingTime={article.reading_time} />
+               
 
                 <SaveButton
                   article={article}
@@ -156,7 +154,7 @@ export const Article = ({
 Article.defaultProps = {
   isBookmarked: false,
   isFeatured: false,
-  feedStyle: 'basic',
+  feedStyle: 'rich',
   saveable: true,
 };
 

@@ -322,7 +322,7 @@ export const ImageUploader = ({
       payload: { insertionImageUrls: response.links },
     });
 
-    onImageUploadSuccess?.(`![Image description](${response.links})`);
+    onImageUploadSuccess?.(`![Опис картинки](${response.links})`);
 
     document.getElementById('upload-success-info').innerText =
       'image upload complete';
@@ -349,7 +349,7 @@ export const ImageUploader = ({
         });
         break;
       case 'success':
-        onImageUploadSuccess?.(`![Image description](${message.link})`);
+        onImageUploadSuccess?.(`![Опис картинки](${message.link})`);
         dispatch({
           type: 'upload_image_success',
           payload: { insertionImageUrls: [message.link] },

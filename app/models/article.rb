@@ -441,7 +441,7 @@ class Article < ApplicationRecord
   end
 
   def body_text
-    ActionView::Base.full_sanitizer.sanitize(processed_html)[0..7000]
+    ActionView::Base.full_sanitizer.sanitize(processed_html)[0..8000]
   end
 
   def touch_by_reaction
@@ -540,7 +540,7 @@ class Article < ApplicationRecord
   def cloudinary_video_url
     return if video_thumbnail_url.blank?
 
-    Images::Optimizer.call(video_thumbnail_url, width: 880, quality: 80)
+    Images::Optimizer.call(video_thumbnail_url, width: 2200, quality: 80)
   end
 
   def video_duration_in_minutes
@@ -949,7 +949,7 @@ class Article < ApplicationRecord
     'п' => 'p', 'р' => 'r', 'с' => 's', 'т' => 't', 'у' => 'u', \
     'ф' => 'f', 'х' => 'h', 'ц' => 'c', 'ч' => 'ch', 'ш' => 'sh', \
     'щ' => 'shch', 'ы' => 'y', 'э' => 'e', 'ю' => 'u', 'я' => 'ya', \
-    'й' => 'н', 'ъ' => '', 'ь' => '', 'ґ' => 'g', 'є' => 'ye', 'і' => 'i', 'ї' => 'yi'}
+    'й' => 'i', 'ъ' => '', 'ь' => '', 'ґ' => 'g', 'є' => 'ye', 'і' => 'i', 'ї' => 'yi'}
 
     identifier = ''
 

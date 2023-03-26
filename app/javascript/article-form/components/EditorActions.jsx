@@ -76,7 +76,7 @@ export const EditorActions = ({
           onClick={onSaveDraft}
           disabled={previewLoading}
         >
-          Save <span className="hidden s:inline">draft</span>
+          Зберегти <span className="hidden s:inline">чернетку</span>
         </Button>
       )}
 
@@ -96,7 +96,7 @@ export const EditorActions = ({
           className="whitespace-nowrap fw-normal fs-s"
           disabled={previewLoading}
         >
-          Revert <span className="hidden s:inline">new changes</span>
+          Відкатити <span className="hidden s:inline">нові зміни</span>
         </Button>
       )}
     </div>
