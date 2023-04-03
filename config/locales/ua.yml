@@ -14,6 +14,8 @@ ua:
     follow_back: Взаємно підписатися
     following: Підписки
     like: Подобається
+    following: Ви підписані
+    like: Лайки
     loading: завантаження...
     reaction: Реакції
     report_abuse: Поскаржитись
