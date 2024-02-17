@@ -46,21 +46,10 @@ module Admin
     end
 
     def index
-      @users = Admin::UsersQuery.call(
-        relation: User.registered,
-        search: params[:search],
-        role: params[:role],
-        roles: params[:roles],
-        statuses: params[:statuses],
-        joining_start: params[:joining_start],
-        joining_end: params[:joining_end],
-        date_format: params[:date_format],
-        organizations: params[:organizations],
-      ).page(params[:page]).per(50)
-
-      @organization_limit = 3
-      @organizations = Organization.order(name: :desc)
-      @earliest_join_date = User.first.registered_at.to_s
+      respond_to do |format|
+        format.html { index_for_html }
+        format.json { index_for_json }
+      end
     end
 
     def show
@@ -90,19 +79,25 @@ module Admin
     end
 
     def destroy
-      role = params[:role].to_sym
+      role = Role.find(params[:role_id])
+      authorize(role, :remove_role?)
+
       resource_type = params[:resource_type]
 
       @user = User.find(params[:user_id])
 
-      response = ::Users::RemoveRole.call(user: @user,
-                                          role: role,
-                                          resource_type: resource_type,
-                                          admin: current_user)
+      response = ::Users::RemoveRole.call(
+        user: @user,
+        role: role.name,
+        resource_type: resource_type,
+      )
+
       if response.success
         flash[:success] =
           I18n.t("admin.users_controller.role_removed",
-                 role: role.to_s.humanize.titlecase) # TODO: [@yheuhtozr] need better role i18n
+                 role: I18n.t("views.admin.users.overview.roles.name.#{
+                   role.name_labelize.underscore.parameterize(separator: '_')
+                 }", default: role.name.to_s.humanize.titlecase)) # TODO: [@yheuhtozr] need better role i18n
       else
         flash[:danger] = response.error_message
       end
@@ -185,7 +180,7 @@ module Admin
                                  user: @user.username,
                                  email: @user.email.presence || I18n.t("admin.users_controller.no_email"),
                                  id: @user.id,
-                                 the_page: link).html_safe # rubocop:disable Rails/OutputSafety
+                                 the_page: link).html_safe
       rescue StandardError => e
         flash[:danger] = e.message
       end
@@ -327,6 +322,35 @@ module Admin
 
     private
 
+    def index_for_html
+      @users = Admin::UsersQuery.call(
+        relation: User.registered,
+        search: params[:search],
+        role: params[:role],
+        roles: params[:roles],
+        statuses: params[:statuses],
+        joining_start: params[:joining_start],
+        joining_end: params[:joining_end],
+        date_format: params[:date_format],
+        organizations: params[:organizations],
+      ).page(params[:page]).per(50)
+
+      @organization_limit = 3
+      @organizations = Organization.order(name: :desc)
+      @earliest_join_date = User.first.registered_at.to_s
+    end
+
+    def index_for_json
+      @users = Admin::UsersQuery.call(
+        relation: User.registered,
+        search: params[:search],
+        ids: params[:ids],
+        limit: params[:limit],
+      )
+
+      render json: @users.to_json(only: %i[id name username])
+    end
+
     def set_user_details
       @organizations = @user.organizations.order(:name)
       @notes = @user.notes.order(created_at: :desc).limit(10)
@@ -363,8 +387,14 @@ module Admin
         Reaction.where(reactable_type: "Comment", reactable_id: user_comment_ids, category: "vomit")
           .or(Reaction.where(reactable_type: "Article", reactable_id: user_article_ids, category: "vomit"))
           .or(Reaction.where(reactable_type: "User", reactable_id: @user.id, category: "vomit"))
-          .includes(:reactable)
+          .includes(:user)
           .order(created_at: :desc).limit(15)
+
+      @user_vomit_reactions =
+        Reaction.where(reactable_type: "User", reactable_id: @user.id, category: "vomit")
+          .includes(:user)
+          .order(created_at: :desc)
+      @countable_flags = calculate_countable_flags(@user_vomit_reactions)
     end
 
     def user_params
@@ -408,7 +438,20 @@ module Admin
     def set_unpublish_all_log
       # in theory, there could be multiple "unpublish all" actions
       # but let's query and display the last one for now, that should be enough for most cases
-      @unpublish_all_data = AuditLog::UnpublishAllsQuery.call(@user.id)
+      @unpublish_all_data = if @current_tab == "unpublish_logs"
+                              AuditLog::UnpublishAllsQuery.call(@user.id)
+                            else
+                              # only find if the data exists for most tabs
+                              AuditLog::UnpublishAllsQuery.new(@user.id).exists?
+                            end
+    end
+
+    def calculate_countable_flags(reactions)
+      countable_flags = 0
+      reactions.each do |reaction|
+        countable_flags += 1 if reaction.status != "invalid"
+      end
+      countable_flags
     end
   end
 end

@@ -18,6 +18,7 @@ RSpec.describe AuditLog::UnpublishAllsQuery, type: :query do
         expect(res.audit_log).to eq(audit_log)
       end
 
+<<<<<<< HEAD
       it "exists?" do
         res = described_class.call(user.id)
         expect(res.exists?).to be true
@@ -28,5 +29,27 @@ RSpec.describe AuditLog::UnpublishAllsQuery, type: :query do
       res = described_class.call(user.id)
       expect(res.exists?).to be false
     end
+=======
+      it "exists? when data requested" do
+        res = described_class.call(user.id)
+        expect(res.exists?).to be true
+      end
+
+      it "exists? when exists requested" do
+        res = described_class.new(user.id).exists?
+        expect(res.exists?).to be true
+      end
+    end
+
+    it "doesn't exist when there is no related audit_log and asked for data" do
+      res = described_class.call(user.id)
+      expect(res.exists?).to be false
+    end
+
+    it "doesn't exist when there is no related audit_log and asked for exists?" do
+      res = described_class.new(user.id).exists?
+      expect(res.exists?).to be false
+    end
+>>>>>>> upstream/main
   end
 end

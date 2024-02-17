@@ -24,6 +24,10 @@ RSpec.describe "/admin/content_manager/badge_achievements" do
     let(:user2) { create(:user) }
     let(:usernames_string) { "#{user.username}, #{user2.username}" }
     let(:usernames_array) { [user.username, user2.username] }
+    let(:expected_message) do
+      "Congrats on your achievement! 🎉 And thank you for being " \
+        "such a vital part of #{Settings::Community.community_name}!"
+    end
 
     before do
       sign_in admin
@@ -68,8 +72,9 @@ RSpec.describe "/admin/content_manager/badge_achievements" do
         usernames: usernames_string,
         message_markdown: ""
       }
-      expect(BadgeAchievements::BadgeAwardWorker).to have_received(:perform_async).with(usernames_array, badge.slug,
-                                                                                        "Congrats!")
+      expect(BadgeAchievements::BadgeAwardWorker).to have_received(:perform_async).with(usernames_array,
+                                                                                        badge.slug,
+                                                                                        expected_message)
       expect(request.flash[:success]).to include("Badges are being rewarded. The task will finish shortly.")
     end
 
@@ -103,7 +108,7 @@ RSpec.describe "/admin/content_manager/badge_achievements" do
     it "deletes the badge_achievement" do
       expect do
         delete admin_badge_achievement_path(badge_achievement.id)
-      end.to change { BadgeAchievement.all.count }.by(-1)
+      end.to change(BadgeAchievement, :count).by(-1)
     end
   end
 end

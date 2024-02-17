@@ -29,6 +29,7 @@ export const Article = ({
     return <PodcastArticle article={article} />;
   }
 
+  const isArticle = article.class_name === 'Article';
   const clickableClassList = [
     'crayons-story',
     'crayons-story__top',
@@ -51,6 +52,7 @@ export const Article = ({
         isFeatured ? ' crayons-story--featured' : ''
       }`}
       id={isFeatured ? 'featured-story-marker' : `article-${article.id}`}
+      data-feed-content-id={isArticle ? article.id : null}
       data-content-user-id={article.user_id}
 	  style="margin-bottom: 22px;"
     >
@@ -108,7 +110,7 @@ export const Article = ({
             <ContentTitle article={article} />
             <TagList tags={article.tag_list} flare_tag={article.flare_tag} />
 
-            {article.class_name === 'Article' && (
+            {isArticle && (
               // eslint-disable-next-line no-underscore-dangle
               <SearchSnippet highlightText={article.highlight} />
             )}

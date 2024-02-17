@@ -1,6 +1,10 @@
 require "rails_helper"
 
+<<<<<<< HEAD
 RSpec.describe "Search", proper_status: true do
+=======
+RSpec.describe "Search", :proper_status do
+>>>>>>> upstream/main
   let(:authorized_user) { create(:user) }
 
   describe "GET /search/tags" do

@@ -278,7 +278,11 @@ RSpec.describe MarkdownProcessor::Parser, type: :service do
       end
 
       it "strips the styles as expected" do
+<<<<<<< HEAD
         linked_user = %(<a class="mentioned-user" href="http://localhost:3000/user1">@user1</a>)
+=======
+        linked_user = %(<a class="mentioned-user" href="http://forem.test/user1">@user1</a>)
+>>>>>>> upstream/main
         expected_result = <<~HTML.strip
           <p>x{animation:s}#{linked_user} s{}&lt;br&gt;
           &lt;style&gt;{transition:color 1s}:hover{color:red}&lt;/p&gt;
@@ -371,7 +375,7 @@ RSpec.describe MarkdownProcessor::Parser, type: :service do
       expect(generate_and_parse_markdown(markdown_with_img)).to include("<a")
     end
 
-    it "wraps the image with Cloudinary", cloudinary: true do
+    it "wraps the image with Cloudinary", :cloudinary do
       expect(generate_and_parse_markdown(markdown_with_img))
         .to include("https://res.cloudinary.com")
     end
@@ -480,7 +484,7 @@ RSpec.describe MarkdownProcessor::Parser, type: :service do
         "{% liquid example %}",
         source: :my_source,
         user: :my_user,
-        policy: :my_policy,
+        liquid_tag_options: { policy: :my_policy },
       ).finalize
       expect(Liquid::Template).to have_received(:parse)
         .with(
