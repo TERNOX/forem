@@ -11,6 +11,7 @@ fr:
       desc: Receive badges for being awesome! Click on a badge to see how you can earn it.
       icon_close: Close
       gotit: Got it
+      indicator: "%{user} a obtenu ce badge %{number} fois."
     campaign:
       subtitle: Stories (%{count})
       view: See all posts
@@ -46,6 +47,8 @@ fr:
       preview:
         icon: App logo
         text: 'Preview:'
+    mailers:
+      contact_mailto_html: Contactez-nous à l'adresse <a href="mailto:%{contact_email}">%{contact_email}</a> si nous pouvons vous aider davantage.
     onboardings:
       meta:
         title: Welcome to %{community}
@@ -83,6 +86,7 @@ fr:
         people: People
         comments: Comments
         my_posts: My posts only
+        organizations: Organizations
         tags: Tags
       sort:
         aria_label: Search result sort options

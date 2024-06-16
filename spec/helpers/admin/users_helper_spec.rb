@@ -30,14 +30,14 @@ describe Admin::UsersHelper do
 
   describe "#format_last_activity_timestamp" do
     it "renders the proper 'Last activity' date for a user that was active today" do
-      timestamp = Time.zone.today.in_time_zone("Kyiv") # Since actual user last_activity class is TimeWithZone
+      timestamp = Time.zone.today.in_time_zone # Since actual user last_activity class is TimeWithZone
       date = timestamp.strftime("%d %b")
       formatted_date = helper.format_last_activity_timestamp(timestamp)
       expect(formatted_date).to eq "Today, #{date}"
     end
 
     it "renders the proper 'Last activity' date for a user that was active yesterday" do
-      timestamp = Date.yesterday.in_time_zone("Kyiv") # Since actual user last_activity class is TimeWithZone
+      timestamp = Date.yesterday.in_time_zone # Since actual user last_activity class is TimeWithZone
       date = timestamp.strftime("%d %b")
       formatted_date = helper.format_last_activity_timestamp(timestamp)
       expect(formatted_date).to eq "Yesterday, #{date}"
@@ -121,6 +121,12 @@ describe Admin::UsersHelper do
       expect(status).to eq "Suspended"
     end
 
+    it "renders the proper status for a user that is spam" do
+      spam_user = create(:user, :spam)
+      status = helper.user_status(spam_user)
+      expect(status).to eq "Spam"
+    end
+
     it "renders the proper status for a user that is warned" do
       warned_user = create(:user, :warned)
       status = helper.user_status(warned_user)
@@ -131,6 +137,12 @@ describe Admin::UsersHelper do
       comment_suspended_user = create(:user, :comment_suspended)
       status = helper.user_status(comment_suspended_user)
       expect(status).to eq "Comment Suspended"
+    end
+
+    it "renders the proper status for a user that is limited" do
+      limited_user = create(:user, :limited)
+      status = helper.user_status(limited_user)
+      expect(status).to eq "Limited"
     end
 
     it "renders the proper status for a user that is trusted" do
