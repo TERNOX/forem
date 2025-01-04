@@ -8,7 +8,7 @@ fr:
     badge_achievements_controller:
       deleted: La réalisation du badge a été supprimée !
       rewarded: Les badges sont en train d'être récompensés. La tâche sera bientôt terminée.
-      congrats: Félicitations !
+      congrats: Félicitations pour votre succès! 🎉 Et merci d'être une partie si essentielle de %{community} !
       award: Veuillez choisir un badge à décerner
       wrong: Quelque chose a mal fonctionné.
     badges_controller:
@@ -19,16 +19,27 @@ fr:
       deleted: Le Broadcast a été supprimée !
       updated: Le Broadcast a été mise à jour !
       wrong: Quelque chose s'est mal passé avec la suppression du Broadcast.
+    bulk_assign_role_controller:
+      role_assigment: Role %{role} assigned to user.
+      role_blank: Please choose a role to add.
+      success_message: Roles are being added. The task will finish shortly.
     consumer_apps_controller:
       created: '%{app} a été créé !'
       deleted: '%{app} a été supprimé !'
       updated: '%{app} a été mis à jour !'
       wrong: Quelque chose s'est mal passé en supprimant %{app}.
-    display_ads_controller:
+    billboards_controller:
       created: L'annonce publicitaire a été créée !
       deleted: L'annonce a été supprimée !
       updated: L'annonce publicitaire a été mise à jour !
       wrong: Quelque chose s'est mal passé avec la suppression de l'annonce publicitaire.
+    emails_controller:
+      created: Emails are being sent!
+      drafted: Email has been drafted!
+      activated: Email has been activated!
+      deleted: Email has been deleted!
+      updated: Email has been updated!
+      wrong: Something went wrong with deleting the Email.
     extensions_controller:
       update_success: Les extensions ont été mises à jour.
     gdpr_delete_requests_controller:
@@ -66,6 +77,8 @@ fr:
       updated: L'utilisateur a été mis à jour avec succès vers %{type}
     organizations_controller:
       credit_updated: Crédits actualisés avec succès
+      deletion_scheduled: 'Organization, "%{organization_name}", deletion is scheduled.'
+      error: 'Your organization, %{organization_name}, could not be deleted: %{error}.'
     pages_controller:
       updated: La page a été mise à jour avec succès.
       created: La page a été créée avec succès.
@@ -106,7 +119,7 @@ fr:
       update_success: L'espace a été mis à jour.
     tags:
       moderators_controller:
-        not_found: "L'ID utilisateur #%{user_id} n'a pas été trouvé"
+        not_found: "Le nom d'utilisateur %{username} n'a pas été trouvé"
         not_found_or: "L'identifiant de l'utilisateur #%{user_id} n'a pas été trouvé, ou son compte présente des erreurs : %{errors}"
         removed: "@%{username} - ID #%{user_id} a été supprimé en tant que modérateur de tags."
         added: "%{username} a été ajouté en tant que modérateur de tags !"
@@ -122,7 +135,9 @@ fr:
       exported: Données exportées vers le %{receiver}. Le travail sera terminé dans un instant.
       email_fail: L'envoi de l'e-mail a échoué !
       email_sent: Courriel envoyé !
+      confirm_sent: Courriel de Confirmation Envoyé!
       verify_sent: E-mail de vérification envoyé !
+      manual_verification_sent: E-mail vérifié manuellement !
       full_delete_html: "@%{user} (email: %{email}, user_id: %{id}) a été entièrement supprimé. S'il s'agit d'une suppression GDPR, supprimez-les de Mailchimp & Google Analytics et confirmez sur %{the_page}."
       no_email: Aucun e-mail
       parameter_missing: Le sujet et le corps sont tous deux requis !
@@ -136,6 +151,7 @@ fr:
       updated_json: Succès ! %{username} a été mis à jour.
       credits_added: Les crédits ont été ajoutés !
       credits_removed: Les crédits ont été supprimés.
+      tag_not_found: 'Tag "%{tag_name}" non trouvée'
     welcome_controller:
       thread_content: |
         ---

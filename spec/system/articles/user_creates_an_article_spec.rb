@@ -23,7 +23,7 @@ RSpec.describe "Creating an article with the editor" do
   it "creates a new article", :flaky, js: true do
     visit new_path
     fill_in "article_body_markdown", with: template
-    click_button "Зберегти"
+    click_button "Save changes"
     expect(page).to have_selector("header h1", text: "Sample Article")
   end
 
@@ -45,7 +45,7 @@ RSpec.describe "Creating an article with the editor" do
     it "creates a new article with a Runkit tag" do
       visit new_path
       fill_in "article_body_markdown", with: template_with_runkit_tag
-      click_button "Зберегти"
+      click_button "Save changes"
 
       expect(page).not_to have_current_path(new_path)
       expect_runkit_tag_to_be_active
@@ -54,7 +54,7 @@ RSpec.describe "Creating an article with the editor" do
     it "creates a new article with a Runkit tag with complex preamble" do
       visit new_path
       fill_in "article_body_markdown", with: template_with_runkit_tag_with_preamble
-      click_button "Зберегти"
+      click_button "Save changes"
 
       expect(page).not_to have_current_path(new_path)
       expect_runkit_tag_to_be_active(count: 2)
@@ -64,15 +64,15 @@ RSpec.describe "Creating an article with the editor" do
     xit "previews article with a Runkit tag and creates it" do
       visit new_path
       fill_in "article_body_markdown", with: template_with_runkit_tag
-      click_button "Передперегляд"
+      click_button "Preview"
 
       expect_runkit_tag_to_be_active
 
-      click_button "Редагувати"
+      click_button "Edit"
 
       expect_no_runkit_tag_to_be_active
 
-      click_button "Зберегти"
+      click_button "Save changes"
 
       expect_runkit_tag_to_be_active
     end
@@ -93,7 +93,7 @@ RSpec.describe "Creating an article with the editor" do
     it "displays a rate limit warning", :flaky, js: true do
       visit new_path
       fill_in "article_body_markdown", with: template
-      click_button "Зберегти"
+      click_button "Save changes"
       expect(page).to have_text("Rate limit reached")
     end
   end

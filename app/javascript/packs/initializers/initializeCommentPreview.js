@@ -46,12 +46,12 @@ function handleCommentPreview(event) {
   if (editor.value !== '') {
     if (form.classList.contains('preview-open')) {
       form.classList.toggle('preview-open');
-      trigger.innerHTML = 'Прев`ю';
+      trigger.innerHTML = 'Preview';
     } else {
       getAndShowPreview(preview, editor);
       const editorHeight = editor.offsetHeight + 43; // not ideal but prevents jumping screen
       preview.style.minHeight = `${editorHeight}px`;
-      trigger.innerHTML = 'Редагувати';
+      trigger.innerHTML = 'Continue editing';
       form.classList.toggle('preview-open');
     }
   }
@@ -64,5 +64,6 @@ export function initializeCommentPreview() {
     return;
   }
 
+  window.handleCommentPreview = handleCommentPreview;
   previewButton.addEventListener('click', handleCommentPreview);
 }

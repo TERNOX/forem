@@ -11,28 +11,27 @@ RSpec.describe "Editing with an editor", js: true do
     allow(Settings::General).to receive(:logo_png).and_return("https://dummyimage.com/800x600.png")
     allow(Settings::General).to receive(:mascot_image_url).and_return("https://dummyimage.com/800x600.jpg")
     allow(Settings::General).to receive(:suggested_tags).and_return("coding, beginners")
-    allow(Settings::General).to receive(:suggested_users).and_return("romagueramica")
     sign_in user
   end
 
   it "user previews their changes" do
     visit "/#{user.username}/#{article.slug}/edit"
     fill_in "article_body_markdown", with: template.gsub("Suspendisse", "Yooo")
-    click_button("Передперегляд")
+    click_button("Preview")
     expect(page).to have_text("Yooo")
   end
 
   it "user updates their post" do
     visit "/#{user.username}/#{article.slug}/edit"
     fill_in "article_body_markdown", with: template.gsub("Suspendisse", "Yooo")
-    click_button("Зберегти")
+    click_button("Save changes")
     expect(page).to have_text("Yooo")
   end
 
   it "user unpublishes their post" do
     visit "/#{user.username}/#{article.slug}/edit"
     fill_in("article_body_markdown", with: template.gsub("true", "false"), fill_options: { clear: :backspace })
-    click_button("Зберегти")
+    click_button("Save changes")
     expect(page).to have_text("Unpublished Post.")
   end
 
@@ -51,7 +50,7 @@ RSpec.describe "Editing with an editor", js: true do
     it "displays a rate limit warning", :flaky, js: true do
       visit "/#{user.username}/#{article.slug}/edit"
       fill_in "article_body_markdown", with: template.gsub("Suspendisse", "Yooo")
-      click_button "Зберегти"
+      click_button "Save changes"
       expect(page).to have_text("Rate limit reached")
     end
   end

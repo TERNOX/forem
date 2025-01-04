@@ -16,7 +16,9 @@ module Stories
 
       @page = (params[:page] || 1).to_i
 
-      @moderators = User.with_role(:tag_moderator, @tag).select(:username, :profile_image, :id)
+      @moderators = User.with_role(:tag_moderator, @tag)
+        .order(badge_achievements_count: :desc)
+        .select(:username, :profile_image, :id)
 
       set_number_of_articles(tag: @tag)
 
@@ -32,11 +34,12 @@ module Stories
 
     def set_number_of_articles(tag:)
       @num_published_articles = if tag.requires_approval?
-                                  tag.articles.published.approved.count
+                                  tag.articles.published.from_subforem.approved.count
                                 elsif Settings::UserExperience.feed_strategy == "basic"
                                   tagged_count(tag: tag)
                                 else
-                                  Rails.cache.fetch("article-cached-tagged-count-#{tag.name}", expires_in: 2.hours) do
+                                  Rails.cache.fetch("#{tag.cache_key}/article-cached-tagged-count",
+                                                    expires_in: 2.hours) do
                                     tagged_count(tag: tag)
                                   end
                                 end
@@ -55,11 +58,12 @@ module Stories
 
       # Now, apply the filter.
       stories = stories_by_timeframe(stories: stories)
+      stories = stories.full_posts.from_subforem
       @stories = stories.decorate
     end
 
     def tagged_count(tag:)
-      tag.articles.published.where(score: Settings::UserExperience.tag_feed_minimum_score..).count
+      tag.articles.published.from_subforem.where(score: Settings::UserExperience.tag_feed_minimum_score..).count
     end
 
     # Do we have an established tag?  That means it's supported OR we have at least one published story.
@@ -70,7 +74,7 @@ module Stories
     # @return [FalseClass] if we do not
     def established?(stories:, tag:)
       return true if tag.supported?
-      return true if stories.published.exists?
+      return true if stories.published.from_subforem.exists?
 
       false
     end
@@ -78,6 +82,7 @@ module Stories
     def stories_by_timeframe(stories:)
       if Timeframe::FILTER_TIMEFRAMES.include?(params[:timeframe])
         stories.where("published_at > ?", Timeframe.datetime(params[:timeframe]))
+          .where(score: -20..)
           .order(public_reactions_count: :desc)
       elsif params[:timeframe] == Timeframe::LATEST_TIMEFRAME
         stories.where(score: -20..).order(published_at: :desc)

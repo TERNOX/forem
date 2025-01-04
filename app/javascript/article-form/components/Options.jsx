@@ -75,7 +75,7 @@ export const Options = ({
             variant="primary"
             onClick={onSaveDraft}
           >
-            До чорнеток
+            Convert to a Draft
           </Button>
         </div>
       );
@@ -83,10 +83,10 @@ export const Options = ({
       publishedField = (
         <div data-testid="options__danger-zone" className="crayons-field mb-6">
           <div className="crayons-field__label color-accent-danger">
-            Обережено!
+            Danger Zone
           </div>
           <Button variant="primary" destructive onClick={onSaveDraft}>
-            Сховати допис
+            Unpublish post
           </Button>
         </div>
       );
@@ -98,7 +98,7 @@ export const Options = ({
     publishedAtField = (
       <div className="crayons-field mb-6">
         <label htmlFor="publishedAtDate" className="crayons-field__label">
-          Запланувати допис
+          Schedule Publication
         </label>
         <input
           aria-label="Schedule publication date"
@@ -123,7 +123,7 @@ export const Options = ({
         />
         <input
           type="hidden"
-          value="Kyiv"
+          value={timezone} // "Asia/Magadan"
           className="crayons-textfield"
           name="timezone"
           id="timezone"
@@ -138,8 +138,8 @@ export const Options = ({
       <Button
         id="post-options-btn"
         icon={CogIcon}
-        title="Додаткові налаштування"
-        aria-label="Додаткові налаштування"
+        title="Post options"
+        aria-label="Post options"
         disabled={previewLoading}
       />
 
@@ -152,14 +152,14 @@ export const Options = ({
         <h3 className="mb-6">Post options</h3>
         <div className="crayons-field mb-6">
           <label htmlFor="canonicalUrl" className="crayons-field__label">
-            Канонічний URL
+            Canonical URL
           </label>
           <p className="crayons-field__description">
-            Змініть мета теґ
+            Change meta tag
             {` `}
             <code>canonical_url</code>
             {` `}
-            якщо цей допис спочатку було опубліковано десь у іншому міці (наприклад на вашому особистому сайті). Це дасть зрозуміти пошуковим системам де оригінал статті, і перевага буде надаватися вашому сайту.
+            if this post was first published elsewhere (like your own blog).
           </p>
           <input
             type="text"
@@ -175,11 +175,11 @@ export const Options = ({
         {publishedAtField}
         <div className="crayons-field mb-6">
           <label htmlFor="series" className="crayons-field__label">
-            Серія
+            Series
           </label>
           <p className="crayons-field__description">
-            Цей допис є частиною серії дописів? Тож дайте цій серії ім'я.
-            (Перелік дописів буде видно у кожному дописі серії)
+            Will this post be part of a series? Give the series a unique name.
+            (Series visible once it has multiple posts)
           </p>
           <input
             type="text"
@@ -199,7 +199,7 @@ export const Options = ({
           data-content="exit"
           variant="secondary"
         >
-          Готово
+          Done
         </Button>
       </Dropdown>
     </div>

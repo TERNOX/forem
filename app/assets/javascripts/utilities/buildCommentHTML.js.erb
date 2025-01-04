@@ -13,6 +13,7 @@ function buildCommentHTML(comment) {
   var commentFooter = "";
   var commentAvatar = "";
   var commentBody = "";
+  var subscriptionIcon = "";
 
   if ( comment.depth == 0 ) {
     depthClass += "root ";
@@ -26,6 +27,10 @@ function buildCommentHTML(comment) {
 
   if (comment.newly_created) {
     customClass = "comment-created-via-fetch"
+  }
+
+  if (comment.user.cached_base_subscriber) {
+    subscriptionIcon = ` <img class='subscription-icon' src='${document.body.dataset.subscriptionIcon}' alt='Subscriber' />`;
   }
 
   if (comment.depth < 3) {
@@ -51,7 +56,7 @@ function buildCommentHTML(comment) {
       <span class="js-comment-username">${ comment.user.name }</span>
     </a>
     <div class="profile-preview-card relative mb-4 s:mb-0 fw-medium hidden m:block">
-      <button id="comment-profile-preview-trigger-${comment.id}" aria-controls="comment-profile-preview-content-${comment.id}" class="profile-preview-card__trigger p-1 -my-1 -ml-1 crayons-btn crayons-btn--ghost" aria-label="${comment.user.name} profile details">${comment.user.name}</button>
+      <button id="comment-profile-preview-trigger-${comment.id}" aria-controls="comment-profile-preview-content-${comment.id}" class="profile-preview-card__trigger p-1 -my-1 -ml-1 crayons-btn crayons-btn--ghost" aria-label="${comment.user.name} profile details">${comment.user.name}${subscriptionIcon}</button>
       <span data-js-comment-user-id="${comment.user.id}" data-js-dropdown-content-id="comment-profile-preview-content-${comment.id}" class="preview-card-placeholder"></span>
     </div>
     <span class="color-base-30 px-2 m:pl-0" role="presentation">&bull;</span>
@@ -69,10 +74,10 @@ function buildCommentHTML(comment) {
       <div id="comment-dropdown-${comment.id}" class="crayons-dropdown right-1 s:right-0 s:left-auto fs-base dropdown">
         <ul class="m-0">
           <li><a href="${ comment.url }" class="crayons-link crayons-link--block permalink-copybtn" aria-label="Copy link to ${ comment.user.name }'s comment" data-no-instant>${ I18n.t('core.copy_link') }</a></li>
-          <li><a href="${ comment.url }/settings" class="crayons-link crayons-link--block" aria-label="Go to ${ comment.user.name }'s comment settings">Налаштування</a></li>
+          <li><a href="${ comment.url }/settings" class="crayons-link crayons-link--block" aria-label="Go to ${ comment.user.name }'s comment settings">Settings</a></li>
           <li><a href="/report-abuse?url=${ comment.url }" class="crayons-link crayons-link--block" aria-label="Report ${ comment.user.name }'s comment as abusive or violating our code of conduct and/or terms and conditions">${ I18n.t('core.report_abuse') }</a></li>
-
-          <li class="${ comment.newly_created ? '' : 'hidden' }"><a data-no-instant="" href="${ comment.url }/delete_confirm" class="crayons-link crayons-link--block" rel="nofollow" aria-label="Delete this comment">Видалити</a></li>
+          <li class="${ comment.newly_created ? '' : 'hidden' }"><a href="${ comment.url }/edit" class="crayons-link crayons-link--block" rel="nofollow" aria-label="Edit this comment">Edit</a></li>
+          <li class="${ comment.newly_created ? '' : 'hidden' }"><a data-no-instant="" href="${ comment.url }/delete_confirm" class="crayons-link crayons-link--block" rel="nofollow" aria-label="Delete this comment">Delete</a></li>
         </ul>
       </div>
     </div>
@@ -112,7 +117,7 @@ function reply(comment) {
     data-tracking-name="comment_reply_button"
     rel="nofollow">
     ${ iconSmallComment }
-    <span class="hidden m:inline-block">Відповісти</span>
+    <span class="hidden m:inline-block">Reply</span>
   </a>`;
   if (comment.newly_created) {
     return replyButton;
@@ -139,7 +144,7 @@ function react(comment) {
     ${ iconSmallHeart }
     ${ iconSmallHeartFilled }
     <span class="reactions-count" id="reactions-count-${ comment.id }">${ num }</span>
-    ${ num > 0 ? '<span class="reactions-label hidden m:inline-block">подобається</span>' : ''}
+    ${ num > 0 ? '<span class="reactions-label hidden m:inline-block">like</span>' : ''}
     <span data-testid="tooltip" class="crayons-tooltip__content">Like</span>
   </button>`;
 

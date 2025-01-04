@@ -25,7 +25,7 @@ import { Icon } from '@crayons';
 const ORDERED_LIST_ITEM_REGEX = /^\d+\.\s+.*/;
 const MARKDOWN_LINK_REGEX =
   /^\[([\w\s\d]*)\]\((url|(https?:\/\/[\w\d./?=#]+))\)$/;
-const URL_PLACEHOLDER_TEXT = 'посилання';
+const URL_PLACEHOLDER_TEXT = 'url';
 
 const NUMBER_OF_NEW_LINES_BEFORE_BLOCK_SYNTAX = 2;
 const NUMBER_OF_NEW_LINES_BEFORE_AFTER_SYNTAX = 1;
@@ -70,7 +70,7 @@ const handleLinkFormattingForEmptyTextSelection = ({
     editSelectionEnd: selectionEnd,
     replaceSelectionWith: `[](${URL_PLACEHOLDER_TEXT})`,
     newCursorStart: selectionStart + 3,
-    newCursorEnd: selectionEnd + 12,
+    newCursorEnd: selectionEnd + 6,
   };
 
   // Directly after inserting a link with a URL highlighted, cursor is inside the link description '[]'
@@ -407,7 +407,7 @@ export const getNewTextAreaValueWithEdits = ({
 export const markdownSyntaxFormatters = {
   bold: {
     icon: () => <Icon src={BoldIcon} />,
-    label: 'Жирний',
+    label: 'Bold',
     getKeyboardShortcut: () => {
       const modifier = getOSKeyboardModifierKeyString();
       return {
@@ -427,7 +427,7 @@ export const markdownSyntaxFormatters = {
   },
   italic: {
     icon: () => <Icon src={ItalicIcon} />,
-    label: 'Курсив',
+    label: 'Italic',
     getKeyboardShortcut: () => {
       const modifier = getOSKeyboardModifierKeyString();
       return {
@@ -447,7 +447,7 @@ export const markdownSyntaxFormatters = {
   },
   link: {
     icon: () => <Icon src={LinkIcon} />,
-    label: 'Посилання',
+    label: 'Link',
     getKeyboardShortcut: () => {
       const modifier = getOSKeyboardModifierKeyString();
       return {
@@ -500,13 +500,13 @@ export const markdownSyntaxFormatters = {
         editSelectionEnd: selectionEnd,
         replaceSelectionWith: `[${selectedText}](${URL_PLACEHOLDER_TEXT})`,
         newCursorStart: selectionStart + selectedText.length + 3,
-        newCursorEnd: selectionEnd + 12,
+        newCursorEnd: selectionEnd + 6,
       };
     },
   },
   orderedList: {
     icon: () => <Icon src={OrderedListIcon} />,
-    label: 'Пронумерований перелік',
+    label: 'Ordered list',
     getFormatting: ({ selectionStart, selectionEnd, value }) => {
       const { selectedText, textBeforeSelection } = getSelectionData({
         selectionStart,
@@ -602,7 +602,7 @@ export const markdownSyntaxFormatters = {
   },
   unorderedList: {
     icon: () => <Icon src={UnorderedListIcon} />,
-    label: 'Звичайний перелік',
+    label: 'Unordered list',
     getFormatting: ({ selectionStart, selectionEnd, value }) => {
       return undoOrAddFormattingForMultilineSyntax({
         selectionStart,
@@ -614,7 +614,7 @@ export const markdownSyntaxFormatters = {
   },
   heading: {
     icon: () => <Icon src={HeadingIcon} />,
-    label: 'Заголовок',
+    label: 'Heading',
     getFormatting: ({ selectionStart, selectionEnd, value }) => {
       let currentLineSelectionStart = selectionStart;
 
@@ -682,7 +682,7 @@ export const markdownSyntaxFormatters = {
   },
   quote: {
     icon: () => <Icon src={QuoteIcon} />,
-    label: 'Цитата',
+    label: 'Quote',
     getFormatting: ({ selectionStart, selectionEnd, value }) =>
       undoOrAddFormattingForMultilineSyntax({
         selectionStart,
@@ -693,7 +693,7 @@ export const markdownSyntaxFormatters = {
   },
   code: {
     icon: () => <Icon src={CodeIcon} />,
-    label: 'Код',
+    label: 'Code',
     getFormatting: ({ selectionStart, selectionEnd, value }) =>
       undoOrAddFormattingForInlineSyntax({
         selectionStart,
@@ -705,7 +705,7 @@ export const markdownSyntaxFormatters = {
   },
   codeBlock: {
     icon: () => <Icon src={CodeBlockIcon} />,
-    label: 'Блок коду',
+    label: 'Code block',
     getFormatting: ({ selectionStart, selectionEnd, value }) =>
       undoOrAddFormattingForMultilineSyntax({
         selectionStart,
@@ -717,7 +717,7 @@ export const markdownSyntaxFormatters = {
   },
   embed: {
     icon: () => <Icon src={EmbedIcon} />,
-    label: 'Вбудований контент (напр. Youtube)',
+    label: 'Embed',
     getKeyboardShortcut: () => {
       const modifier = getOSKeyboardModifierKeyString();
       return {
@@ -736,7 +736,7 @@ export const markdownSyntaxFormatters = {
   },
   underline: {
     icon: () => <Icon src={UnderlineIcon} />,
-    label: 'Підкреслення',
+    label: 'Underline',
     getKeyboardShortcut: () => {
       const modifier = getOSKeyboardModifierKeyString();
       return {
@@ -755,7 +755,7 @@ export const markdownSyntaxFormatters = {
   },
   strikethrough: {
     icon: () => <Icon src={StrikethroughIcon} />,
-    label: 'Закреслення',
+    label: 'Strikethrough',
     getKeyboardShortcut: () => {
       const modifier = getOSKeyboardModifierKeyString();
       return {
@@ -774,7 +774,7 @@ export const markdownSyntaxFormatters = {
   },
   divider: {
     icon: () => <Icon src={DividerIcon} />,
-    label: 'Розрив строки',
+    label: 'Line divider',
     getFormatting: ({ selectionStart, selectionEnd, value }) =>
       undoOrAddFormattingForMultilineSyntax({
         selectionStart,

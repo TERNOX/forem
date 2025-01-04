@@ -50,7 +50,7 @@ function initializeCommentsPage() {
                     if (publicReactionCounts[i].count > 0 && reactionsLabelWrapper) {
 
                       if (publicReactionCounts[i].count > 1) {
-                        reactionsLabelWrapper.innerHTML = `&nbsp;${I18n.t('core.like').toLowerCase()}`;
+                        reactionsLabelWrapper.innerHTML = `&nbsp;${I18n.t('core.like').toLowerCase()}s`;
                       } else {
                         reactionsLabelWrapper.innerHTML = `&nbsp;${I18n.t('core.like').toLowerCase()}`;
                       }
@@ -64,7 +64,7 @@ function initializeCommentsPage() {
                     }
 
                     if (!buttForComment.classList.contains("reacted")) {
-                      buttForComment.setAttribute('aria-pressed', 'false')
+                      buttForComment.setAttribute('aria-pressed', 'false');
                     }
                   }
                 }
@@ -76,7 +76,8 @@ function initializeCommentsPage() {
                     var userActionsEl = allNodes[i].querySelector('.current-user-actions');
                     var buttEl = document.getElementById('button-for-comment-' + allNodes[i].dataset.commentId);
                     if (userActionsEl && buttEl) {
-                      userActionsEl.innerHTML = `<li><a data-no-instant href="${ path }/delete_confirm" class="edit-butt crayons-link crayons-link--block" aria-label="Delete this comment">Видалити</a></li>`
+                      userActionsEl.innerHTML = `<li><a href="${ path }/edit" class="crayons-link crayons-link--block" aria-label="Edit this comment">Edit</a></li>
+                                                <li><a data-no-instant href="${ path }/delete_confirm" class="edit-butt crayons-link crayons-link--block" aria-label="Delete this comment">Delete</a></li>`
                       userActionsEl.classList.remove('hidden');
                     }
                   }
@@ -117,9 +118,9 @@ function initializeCommentsPage() {
               reactionCount.innerHTML = parseInt(reactionCount.innerHTML) + 1;
               reactionCount.classList.remove("hidden");
               if(parseInt(reactionCount.innerHTML) == 1) {
-                reactionLabel.innerHTML = "&nbsp;подобається"
+                reactionLabel.innerHTML = "&nbsp;like"
               } else if(parseInt(reactionCount.innerHTML) > 1) {
-                reactionLabel.innerHTML = "&nbsp;подобається"
+                reactionLabel.innerHTML = "&nbsp;likes"
               }
             }
           } else {
@@ -290,7 +291,7 @@ function handleCommentSubmit(event) {
           }
           else if (document.getElementById("notifications-container")) {
             var newDiv = document.createElement("span")
-            newDiv.innerHTML = '<div class="crayons-notice align-center p-2 m-2 crayons-notice--success reply-sent-notice reply-sent-notice" aria-live="polite">Відповідь надіслано — <a href="' + newComment.url + '">Він ось тут</a></div>'
+            newDiv.innerHTML = '<div class="crayons-notice align-center p-2 m-2 crayons-notice--success reply-sent-notice reply-sent-notice" aria-live="polite">Reply sent — <a href="' + newComment.url + '">Check it out</a></div>'
             form.replaceWith(newDiv);
           }
           else {
@@ -299,7 +300,6 @@ function handleCommentSubmit(event) {
           updateCommentsCount();
           initializeCommentsPage();
           initializeCommentDate();
-          initializeDateHelpers();
           activateRunkitTags();
         })
       } else {
@@ -416,9 +416,9 @@ function updateItemSummaryHtml(item) {
   }
   var itemUsername = usernames[0].textContent + number
   if (item.open) {
-    itemSummaryContent.innerHTML = "";
+    itemSummaryContent.textContent = "";
   } else {
-    itemSummaryContent.innerHTML = itemUsername;
+    itemSummaryContent.textContent = itemUsername;
   }
 }
 

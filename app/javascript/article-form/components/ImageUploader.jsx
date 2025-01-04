@@ -60,12 +60,12 @@ const NativeIosV1ImageUpload = ({ uploadingImage }) => (
   <Fragment>
     {!uploadingImage && (
       <Button
-        aria-label="Завантажити картинку"
+        aria-label="Upload an image"
         className="mr-2"
         icon={ImageIcon}
         onClick={initNativeImagePicker}
       >
-        Завантажити картинку
+        Upload image
       </Button>
     )}
   </Fragment>
@@ -322,7 +322,7 @@ export const ImageUploader = ({
       payload: { insertionImageUrls: response.links },
     });
 
-    onImageUploadSuccess?.(`![Опис картинки](${response.links})`);
+    onImageUploadSuccess?.(`![Image description](${response.links})`);
 
     document.getElementById('upload-success-info').innerText =
       'image upload complete';
@@ -349,7 +349,7 @@ export const ImageUploader = ({
         });
         break;
       case 'success':
-        onImageUploadSuccess?.(`![Опис картинки](${message.link})`);
+        onImageUploadSuccess?.(`![Image description](${message.link})`);
         dispatch({
           type: 'upload_image_success',
           payload: { insertionImageUrls: [message.link] },

@@ -3,37 +3,40 @@ en:
   views:
     reactions:
       category:
-        hands: Облиски
-        like: Лайк
-        readinglist: Збережене
-        thinking: Хм...
-        thumbsup: Палець вгору
-        thumbsdown: Палець вниз
-        unicorn: Казково!
-        vomit: Жахливо
-        cry_face: Сумно
-        cry: Сумно
+        hands: Hands
+        like: Like
+        readinglist: Reading list
+        thinking: Thinking
+        thumbsup: Thumbs up
+        thumbsdown: Thumbs down
+        unicorn: Unicorn
+        vomit: Flag
         lightbulb: Lightbulb
-        raised_hands: Чудово
-        rocket: Ульот
-        exploding_head: Неймовірно
-        fire: Вогонь
-      drawer_button: Додати реакцію
+        raised_hands: Raised hands
+        rocket: Rocket
+        exploding_head: Exploding head
+        fire: Fire
+      drawer_button: Add reaction
       summary:
         count_html:
-          one: "%{count}%{start}\_реакція%{end}"
-          other: "%{count}%{start}\_реакцій%{end}"
-        title: Реакції
+          one: "%{count}%{start}\_reaction%{end}"
+          other: "%{count}%{start}\_reactions%{end}"
+        title: Reactions
       like:
-        title: Лайк
-        aria_label: Лайк
-        icon: Сердечко
-        text: Лайк
+        title: Like
+        aria_label: Like
+        icon: Favorite heart button
+        text: Like
       unicorn:
-        title: Казково!
-        aria_label: Казково!
+        title: Unicorn
+        aria_label: React with unicorn
       readingList:
-        title: Зберегти
-        aria_label: Додати до списку збереженого
+        title: Save
+        aria_label: Add to reading list
         icon: Save button
-        text: Зберегти
+        text: Save
+      subscribe:
+        title: Subscribe to Comments
+        aria_label: Subscribe to Comments
+        icon: Save button
+        text: Subscribe to Comments

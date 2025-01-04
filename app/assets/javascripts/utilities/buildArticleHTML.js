@@ -2,7 +2,6 @@
 
 /* eslint-disable no-multi-str */
 
-
 function buildArticleHTML(article, currentUserId = null) {
   var tagIcon = `<svg width="24" height="24" viewBox="0 0 24 24" class="crayons-icon" xmlns="http://www.w3.org/2000/svg"><path d="M7.784 14l.42-4H4V8h4.415l.525-5h2.011l-.525 5h3.989l.525-5h2.011l-.525 5H20v2h-3.784l-.42 4H20v2h-4.415l-.525 5h-2.011l.525-5H9.585l-.525 5H7.049l.525-5H4v-2h3.784zm2.011 0h3.99l.42-4h-3.99l-.42 4z"/></svg>`;
   if (article && article.class_name === 'Tag') {
@@ -48,6 +47,83 @@ function buildArticleHTML(article, currentUserId = null) {
         </div>
       </article>`;
   }
+
+  if (article && article.class_name === 'Organization') {
+    const html = `
+      <article class="crayons-story">
+        <div class="crayons-story__body flex items-start gap-2">
+          <a href="${article.slug}" class="crayons-podcast-episode__cover">
+            <img src="${article.profile_image.url}" alt="" loading="lazy" />
+          </a>
+          <div>
+            <h3 class="crayons-subtitle-2 lh-tight py-1">
+              <a href="${article.slug}" class="c-link"> ${article.name} </a>
+            </h3>
+            <p class="crayons-story__slug-segment">@${article.slug}</p>
+            ${
+              article.summary
+                ? `<div class="truncate-at-3 top-margin-4">${article.summary}</div>`
+                : ''
+            }
+          </div>
+          <div class="print-hidden" style="margin-left: auto">
+            <button class="crayons-btn follow-action-button whitespace-nowrap follow-user w-100" data-info=''>Follow</button>
+          </div>
+        </div>
+      </article>
+    `;
+
+    const parser = new DOMParser();
+    const parsedDocument = parser.parseFromString(html, 'text/html');
+    parsedDocument.querySelector('img').alt = article.name;
+    parsedDocument.querySelector('button').dataset.info = JSON.stringify({
+      id: article.id,
+      name: article.name,
+      className: 'Organization',
+      style: 'full',
+    });
+
+    return parsedDocument.body.innerHTML;
+  }
+
+  if (article && article.class_name === 'User' && article.user === undefined) { // Represents different return values for how users are fetched.
+    const html = `
+      <article class="crayons-story">
+        <div class="crayons-story__body flex items-start gap-2">
+          <a href="${article.username}" class="crayons-podcast-episode__cover">
+            <img src="${article.profile_image.url}" alt="" loading="lazy" />
+          </a>
+          <div>
+            <h3 class="crayons-subtitle-2 lh-tight py-1">
+              <a href="${article.username}" class="c-link"> ${article.name} </a>
+            </h3>
+            <p class="crayons-story__slug-segment">@${article.username}</p>
+            ${
+              article.summary
+                ? `<div class="truncate-at-3 top-margin-4">${article.summary}</div>`
+                : ''
+            }
+          </div>
+          <div class="print-hidden" style="margin-left: auto">
+            <button class="crayons-btn follow-action-button whitespace-nowrap follow-user w-100" data-info=''>Follow</button>
+          </div>
+        </div>
+      </article>
+    `;
+
+    const parser = new DOMParser();
+    const parsedDocument = parser.parseFromString(html, 'text/html');
+    parsedDocument.querySelector('img').alt = article.name;
+    parsedDocument.querySelector('button').dataset.info = JSON.stringify({
+      id: article.id,
+      name: article.name,
+      className: 'User',
+      style: 'full',
+    });
+
+    return parsedDocument.body.innerHTML;
+  }
+
 
   if (article) {
     var container = document.getElementById('index-container');
@@ -100,16 +176,17 @@ function buildArticleHTML(article, currentUserId = null) {
         'class="crayons-btn crayons-btn--s crayons-btn--ghost crayons-btn--icon-left "><svg class="crayons-icon" width="24" height="24" xmlns="http://www.w3.org/2000/svg"><path d="M10.5 5h3a6 6 0 110 12v2.625c-3.75-1.5-9-3.75-9-8.625a6 6 0 016-6zM12 15.5h1.5a4.501 4.501 0 001.722-8.657A4.5 4.5 0 0013.5 6.5h-3A4.5 4.5 0 006 11c0 2.707 1.846 4.475 6 6.36V15.5z"/></svg>';
       if (commentsCount > 0) {
         commentsDisplay +=
-          '<span class="hidden s:inline">Коментарів:&nbsp;'+commentsCount+'</span></a>';
+          commentsCount +
+          '<span class="hidden s:inline">&nbsp;comments</span></a>';
       } else {
         commentsDisplay +=
-          '<span class="hidden s:inline">Додати&nbsp;коментар</span></a>';
+          '<span class="hidden s:inline">Add&nbsp;Comment</span></a>';
       }
     }
 
     var reactionsCount = article.public_reactions_count;
     var reactionsDisplay = '';
-    var reactionsText = reactionsCount === 1 ? 'реакція' : 'реакцій';
+    var reactionsText = reactionsCount === 1 ? 'reaction' : 'reactions';
     var reactionIcons = document.getElementById('reaction-category-resources');
 
     if (article.class_name !== 'User' && reactionsCount > 0) {
@@ -131,7 +208,7 @@ function buildArticleHTML(article, currentUserId = null) {
       }">
                           <div class="multiple_reactions_aggregate">
                             <span class="multiple_reactions_icons_container" dir="rtl">
-                                ${icons.join()}
+                                ${icons.join('')}
                             </span>
                             <span class="aggregate_reactions_counter">
                               <span class="hidden s:inline">${reactionsCount}&nbsp;${reactionsText}</span>
@@ -152,6 +229,9 @@ function buildArticleHTML(article, currentUserId = null) {
       picUrl = article.user.profile_image_90;
       profileUsername = article.user.username;
       userName = filterXSS(article.user.name);
+      if (article.user.cached_base_subscriber) {
+        userName = userName + ' <img class="subscription-icon" src="' + document.body.dataset.subscriptionIcon + '" alt="Subscriber" />';
+      }
     }
     var orgHeadline = '';
     var forOrganization = '';
@@ -171,7 +251,7 @@ function buildArticleHTML(article, currentUserId = null) {
         article.organization.profile_image_90 +
         '" class="crayons-logo__image" loading="lazy"/></a>';
       forOrganization =
-        '<span><span class="crayons-story__tertiary fw-normal"> для </span><a href="/' +
+        '<span><span class="crayons-story__tertiary fw-normal"> for </span><a href="/' +
         article.organization.slug +
         '" class="crayons-story__secondary fw-medium">' +
         article.organization.name +
@@ -193,11 +273,15 @@ function buildArticleHTML(article, currentUserId = null) {
           article.published_timestamp +
           '">' +
           article.readable_publish_date +
+          ' ' +
+          timeAgoInWords +
           '</time>';
       } else {
         publishDate =
           '<time>' +
           article.readable_publish_date +
+          ' ' +
+          timeAgoInWords +
           '</time>';
       }
     }
@@ -218,7 +302,9 @@ function buildArticleHTML(article, currentUserId = null) {
               <span class="crayons-avatar crayons-avatar--xl mr-2 shrink-0">
                 <img src="${picUrl}" class="crayons-avatar__image" alt="" loading="lazy" />
               </span>
-              <span class="crayons-link crayons-subtitle-2 mt-5">${userName}</span>
+              <span class="crayons-link crayons-subtitle-2 mt-5">
+                ${userName}
+              </span>
             </a>
           </div>
           <div class="print-hidden">
@@ -244,7 +330,7 @@ function buildArticleHTML(article, currentUserId = null) {
     }">${userName}</a>
     ${
       isArticle
-        ? `<div class="profile-preview-card relative mb-4 s:mb-0 fw-medium hidden m:inline-block"><button id="story-author-preview-trigger-${article.id}" aria-controls="story-author-preview-content-${article.id}" class="profile-preview-card__trigger fs-s crayons-btn crayons-btn--ghost p-1 -ml-1 -my-2" aria-label="${userName} profile details">${userName}</button>${previewCardContent}</div>`
+        ? `<div class="profile-preview-card relative mb-4 s:mb-0 fw-medium hidden m:inline-block"><button id="story-author-preview-trigger-${article.id}" aria-controls="story-author-preview-content-${article.id}" class="profile-preview-card__trigger fs-s crayons-btn crayons-btn--ghost p-1 -ml-1 -my-2" aria-label="profile details">${userName}</button>${previewCardContent}</div>`
         : ''
     }
             ${forOrganization}
@@ -326,24 +412,6 @@ function buildArticleHTML(article, currentUserId = null) {
         (article.video_duration_string || article.video_duration_in_minutes) +
         '</div></a>';
     }
-	
-	
-	var imageCOVER = '';
-    if (article.main_image) {
-      imageCOVER = 
-	    'a<div className="crayons-article__cover crayons-article__cover__image__feed"><a href="'+
-		article.path+
-		'"className="crayons-article__cover__image__feed crayons-story__cover__image" title="'+
-		article.title+
-		'"><img className="crayons-article__cover__image__feed" src='+
-		(cloud_cover_url(article.main_image))+
-		'" width="650" alt="'+
-		article.title+
-		'" /></a></div>';
-
-		
-    }
-
 
     var navigationLink = `
       <a
@@ -355,32 +423,38 @@ function buildArticleHTML(article, currentUserId = null) {
       </a>
     `;
 
+    let feedContentAttribute = '';
+    if (article.class_name === 'Article') {
+      feedContentAttribute = `data-feed-content-id="${article.id}"`;
+    }
+
     return `<article class="crayons-story"
       data-article-path="${article.path}"
       id="article-${article.id}"
+      ${feedContentAttribute}
       data-content-user-id="${article.user_id}">\
         ${navigationLink}\
         <div role="presentation">\
           ${videoHTML}\
-		  ${imageCOVER}\
-          <div class="crayons-story__body">\
+          <div class="crayons-story__body crayons-story__body-${article.type_of}">\
             <div class="crayons-story__top">\
               ${meta}
             </div>\
             <div class="crayons-story__indention">
-              <h3 class="crayons-story__title">
+              <h3 class="crayons-story__title crayons-story__title-${article.type_of}">
                 <a href="${article.path}" id="article-link-${article.id}">
                   ${filterXSS(article.title)}
                 </a>
               </h3>\
-              <div class="crayons-story__tags">
-                ${tagString}
-              </div>\
+              ${article.type_of !== 'status' ? `<div class="crayons-story__tags">${tagString}</div>` : ''}\
+              ${(article.type_of === 'status' && article.body_preview && article.body_preview.length > 10) ? `<div class="crayons-story__contentpreview text-styles">${article.body_preview}</div>` : '' }\
               ${searchSnippetHTML}\
               <div class="crayons-story__bottom">\
                 <div class="crayons-story__details">
                   ${reactionsDisplay} ${commentsDisplay}
                 </div>\
+                <div class="crayons-story__save">\
+                  ${readingTimeHTML}\
                   ${saveButton}
                 </div>\
               </div>\

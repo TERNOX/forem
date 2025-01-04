@@ -6,10 +6,11 @@ export const BasicEditor = ({ openModal }) => (
     data-testid="basic-editor-help"
     className="crayons-card crayons-card--secondary p-4 mb-6"
   >
-    Це базова розмітка {' '}
+    You are currently using the basic markdown editor that uses{' '}
     <a href="#frontmatter" onClick={() => openModal('frontmatterShowing')}>
       Jekyll front matter
     </a>
+    . You can also use the <em>rich+markdown</em> editor you can find in{' '}
     <a href="/settings/customization">
       UX settings
       <svg

@@ -1,17 +1,20 @@
 class Page < ApplicationRecord
-  TEMPLATE_OPTIONS = %w[contained full_within_layout nav_bar_included json].freeze
+  extend UniqueAcrossModels
+  TEMPLATE_OPTIONS = %w[contained full_within_layout nav_bar_included json css txt].freeze
 
   TERMS_SLUG = "terms".freeze
   CODE_OF_CONDUCT_SLUG = "code-of-conduct".freeze
   PRIVACY_SLUG = "privacy".freeze
 
+  has_many :billboards, dependent: :nullify
+  belongs_to :subforem, optional: true
+
   validates :title, presence: true
   validates :description, presence: true
-  validates :slug, presence: true, format: /\A[0-9a-z\-_]*\z/
   validates :template, inclusion: { in: TEMPLATE_OPTIONS }
   validate :body_present
-  validates :slug, unique_cross_model_slug: true, if: :slug_changed?
-  validates :slug, uniqueness: true
+
+  unique_across_models :slug
 
   before_validation :set_default_template
   before_save :evaluate_markdown
@@ -21,6 +24,11 @@ class Page < ApplicationRecord
 
   mount_uploader :social_image, ProfileImageUploader
   resourcify
+
+  scope :from_subforem, lambda { |subforem_id = nil|
+    subforem_id ||= RequestStore.store[:subforem_id]
+    where(subforem_id: [subforem_id, nil])
+  }
 
   # @param slug [String]
   #
@@ -80,7 +88,7 @@ class Page < ApplicationRecord
   end
 
   def body_present
-    return unless body_markdown.blank? && body_html.blank? && body_json.blank?
+    return unless body_markdown.blank? && body_html.blank? && body_json.blank? && body_css.blank?
 
     errors.add(:body_markdown, I18n.t("models.page.body_must_exist"))
   end

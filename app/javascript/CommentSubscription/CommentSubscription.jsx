@@ -98,7 +98,7 @@ export class CommentSubscription extends Component {
               }
             }}
           >
-            {subscribed ? 'Відписка від коментарів' : 'Підписатися на коментарі'}
+            {subscribed ? 'Unsubscribe' : 'Subscribe'}
           </Button>
           {subscribed ? (
             <Button
@@ -137,9 +137,9 @@ export class CommentSubscription extends Component {
                   onClick={this.commentSubscriptionClick}
                 />
                 <label htmlFor="subscribe-all" className="crayons-field__label">
-                  Всі коментарі
+                  All comments
                   <p className="crayons-field__description">
-                    Ви будете отримувати сповіщення про всі нові коментарі.
+                    You’ll receive notifications for all new comments.
                   </p>
                 </label>
               </FormField>
@@ -156,9 +156,10 @@ export class CommentSubscription extends Component {
                   htmlFor="subscribe-toplevel"
                   className="crayons-field__label"
                 >
-                  Найкращі коментарі
+                  Top-level comments
                   <p className="crayons-field__description">
-                    Ви отримуватимете сповіщення лише про нові коментарі вищого рівня.
+                    You’ll receive notifications only for all new top-level
+                    comments.
                   </p>
                 </label>
               </FormField>
@@ -177,9 +178,10 @@ export class CommentSubscription extends Component {
                   htmlFor="subscribe-author"
                   className="crayons-field__label"
                 >
-                  Коментарі автора публікації
+                  Post author comments
                   <p className="crayons-field__description">
-                    Ви будете отримувати сповіщення, тільки якщо автор допису надішле новий коментар.
+                    You’ll receive notifications only if post author sends a new
+                    comment.
                   </p>
                 </label>
               </FormField>

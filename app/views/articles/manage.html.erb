@@ -15,6 +15,7 @@
           <h3 class="manage-page-success"><%= flash[:success] %></h3>
         </div>
       <% end %>
+      <h2><%= t("views.manager.tools.heading") %></h2>
       <p><strong><%= t("views.manager.tools.subtitle") %></strong><%= t("views.manager.tools.text_html") %>
       <h2><%= t("views.manager.tips.heading") %></h2>
       <ol>
@@ -31,7 +32,7 @@
     </div>
   </div>
 
--  <div class="dashboard-container crayons-layout">
+  <div class="dashboard-container crayons-layout">
     <%= render "dashboards/dashboard_article", article: @article, discussion_lock: @discussion_lock, organization: @article.organization, org_admin: @user.org_admin?(@article.organization), manage_view: true %>
     <div class="single-article single-article-manage-form-wrapper">
       <%= form_for(RatingVote.new) do |f| %>

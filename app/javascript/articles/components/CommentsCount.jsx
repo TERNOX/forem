@@ -25,13 +25,17 @@ export const CommentsCount = ({ count, articlePath, articleTitle }) => {
         url={`${articlePath}#comments`}
         icon={commentsSVG}
         tagName="a"
+        className="flex items-center"
         aria-label={commentsAriaLabelText}
       >
         <span title="Number of comments">
-          
+          {count}
           <span className="hidden s:inline">
-			Коментарі:
-          </span>&nbsp;{count}
+            &nbsp;
+            {`${
+              count > 1 ? `${locale('core.comment')}s` : locale('core.comment')
+            }`}
+          </span>
         </span>
       </Button>
     );

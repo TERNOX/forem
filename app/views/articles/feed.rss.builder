@@ -4,13 +4,12 @@
 
 xml.instruct! :xml, version: "1.0"
 xml.rss(:version => "2.0",
-		"xmlns:media" => "http://search.yahoo.com/mrss/",
         "xmlns:atom" => "http://www.w3.org/2005/Atom",
         "xmlns:dc" => "http://purl.org/dc/elements/1.1/") do
   xml.channel do
     if user
       xml.title "#{community_name}: #{user.name}"
-      xml.description "Куток - це відкрита платформа для українців, що цікавляться іграми, кіно, аніме, розробкою, технологіями та популярною культурою загалом. Дописи від #{user.name} (@#{user.username})."
+      xml.description "The latest articles on #{community_name} by #{user.name} (@#{user.username})."
       xml.link app_url(user.path)
       xml.image do
         xml.url app_url(user.profile_image_90)
@@ -19,7 +18,7 @@ xml.rss(:version => "2.0",
       end
     elsif tag
       xml.title "#{community_name}: #{tag.name}"
-      xml.description "Куток - це відкрита платформа для українців, що цікавляться іграми, кіно, аніме, розробкою, технологіями та популярною культурою загалом. Дописи за теґом '#{tag.name}' на #{community_name}."
+      xml.description "The latest articles tagged '#{tag.name}' on #{community_name}."
       xml.link tag_url(tag)
       # NOTE: there exists a `tag.profile_image`, but unsure if it's in use.
       # xml.image do
@@ -29,7 +28,7 @@ xml.rss(:version => "2.0",
       # end
     elsif latest
       xml.title "#{community_name}: Latest"
-      xml.description "Останні статті на сайті #{community_name}."
+      xml.description "The most recent articles on #{community_name}."
       xml.link "#{app_url}/latest"
     else
       xml.title community_name
@@ -37,7 +36,7 @@ xml.rss(:version => "2.0",
       xml.link app_url
     end
     xml.tag! "atom:link", rel: "self", type: "application/rss+xml", href: request.original_url
-    xml.language "uk" # TODO: [yheuhtozr] support localized feeds (see #15136)
+    xml.language "en" # TODO: [yheuhtozr] support localized feeds (see #15136)
     articles.each do |article|
       xml.item do
         xml.title article.title

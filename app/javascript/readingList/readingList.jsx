@@ -7,6 +7,7 @@ import {
   performInitialSearch,
   search,
   selectTag,
+  checkForPersistedTag,
   clearSelectedTags,
 } from '../searchableItemList/searchableItemList';
 import { addSnackbarItem } from '../Snackbar';
@@ -69,12 +70,23 @@ export class ReadingList extends Component {
     this.clearSelectedTags = clearSelectedTags.bind(this);
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     const { statusView } = this.state;
 
-    this.performInitialSearch({
+    await this.performInitialSearch({
       searchOptions: { status: `${statusView}` },
     });
+
+    const persistedAvailableTag = checkForPersistedTag(this.state.availableTags);
+    if (persistedAvailableTag) {
+      this.selectTag({
+        target: {
+          value: persistedAvailableTag,
+          skipPushState: true,
+      },
+        preventDefault(){},
+      });
+    }
   }
 
   toggleStatusView = (event) => {
@@ -167,7 +179,7 @@ export class ReadingList extends Component {
     return (
       <h2 className="align-center p-9 py-10 color-base-80 fw-bold fs-l">
         {showMessage
-          ? 'Ваш архів пустий...'
+          ? 'Your Archive is empty...'
           : NO_RESULTS_WITH_FILTER_MESSAGE}
       </h2>
     );
@@ -184,7 +196,7 @@ export class ReadingList extends Component {
     } = this.state;
 
     const isStatusViewValid = this.statusViewValid();
-    const archiveButtonLabel = isStatusViewValid ? 'До архіву' : 'До збереженого';
+    const archiveButtonLabel = isStatusViewValid ? 'Archive' : 'Unarchive';
 
     return (
       <main
@@ -194,7 +206,7 @@ export class ReadingList extends Component {
         <header className="crayons-page-header block s:flex">
           <div className="flex justify-between items-center flex-1 mb-2 s:mb-0">
             <h1 class="crayons-title flex-1">
-              {isStatusViewValid ? 'Збережене' : 'Архів'}
+              {isStatusViewValid ? 'Reading list' : 'Archive'}
               {` (${itemsTotal})`}
             </h1>
             <Link
@@ -208,7 +220,7 @@ export class ReadingList extends Component {
               block
               data-no-instant
             >
-              {isStatusViewValid ? 'Показати архів' : 'Показати збережене'}
+              {isStatusViewValid ? 'View archive' : 'View reading list'}
             </Link>
           </div>
           <fieldset className="m:flex justify-end s:pl-2 w-100 s:w-auto">

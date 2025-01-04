@@ -16,7 +16,7 @@ import { addSnackbarItem } from '../Snackbar';
  * @constant {Object.<string, number>}
  */
 const MAX_FILE_SIZE_MB = Object.freeze({
-  image: 20,
+  image: 25,
   video: 50,
 });
 
@@ -74,12 +74,12 @@ function handleFileSizeError(fileSizeErrorHandler, fileSizeMb, maxFileSizeMb) {
   if (fileSizeErrorHandler) {
     fileSizeErrorHandler();
   } else {
-    let errorMessage = `Файл занадто важкий (${fileSizeMb} Мб).`;
+    let errorMessage = `File size too large (${fileSizeMb} MB).`;
 
     // If a user uploads a file type that we haven't defined a max size limit for then maxFileSizeMb
     // could be NaN
     if (maxFileSizeMb >= 0) {
-      errorMessage += ` Ліміт ${maxFileSizeMb} Мб.`;
+      errorMessage += ` The limit is ${maxFileSizeMb} MB.`;
     }
 
     addErrorMessage(errorMessage);

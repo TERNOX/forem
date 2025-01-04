@@ -18,7 +18,7 @@ export function timestampToLocalDateTime(timestamp, locale, options) {
   try {
     const time = new Date(timestamp);
     const formattedTime = new Intl.DateTimeFormat(
-      locale || 'uk',
+      locale || 'default',
       options,
     ).format(time);
     return options.year === '2-digit'
@@ -55,7 +55,7 @@ export function localizeTimeElements(elements, timeOptions) {
     if (timestamp) {
       const localDateTime = timestampToLocalDateTime(
         timestamp,
-        "uk",
+        navigator.language,
         timeOptions,
       );
 
@@ -67,7 +67,7 @@ export function localizeTimeElements(elements, timeOptions) {
 function timestampToLocalDateTimeLong(timestamp) {
   // example: "Wednesday, April 3, 2019, 2:55:14 PM"
 
-  return timestampToLocalDateTime(timestamp, "uk", {
+  return timestampToLocalDateTime(timestamp, navigator.language, {
     weekday: 'long',
     year: 'numeric',
     month: 'long',
@@ -95,7 +95,7 @@ function timestampToLocalDateTimeShort(timestamp) {
       timeOptions.year = 'numeric';
     }
 
-    return timestampToLocalDateTime(timestamp, "uk", timeOptions);
+    return timestampToLocalDateTime(timestamp, navigator.language, timeOptions);
   }
 
   return '';

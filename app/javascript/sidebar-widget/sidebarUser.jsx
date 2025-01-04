@@ -31,7 +31,7 @@ export const SidebarUser = ({ followUser, user }) => {
           onClick={onClick}
           id={`widget-list-item__follow-button-${user.username}`}
         >
-          {user.following ? 'Вже підписані' : 'Підписатися'}
+          {user.following ? 'Following' : 'Follow'}
         </button>
       </div>
     </div>

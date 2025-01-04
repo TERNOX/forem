@@ -21,9 +21,9 @@ export const ReactionsCount = ({ article }) => {
     reversable.reverse();
 
     const icons = reversable.map((category) => {
-      const path = reactionIcons?.querySelector(
+      const path = reactionIcons.querySelector(
         `img[data-slug=${category.slug}]`,
-      )?.src;
+      ).src;
       const alt = category.name;
       return (
         <span className="crayons_icon_container" key={category.slug}>
@@ -33,7 +33,11 @@ export const ReactionsCount = ({ article }) => {
     });
 
     return (
-      <span className="multiple_reactions_icons_container" dir="rtl">
+      <span
+        className="multiple_reactions_icons_container"
+        dir="rtl"
+        data-testid="multiple-reactions-icons-container"
+      >
         {icons}
       </span>
     );
@@ -42,8 +46,8 @@ export const ReactionsCount = ({ article }) => {
   function buildCounter() {
     const reactionText = `${
       totalReactions == 1
-        ? `реакція`
-        : `реакцій`
+        ? locale('core.reaction')
+        : `${locale('core.reaction')}s`
     }`;
     return (
       <span className="aggregate_reactions_counter">
@@ -56,7 +60,7 @@ export const ReactionsCount = ({ article }) => {
 
   return (
     <a
-      href={article.path}
+      href={article.url}
       className="crayons-btn crayons-btn--s crayons-btn--ghost crayons-btn--icon-left"
       data-reaction-count
       data-reactable-id={article.id}

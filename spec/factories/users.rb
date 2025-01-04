@@ -122,6 +122,14 @@ FactoryBot.define do
       after(:build) { |user| user.add_role(:comment_suspended) }
     end
 
+    trait :limited do
+      after(:build) { |user| user.add_role(:limited) }
+    end
+
+    trait :spam do
+      after(:build) { |user| user.add_role(:spam) }
+    end
+
     trait :invited do
       after(:build) do |user|
         user.registered = false
@@ -193,5 +201,13 @@ FactoryBot.define do
           .update_columns(email_newsletter: true, email_digest_periodic: true)
       end
     end
+
+    trait :without_newsletters do
+      after(:create) do |user|
+        Users::NotificationSetting.find_by(user_id: user.id)
+          .update_columns(email_newsletter: false, email_digest_periodic: true)
+      end
+    end
+
   end
 end

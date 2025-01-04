@@ -25,6 +25,15 @@ RSpec.describe "ArticlesUpdate" do
     expect(article.reload.title).to eq(new_title)
   end
 
+  it "returns an unprocessable status with invalid params" do
+    put "/articles/#{article.id}", params: {
+      article: { title: "", body_markdown: "Hello World" },
+      format: :json
+    }
+
+    expect(response).to have_http_status(:unprocessable_entity)
+  end
+
   it "updates article with front matter params" do
     put "/articles/#{article.id}", params: {
       article: {
@@ -177,7 +186,7 @@ RSpec.describe "ArticlesUpdate" do
       attributes[:published] = true
       put "/articles/#{article.id}", params: { article: attributes }
       article.reload
-      published_at_utc = article.published_at.in_time_zone("Kyiv").strftime("%m/%d/%Y %H:%M")
+      published_at_utc = article.published_at.in_time_zone("UTC").strftime("%m/%d/%Y %H:%M")
       expect(published_at_utc).to eq("#{tomorrow.strftime('%m/%d/%Y')} 15:00")
     end
 
@@ -194,12 +203,12 @@ RSpec.describe "ArticlesUpdate" do
 
     # draft => scheduled
     it "sets published_at according to the timezone when updating draft => scheduled" do
-      draft = create(:article, published: false, user_id: user.id, published_at: nil)
+      draft = create(:unpublished_article, user_id: user.id, published_at: nil)
       attributes[:published] = true
       attributes[:timezone] = "America/Mexico_City"
       put "/articles/#{draft.id}", params: { article: attributes }
       draft.reload
-      published_at_utc = draft.published_at.in_time_zone("Kyiv").strftime("%m/%d/%Y %H:%M")
+      published_at_utc = draft.published_at.in_time_zone("UTC").strftime("%m/%d/%Y %H:%M")
       draft.published_at.in_time_zone(attributes[:timezone])
       expected_time = "#{(tomorrow + 1.day).strftime('%m/%d/%Y')} 00:00"
       expect(published_at_utc).to eq(expected_time)
@@ -218,7 +227,7 @@ RSpec.describe "ArticlesUpdate" do
 
   context "when setting published_at in editor v1" do
     it "updates published_at from scheduled to scheduled with timezone" do
-      published_at = 3.days.from_now.in_time_zone("Kyiv")
+      published_at = 3.days.from_now.in_time_zone("Asia/Dhaka")
       article.update_columns(published: true, published_at: 1.day.from_now)
       body_markdown = "---\ntitle: super-article\npublished: true\ndescription:\ntags: heytag
       \npublished_at: #{published_at.strftime('%Y-%m-%d %H:%M %z')}\n---\n\nHey this is the article"
@@ -249,7 +258,7 @@ RSpec.describe "ArticlesUpdate" do
     end
 
     it "allows to set past published_at when publishing with date and no published_at for exported articles" do
-      date = "2022-05-02 19:00:30 Europe/Kiev"
+      date = "2022-05-02 19:00:30 UTC"
       draft = create(:article, published: false, user_id: user.id, published_from_feed: true, published_at: nil)
       body_markdown = "---\ntitle: super-article\npublished: true\ndescription:\ntags: heytag
       \ndate: #{date}---\n\nHey this is the article"
@@ -260,8 +269,8 @@ RSpec.describe "ArticlesUpdate" do
     end
 
     it "doesn't allow changing published_at when updating a published article published_from_feed" do
-      date_was = "2022-05-02 19:00:30 Europe/Kiev"
-      date_new = "2022-08-30 19:00:30 Europe/Kiev"
+      date_was = "2022-05-02 19:00:30 UTC"
+      date_new = "2022-08-30 19:00:30 UTC"
       article = create(:article, :past, published: true, user_id: user.id,
                                         published_from_feed: true, past_published_at: DateTime.parse(date_was))
       body_markdown = "---\ntitle: super-article\npublished: true\ndescription:\ntags: heytag

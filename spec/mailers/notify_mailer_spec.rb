@@ -7,6 +7,7 @@ RSpec.describe NotifyMailer do
   let(:organization) { create(:organization) }
   let(:organization_membership) { create(:organization_membership, user: user, organization: organization) }
   let(:comment) { create(:comment, user_id: user.id, commentable: article) }
+  let(:token) { "secret" }
 
   describe "#new_reply_email" do
     let(:email) { described_class.with(comment: comment).new_reply_email }
@@ -14,7 +15,7 @@ RSpec.describe NotifyMailer do
     include_examples "#renders_proper_email_headers"
 
     it "renders proper subject" do
-      expected_subject = "#{comment.user.name} відповів(ла) на #{comment.parent_type}"
+      expected_subject = "#{comment.user.name} replied to your #{comment.parent_type}"
       expect(email.subject).to eq(expected_subject)
     end
 
@@ -31,7 +32,7 @@ RSpec.describe NotifyMailer do
     include_examples "#renders_proper_email_headers"
 
     it "renders proper subject" do
-      expect(email.subject).to eq("У вас новий підписник #{user2.name} на Кутку!")
+      expect(email.subject).to eq("#{user2.name} just followed you on #{Settings::Community.community_name}")
     end
 
     it "renders proper receiver" do
@@ -47,7 +48,7 @@ RSpec.describe NotifyMailer do
       include_examples "#renders_proper_email_headers"
 
       it "renders proper subject and receiver", :aggregate_failures do
-        expect(email.subject).to eq("#{comment.user.name} щойно згадав(ла) вас у своєму коментарі")
+        expect(email.subject).to eq("#{comment.user.name} just mentioned you in their comment")
         expect(email.to).to eq([user2.email])
       end
     end
@@ -59,7 +60,7 @@ RSpec.describe NotifyMailer do
       include_examples "#renders_proper_email_headers"
 
       it "renders proper subject and receiver", :aggregate_failures do
-        expect(email.subject).to eq("#{article.user.name} щойно згадав(ла) про вас у своєму дописі")
+        expect(email.subject).to eq("#{article.user.name} just mentioned you in their post")
         expect(email.to).to eq([user2.email])
       end
     end
@@ -71,7 +72,7 @@ RSpec.describe NotifyMailer do
     include_examples "#renders_proper_email_headers"
 
     it "renders proper subject" do
-      expect(email.subject).to eq("🔥 У вас 0 непрочитаних сповіщень на #{Settings::Community.community_name}")
+      expect(email.subject).to eq("🔥 You have 0 unread notifications on #{Settings::Community.community_name}")
     end
 
     it "renders proper receiver" do
@@ -85,7 +86,7 @@ RSpec.describe NotifyMailer do
     include_examples "#renders_proper_email_headers"
 
     it "renders proper subject" do
-      expect(email.subject).to eq("Завантаження вашого відео завершено")
+      expect(email.subject).to eq("Your video upload is complete")
     end
 
     it "renders proper receiver" do
@@ -107,61 +108,23 @@ RSpec.describe NotifyMailer do
         user: user,
         badge: badge,
         rewarder: rewarder,
-        rewarding_context_message_markdown: "Привіт [Yoho](/hey)",
+        rewarding_context_message_markdown: "Hello [Yoho](/hey)",
       )
     end
 
     include_examples "#renders_proper_email_headers"
 
     it "renders proper subject" do
-      expect(email.subject).to eq("Ви отримали бейдж!")
+      expect(email.subject).to eq("You just got a badge")
     end
 
     it "renders proper receiver" do
       expect(email.to).to eq([user.email])
     end
 
-    context "when rendering the HTML email for badge with credits" do
-      it "includes the listings URL" do
-        expect(email_with_credits.html_part.body).to include(
-          Rails.application.routes.url_helpers.listings_url(host: Settings::General.app_domain),
-        )
-      end
-
-      it "includes the about listings URL" do
-        expect(email_with_credits.html_part.body).to include(
-          Rails.application.routes.url_helpers.about_listings_url(host: Settings::General.app_domain),
-        )
-      end
-
-      it "includes number of credits" do
-        expect(email_with_credits.html_part.body).to include("7 new credits")
-      end
-    end
-
-    context "when rendering the text email for badge with credits" do
-      it "includes the listings URL" do
-        expect(email_with_credits.text_part.body).not_to include(
-          CGI.escape(
-            Rails.application.routes.url_helpers.listings_url(host: Settings::General.app_domain),
-          ),
-        )
-      end
-
-      it "includes the about listings URL" do
-        expect(email_with_credits.text_part.body).not_to include(
-          CGI.escape(Rails.application.routes.url_helpers.about_listings_url(host: Settings::General.app_domain)),
-        )
-      end
-
-      it "includes number of credits" do
-        expect(email_with_credits.text_part.body).to include("7 new credits")
-      end
-    end
-
     context "when rendering the HTML email for badge w/o credits" do
       it "includes the user URL" do
-        expect(email.html_part.body).to include(URL.user(user))
+        expect(email.html_part.body).to include("/#{user.username}")
       end
 
       it "doesn't include the listings URL" do
@@ -178,23 +141,27 @@ RSpec.describe NotifyMailer do
         )
       end
 
+      it "includes the click tracking parameters" do
+        expect(email.html_part.body).to include("/hey?ahoy_click=true&t=")
+      end
+
       it "includes the rewarding_context_message in the email" do
-        expect(email.html_part.body).to include("Привіт <a")
-        expect(email.html_part.body).to include(URL.url("/hey"))
+        expect(email.html_part.body).to include("Hello <a")
+        expect(email.html_part.body).to include("/hey")
       end
 
       it "does not include the nil rewarding_context_message in the email" do
         allow(badge_achievement).to receive(:rewarding_context_message).and_return(nil)
 
-        expect(email.html_part.body).not_to include("Привіт <a")
-        expect(email.html_part.body).not_to include(URL.url("/hey"))
+        expect(email.html_part.body).not_to include("Hello <a")
+        expect(email.html_part.body).not_to include("/hey")
       end
 
       it "does not include the empty rewarding_context_message in the email" do
         allow(badge_achievement).to receive(:rewarding_context_message).and_return("")
 
-        expect(email.html_part.body).not_to include("Привіт <a")
-        expect(email.html_part.body).not_to include(URL.url("/hey"))
+        expect(email.html_part.body).not_to include("Hello <a")
+        expect(email.html_part.body).not_to include("/hey")
       end
     end
 
@@ -216,22 +183,66 @@ RSpec.describe NotifyMailer do
       end
 
       it "includes the rewarding_context_message in the email" do
-        expect(email.text_part.body).to include("Привіт")
-        expect(email.text_part.body).not_to include(URL.url("/hey"))
+        expect(email.text_part.body).to include("Hello Yoho")
+        expect(email.text_part.body).not_to include("/hey")
       end
 
       it "does not include the nil rewarding_context_message in the email" do
         allow(badge_achievement).to receive(:rewarding_context_message).and_return(nil)
 
-        expect(email.text_part.body).not_to include("Привіт")
-        expect(email.text_part.body).not_to include(URL.url("/hey"))
+        expect(email.text_part.body).not_to include("Hello Yoho")
+        expect(email.text_part.body).not_to include("/hey")
       end
 
       it "does not include the empty rewarding_context_message in the email" do
         allow(badge_achievement).to receive(:rewarding_context_message).and_return("")
 
-        expect(email.text_part.body).not_to include("Привіт")
-        expect(email.text_part.body).not_to include(URL.url("/hey"))
+        expect(email.text_part.body).not_to include("Hello Yoho")
+        expect(email.text_part.body).not_to include("/hey")
+      end
+    end
+
+    context "when the rewarding_context_message includes internal and external links" do
+      before do
+        allow(badge_achievement).to receive(:rewarding_context_message_markdown).and_return(
+          "Hello [Internal Link](/internal-path) and [External Link](https://externaldomain.com/path)",
+        )
+        badge_achievement.save!
+      end
+
+      it "processes internal links correctly in the HTML email" do
+        doc = Nokogiri::HTML(email.html_part.body.to_s)
+        internal_link = doc.at_xpath("//a[contains(text(), 'Internal Link')]")
+        expect(internal_link).not_to be_nil
+        href = internal_link["href"]
+        expect(href).to include("/internal-path")
+        expect(href).to include("ahoy_click=true")
+        expect(href).to include("t=")
+        expect(href).to include("s=")
+        expect(href).to include("u=")
+        expect(href).not_to include("/ahoy/click")
+      end
+
+      it "processes external links correctly in the HTML email" do
+        doc = Nokogiri::HTML(email.html_part.body.to_s)
+        external_link = doc.at_xpath("//a[contains(text(), 'External Link')]")
+        expect(external_link).not_to be_nil
+        href = external_link["href"]
+        expect(href).to include("/ahoy/click")
+        expect(href).to include("t=")
+        expect(href).to include("s=")
+        expect(href).to include("u=")
+        expect(href).to include(CGI.escape("https://externaldomain.com/path"))
+        expect(href).not_to eq("https://externaldomain.com/path")
+      end
+
+      it "does not add UTM parameters to internal links" do
+        doc = Nokogiri::HTML(email.html_part.body.to_s)
+        internal_link = doc.at_xpath("//a[contains(text(), 'Internal Link')]")
+        href = internal_link["href"]
+        uri = Addressable::URI.parse(href)
+        query_params = uri.query_values || {}
+        expect(query_params.keys).not_to include("utm_source", "utm_medium", "utm_campaign")
       end
     end
   end
@@ -286,7 +297,7 @@ RSpec.describe NotifyMailer do
     include_examples "#renders_proper_email_headers"
 
     it "renders proper subject" do
-      expect(email.subject).to eq("Дякуємо за ваше повідомлення про #{Settings::Community.community_name}")
+      expect(email.subject).to eq("Thanks for your report on #{Settings::Community.community_name}")
     end
 
     it "renders proper receiver" do
@@ -294,7 +305,7 @@ RSpec.describe NotifyMailer do
     end
 
     it "renders proper body" do
-      expect(email.html_part.body).to include("Дякуємо, що позначили контент як неприємний.")
+      expect(email.html_part.body).to include("Thank you for flagging content")
     end
   end
 
@@ -331,6 +342,22 @@ RSpec.describe NotifyMailer do
     it "renders proper receiver" do
       expect(email.to).to eq([user.email])
     end
+
+    it "includes contact email" do
+      expect(email.html_part.body).to include(ForemInstance.contact_email)
+    end
+  end
+
+  describe "#account_deletion_requested_email" do
+    let(:email) do
+      described_class.with(user: user, token: token).account_deletion_requested_email
+    end
+
+    include_examples "#renders_proper_email_headers"
+
+    it "includes contact email" do
+      expect(email.html_part.body).to include(ForemInstance.contact_email)
+    end
   end
 
   describe "#organization_deleted_email" do
@@ -346,6 +373,10 @@ RSpec.describe NotifyMailer do
 
     it "renders proper receiver" do
       expect(email.to).to eq([user.email])
+    end
+
+    it "includes contact email" do
+      expect(email.html_part.body).to include(ForemInstance.contact_email)
     end
   end
 
@@ -381,7 +412,7 @@ RSpec.describe NotifyMailer do
     include_examples "#renders_proper_email_headers"
 
     it "renders proper subject" do
-      expect(email.subject).to eq("Вітаємо! Ви тепер модератор теґу ##{tag.name}")
+      expect(email.subject).to eq("Congrats! You're now a moderator for ##{tag.name}")
     end
 
     it "renders proper receiver" do
@@ -396,7 +427,22 @@ RSpec.describe NotifyMailer do
     include_examples "#renders_proper_email_headers"
 
     it "renders proper subject" do
-      expected_subject = "Вітаємо! Ви тепер \"довірений\" користувач на сайті #{Settings::Community.community_name}!"
+      expected_subject = "Congrats! You're now a \"trusted\" user on #{Settings::Community.community_name}!"
+      expect(email.subject).to eq(expected_subject)
+    end
+
+    it "renders proper receiver" do
+      expect(email.to).to eq([user.email])
+    end
+  end
+
+  describe "#base_subscriber_role_email" do
+    let(:email) { described_class.with(user: user).base_subscriber_role_email }
+
+    include_examples "#renders_proper_email_headers"
+
+    it "renders proper subject" do
+      expected_subject = "Congrats! You're now subscribed to DEV++"
       expect(email.subject).to eq(expected_subject)
     end
 

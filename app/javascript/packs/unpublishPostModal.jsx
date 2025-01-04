@@ -71,7 +71,7 @@ export function toggleUnpublishPostModal(event) {
   showWindowModal({
     document: window.parent.document,
     modalContent: getModalContents(modalContentSelector),
-    title: 'Сховати допис',
+    title: 'Unpublish post',
     size: 'small',
     onOpen: () => {
       activateModalUnpublishBtn(articleId, authorUsername, articleSlug);

@@ -23,17 +23,24 @@
             data-info='<%= DataInfo.to_json(object: @user) %>'>
             <%= t("views.organizations.follow") %>
           </button>
+          <div class="profile-dropdown ml-2 s:relative" data-organizationname="<%= @organization.name %>">
+              <button id="organization-profile-dropdown" aria-expanded="false" aria-controls="organization-profile-dropdownmenu" aria-haspopup="true" class="crayons-btn crayons-btn--ghost-dimmed crayons-btn--icon">
+                <%= crayons_icon_tag("overflow-horizontal", class: "dropdown-icon", title: t("views.organizations.dropdown")) %>
+              </button>
+
+              <div id="organization-profile-dropdownmenu" class="crayons-dropdown left-2 right-2 s:right-0 s:left-auto top-100 mt-1">
+                <span class="report-abuse-link-wrapper" data-path="/report-abuse?url=<%= organization_url(@organization) %>"></span>
+              </div>
+            </div>
         </div>
       </div>
 
       <div class="profile-header__details">
         <h1 class="crayons-title fw-heavy mb-2"><%= sanitize @user.name %></h1>
         <% if @user.tag_line.present? %>
-          <p class="fs-l m:fs-xl color-base-70 mb-4 mx-auto max-w-100 m:max-w-75" style="overflow: hidden;
-    max-width: 687px;"><%= sanitize @user.tag_line %></p>
+          <p class="fs-l m:fs-xl color-base-70 mb-4 mx-auto max-w-100 m:max-w-75"><%= sanitize @user.tag_line %></p>
         <% end %>
-        <p class="fs-base m:fs-l color-base-90 mb-4 mx-auto max-w-100 m:max-w-75" style="overflow: hidden;
-    max-width: 687px;"><%= sanitize(@user.summary.presence || t("views.organizations.empty")) %></p>
+        <p class="fs-base m:fs-l color-base-90 mb-4 mx-auto max-w-100 m:max-w-75"><%= sanitize(@user.summary.presence || t("views.organizations.empty")) %></p>
 
         <div class="profile-header__meta">
           <% if @organization.location.present? %>
@@ -63,8 +70,8 @@
                 <%= crayons_icon_tag(:github, title: t("views.organizations.github.icon")) %>
               </a>
             <% end %>
-            <% if @user.profile.website_url.present? %>
-              <a href="<%= @user.profile.website_url %>" target="_blank" rel="noopener nofollow me" class="px-1 align-middle inline-block">
+            <% if @user&.profile&.website_url.present? %>
+              <a href="<%= @user&.profile&.website_url %>" target="_blank" rel="noopener nofollow me" class="px-1 align-middle inline-block">
                 <%= crayons_icon_tag("external-link", title: t("views.organizations.external.icon")) %>
               </a>
             <% end %>
@@ -77,3 +84,6 @@
     </header>
   </div>
 </div>
+
+<%= javascript_include_tag "organizationDropdown",
+                           defer: true %>

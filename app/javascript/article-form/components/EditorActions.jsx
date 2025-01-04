@@ -18,6 +18,7 @@ export const EditorActions = ({
   onConfigChange,
   submitting,
   previewLoading,
+  switchHelpContext,
 }) => {
   const isVersion1 = version === 'v1';
   const isVersion2 = version === 'v2';
@@ -32,7 +33,7 @@ export const EditorActions = ({
           disabled
         >
           {published && isVersion2
-            ? 'Публікується...'
+            ? 'Publishing...'
             : `Saving ${isVersion2 ? 'draft' : ''}...`}
         </Button>
       </div>
@@ -48,24 +49,29 @@ export const EditorActions = ({
 
   let saveButtonText;
   if (isVersion1) {
-    saveButtonText = 'Зберегти зміни';
+    saveButtonText = 'Save changes';
   } else if (schedule) {
-    saveButtonText = 'Запланувати';
+    saveButtonText = 'Schedule';
   } else if (wasScheduled || !published) {
     // if the article was saved as scheduled, and the user clears publishedAt in the post options, the save button text is changed to "Publish"
     // to make it clear that the article is going to be published right away
-    saveButtonText = 'Публікувати';
+    saveButtonText = 'Publish';
   } else {
-    saveButtonText = 'Зберегти зміни';
+    saveButtonText = 'Save changes';
   }
 
   return (
-    <div className="crayons-article-form__footer">
+    <div
+      id="editor-actions"
+      className="crayons-article-form__footer"
+      onMouseEnter={switchHelpContext}
+    >
       <Button
         variant="primary"
         className="mr-2 whitespace-nowrap"
         onClick={onPublish}
         disabled={previewLoading}
+        onFocus={(event) => switchHelpContext(event, 'editor-actions')}
       >
         {saveButtonText}
       </Button>
@@ -75,8 +81,9 @@ export const EditorActions = ({
           className="mr-2 whitespace-nowrap"
           onClick={onSaveDraft}
           disabled={previewLoading}
+          onFocus={(event) => switchHelpContext(event, 'editor-actions')}
         >
-          Зберегти <span className="hidden s:inline">чернетку</span>
+          Save <span className="hidden s:inline">draft</span>
         </Button>
       )}
 
@@ -87,6 +94,7 @@ export const EditorActions = ({
           onConfigChange={onConfigChange}
           onSaveDraft={onSaveDraft}
           previewLoading={previewLoading}
+          onFocus={(event) => switchHelpContext(event, 'editor-actions')}
         />
       )}
 
@@ -95,8 +103,9 @@ export const EditorActions = ({
           onClick={onClearChanges}
           className="whitespace-nowrap fw-normal fs-s"
           disabled={previewLoading}
+          onFocus={(event) => switchHelpContext(event, 'editor-actions')}
         >
-          Відкатити <span className="hidden s:inline">нові зміни</span>
+          Revert <span className="hidden s:inline">new changes</span>
         </Button>
       )}
     </div>
