@@ -32,11 +32,11 @@ export const TagsField = ({ onInput, defaultValue, switchHelpContext }) => {
       fetchSuggestions={fetchSuggestions}
       staticSuggestions={topTags}
       staticSuggestionsHeading={
-        <h2 className="c-autocomplete--multi__top-tags-heading">Популярні теґи</h2>
+        <h2 className="c-autocomplete--multi__top-tags-heading">Top tags</h2>
       }
-      labelText="Додайте до 4 теґів"
+      labelText="Add up to 4 tags"
       showLabel={false}
-      placeholder="Додайте до 4 теґів"
+      placeholder="Add up to 4 tags..."
       border={false}
       maxSelections={4}
       SuggestionTemplate={TagAutocompleteOption}

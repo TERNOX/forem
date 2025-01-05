@@ -1,5 +1,6 @@
 class EmailMessage < Ahoy::Message
   belongs_to :feedback_message, optional: true
+  belongs_to :email, optional: true
 
   def html_content
     return "" if content.nil?

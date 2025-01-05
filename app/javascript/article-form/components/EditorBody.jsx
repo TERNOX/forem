@@ -56,7 +56,7 @@ export const EditorBody = ({
       <AutocompleteTriggerTextArea
         triggerCharacter="@"
         maxSuggestions={6}
-        searchInstructionsMessage="Напишіть, щоб знайти користувача"
+        searchInstructionsMessage="Type to search for a user"
         ref={textAreaRef}
         fetchSuggestions={(username) =>
           fetchSearch('usernames', { username }).then(({ result }) =>
@@ -70,7 +70,7 @@ export const EditorBody = ({
         name="body_markdown"
         id="article_body_markdown"
         defaultValue={defaultValue}
-        placeholder="Пишіть свій текст  тут..."
+        placeholder="Write your post content here..."
         className="crayons-textfield crayons-textfield--ghost crayons-article-form__body__field ff-monospace fs-l h-100"
       />
     </div>

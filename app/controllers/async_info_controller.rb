@@ -14,6 +14,8 @@ class AsyncInfoController < ApplicationController
             param: request_forgery_protection_token,
             token: form_authenticity_token,
             user: user_data,
+            client_geolocation: client_geolocation,
+            default_email_optin_allowed: default_email_optin_allowed?,
             creator: user_is_a_creator
           }
         end
@@ -42,7 +44,7 @@ class AsyncInfoController < ApplicationController
   #       decorated version of the user.  It would be nice if we were using the same "variable" for
   #       the cache key and for that which we cache.
   def user_data
-    Rails.cache.fetch("#{current_user.cache_key_with_version}/user-info",
+    Rails.cache.fetch("#{current_user.cache_key_with_version}/user-info-#{RequestStore.store[:subforem_id]}",
                       expires_in: NUMBER_OF_MINUTES_FOR_CACHE_EXPIRY.minutes) do
       AsyncInfo.to_hash(user: @user, context: self)
     end.to_json
