@@ -102,7 +102,7 @@ class ArticleDecorator < ApplicationDecorator
   end
 
   def co_author_name_and_path
-    User.select(:name, :username).where(id: co_author_ids).in_order_of(:id, co_author_ids).map do |user|
+    co_authors.map do |user|
       %(<a href="#{user.path}" class="crayons-link">#{user.name}</a>)
     end.to_sentence
   end
@@ -113,8 +113,6 @@ class ArticleDecorator < ApplicationDecorator
   end
 
   def permit_adjacent_sponsors?
-    return true unless respond_to?(:user_id) && user_id.present?
-
     author_ids = [user_id] + co_author_ids
     Users::Setting.where(user_id: author_ids).all?(&:permit_adjacent_sponsors)
   end

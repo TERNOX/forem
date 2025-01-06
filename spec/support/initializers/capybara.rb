@@ -1,6 +1,5 @@
 require "capybara/rails"
 require "capybara/rspec"
-<<<<<<< HEAD
 require "capybara/cuprite"
 
 Capybara.default_max_wait_time = 2
@@ -19,24 +18,13 @@ Capybara.register_driver(:better_cuprite) do |app|
     headless: !ENV["HEADLESS"].in?(%w[n 0 no false]),
   )
 end
-=======
-
-Capybara.server_host = "0.0.0.0"
-Capybara.app_host = "http://#{ENV.fetch('APP_HOST', `hostname`.strip&.downcase || '0.0.0.0')}"
-Capybara.default_max_wait_time = 10
-Capybara.save_path = ENV.fetch("CAPYBARA_ARTIFACTS", "./tmp/capybara")
->>>>>>> upstream/main
 
 RSpec.configure do |config|
   config.before(:each, type: :system) do
     driven_by :rack_test
   end
 
-<<<<<<< HEAD
   config.before(:each, js: true, type: :system) do
-=======
-  config.before(:each, :js, type: :system) do
->>>>>>> upstream/main
     driven_by :better_cuprite
   end
 end

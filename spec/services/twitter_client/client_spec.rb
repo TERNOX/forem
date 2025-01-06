@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe TwitterClient::Client, :vcr, type: :service do
+RSpec.describe TwitterClient::Client, type: :service, vcr: true do
   let(:tweet_id) { "1018911886862057472" }
 
   describe ".status" do

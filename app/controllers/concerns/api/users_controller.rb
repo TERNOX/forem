@@ -8,8 +8,7 @@ module Api
     ].freeze
 
     def show
-      attributes_for_select = SHOW_ATTRIBUTES_FOR_SERIALIZATION + %i[display_email_on_profile email]
-      relation = User.joins(:profile).joins(:setting).select(attributes_for_select)
+      relation = User.joins(:profile).select(SHOW_ATTRIBUTES_FOR_SERIALIZATION)
 
       @user = if params[:id] == "by_username"
                 relation.find_by!(username: params[:url])
@@ -19,19 +18,30 @@ module Api
       not_found unless @user.registered
     end
 
-    def me; end
+    def me
+      render :show
+    end
 
-    def search
-      authorize(User, :search_by_email?)
+    def suspend
+      authorize(@user, :toggle_suspension_status?)
 
-      not_found unless params[:email]
+      target_user = User.find(params[:id])
+      suspend_params = { note_for_current_role: params[:note], user_status: "Suspended" }
 
-      @user = User.find_by(email: params[:email])
+      begin
+        Moderator::ManageActivityAndRoles.handle_user_roles(admin: @user,
+                                                            user: target_user,
+                                                            user_params: suspend_params)
 
-      if @user
-        render :show
-      else
-        not_found
+        payload = { action: "api_user_suspend", target_user_id: target_user.id }
+        Audit::Logger.log(:admin_api, @user, payload)
+
+        render status: :no_content
+      rescue StandardError
+        render json: {
+          success: false,
+          message: @user.errors_as_sentence
+        }, status: :unprocessable_entity
       end
     end
 

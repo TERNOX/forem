@@ -9,7 +9,6 @@ GIT
 GEM
   remote: https://rubygems.org/
   specs:
-<<<<<<< HEAD
     actioncable (7.0.4.3)
       actionpack (= 7.0.4.3)
       activesupport (= 7.0.4.3)
@@ -21,42 +20,20 @@ GEM
       activerecord (= 7.0.4.3)
       activestorage (= 7.0.4.3)
       activesupport (= 7.0.4.3)
-=======
-    actioncable (7.0.7.2)
-      actionpack (= 7.0.7.2)
-      activesupport (= 7.0.7.2)
-      nio4r (~> 2.0)
-      websocket-driver (>= 0.6.1)
-    actionmailbox (7.0.7.2)
-      actionpack (= 7.0.7.2)
-      activejob (= 7.0.7.2)
-      activerecord (= 7.0.7.2)
-      activestorage (= 7.0.7.2)
-      activesupport (= 7.0.7.2)
->>>>>>> upstream/main
       mail (>= 2.7.1)
       net-imap
       net-pop
       net-smtp
-<<<<<<< HEAD
     actionmailer (7.0.4.3)
       actionpack (= 7.0.4.3)
       actionview (= 7.0.4.3)
       activejob (= 7.0.4.3)
       activesupport (= 7.0.4.3)
-=======
-    actionmailer (7.0.7.2)
-      actionpack (= 7.0.7.2)
-      actionview (= 7.0.7.2)
-      activejob (= 7.0.7.2)
-      activesupport (= 7.0.7.2)
->>>>>>> upstream/main
       mail (~> 2.5, >= 2.5.4)
       net-imap
       net-pop
       net-smtp
       rails-dom-testing (~> 2.0)
-<<<<<<< HEAD
     actionpack (7.0.4.3)
       actionview (= 7.0.4.3)
       activesupport (= 7.0.4.3)
@@ -73,31 +50,12 @@ GEM
       nokogiri (>= 1.8.5)
     actionview (7.0.4.3)
       activesupport (= 7.0.4.3)
-=======
-    actionpack (7.0.7.2)
-      actionview (= 7.0.7.2)
-      activesupport (= 7.0.7.2)
-      rack (~> 2.0, >= 2.2.4)
-      rack-test (>= 0.6.3)
-      rails-dom-testing (~> 2.0)
-      rails-html-sanitizer (~> 1.0, >= 1.2.0)
-    actiontext (7.0.7.2)
-      actionpack (= 7.0.7.2)
-      activerecord (= 7.0.7.2)
-      activestorage (= 7.0.7.2)
-      activesupport (= 7.0.7.2)
-      globalid (>= 0.6.0)
-      nokogiri (>= 1.8.5)
-    actionview (7.0.7.2)
-      activesupport (= 7.0.7.2)
->>>>>>> upstream/main
       builder (~> 3.1)
       erubi (~> 1.4)
       rails-dom-testing (~> 2.0)
       rails-html-sanitizer (~> 1.1, >= 1.2.0)
     active_record_union (1.3.0)
       activerecord (>= 4.0)
-<<<<<<< HEAD
     activejob (7.0.4.3)
       activesupport (= 7.0.4.3)
       globalid (>= 0.3.6)
@@ -114,37 +72,18 @@ GEM
       marcel (~> 1.0)
       mini_mime (>= 1.1.0)
     activesupport (7.0.4.3)
-=======
-    activejob (7.0.7.2)
-      activesupport (= 7.0.7.2)
-      globalid (>= 0.3.6)
-    activemodel (7.0.7.2)
-      activesupport (= 7.0.7.2)
-    activerecord (7.0.7.2)
-      activemodel (= 7.0.7.2)
-      activesupport (= 7.0.7.2)
-    activestorage (7.0.7.2)
-      actionpack (= 7.0.7.2)
-      activejob (= 7.0.7.2)
-      activerecord (= 7.0.7.2)
-      activesupport (= 7.0.7.2)
-      marcel (~> 1.0)
-      mini_mime (>= 1.1.0)
-    activesupport (7.0.7.2)
->>>>>>> upstream/main
       concurrent-ruby (~> 1.0, >= 1.0.2)
       i18n (>= 1.6, < 2)
       minitest (>= 5.1)
       tzinfo (~> 2.0)
-    acts-as-taggable-on (10.0.0)
-      activerecord (>= 6.1, < 7.2)
-    addressable (2.8.6)
+    acts-as-taggable-on (9.0.1)
+      activerecord (>= 6.0, < 7.1)
+    addressable (2.8.1)
       public_suffix (>= 2.0.2, < 6.0)
-    ahoy_email (2.2.0)
-      actionmailer (>= 6.1)
+    ahoy_email (2.1.3)
+      actionmailer (>= 5)
       addressable (>= 2.3.2)
       nokogiri
-<<<<<<< HEAD
       safely_block (>= 0.1.1)
     ahoy_matey (4.2.1)
       activesupport (>= 5.2)
@@ -152,59 +91,36 @@ GEM
       safely_block (>= 0.2.1)
     amazing_print (1.4.0)
     ancestry (4.3.0)
-=======
-      safely_block (>= 0.4)
-    ahoy_matey (5.0.2)
-      activesupport (>= 6.1)
-      device_detector (>= 1)
-      safely_block (>= 0.4)
-    amazing_print (1.5.0)
-    ancestry (4.3.3)
->>>>>>> upstream/main
       activerecord (>= 5.2.6)
     anyway_config (2.3.0)
       ruby-next-core (>= 0.14.0)
     ast (2.4.2)
     aws-eventstream (1.2.0)
-    aws-sigv4 (1.6.0)
+    aws-sigv4 (1.5.1)
       aws-eventstream (~> 1, >= 1.0.2)
     aws_cf_signer (0.1.3)
     backport (1.2.0)
-<<<<<<< HEAD
     bcrypt (3.1.18)
     benchmark (0.2.1)
-=======
-    bcrypt (3.1.19)
-    benchmark (0.3.0)
->>>>>>> upstream/main
     benchmark-ips (2.10.0)
-    better_errors (2.10.1)
+    better_errors (2.9.1)
+      coderay (>= 1.0.0)
       erubi (>= 1.0.0)
       rack (>= 0.9.0)
-<<<<<<< HEAD
     better_html (2.0.1)
-=======
-      rouge (>= 1.0.0)
-    better_html (2.0.2)
->>>>>>> upstream/main
       actionview (>= 6.0)
       activesupport (>= 6.0)
       ast (~> 2.0)
       erubi (~> 1.4)
       parser (>= 2.4)
       smart_properties
-    bigdecimal (3.1.5)
     bindex (0.8.1)
     blazer (2.6.5)
       activerecord (>= 5)
       chartkick (>= 3.2)
       railties (>= 5)
       safely_block (>= 0.1.1)
-<<<<<<< HEAD
     bootsnap (1.16.0)
-=======
-    bootsnap (1.17.0)
->>>>>>> upstream/main
       msgpack (~> 1.2)
     brakeman (5.4.1)
     browser (5.3.1)
@@ -213,11 +129,7 @@ GEM
       redis (>= 1.0, < 6)
     buftok (0.2.0)
     builder (3.2.4)
-<<<<<<< HEAD
     bullet (7.0.7)
-=======
-    bullet (7.1.6)
->>>>>>> upstream/main
       activesupport (>= 3.0.0)
       uniform_notifier (~> 1.11)
     bundler-audit (0.9.1)
@@ -232,11 +144,7 @@ GEM
       rack-test (>= 0.6.3)
       regexp_parser (>= 1.5, < 3.0)
       xpath (~> 3.2)
-<<<<<<< HEAD
     carrierwave (2.2.3)
-=======
-    carrierwave (2.2.5)
->>>>>>> upstream/main
       activemodel (>= 5.0.0)
       activesupport (>= 5.0.0)
       addressable (~> 2.6)
@@ -248,14 +156,8 @@ GEM
       activesupport (>= 3.2.0)
       carrierwave
       fastimage
-    cgi (0.3.6)
     chartkick (4.2.1)
-<<<<<<< HEAD
     cloudinary (1.25.0)
-=======
-    cld3 (3.6.0)
-    cloudinary (1.28.0)
->>>>>>> upstream/main
       aws_cf_signer
       rest-client (>= 2.0.0)
     coderay (1.1.3)
@@ -266,24 +168,14 @@ GEM
       coffee-script-source
       execjs
     coffee-script-source (1.12.2)
-<<<<<<< HEAD
     concurrent-ruby (1.2.2)
     connection_pool (2.3.0)
     counter_culture (3.3.0)
-=======
-    concurrent-ruby (1.2.3)
-    connection_pool (2.4.1)
-    counter_culture (3.5.2)
->>>>>>> upstream/main
       activerecord (>= 4.2)
       activesupport (>= 4.2)
-    countries (5.7.1)
-      unaccent (~> 0.3)
-    crack (1.0.0)
-      bigdecimal
+    crack (0.4.5)
       rexml
     crass (1.0.6)
-<<<<<<< HEAD
     cuprite (0.14.3)
       capybara (~> 3.0)
       ferrum (~> 0.13.0)
@@ -302,29 +194,6 @@ GEM
     debug (1.7.1)
       irb (>= 1.5.0)
       reline (>= 0.3.1)
-=======
-    cuprite (0.15)
-      capybara (~> 3.0)
-      ferrum (~> 0.14.0)
-    cypress-rails (0.6.1)
-      puma (>= 3.8.0)
-      railties (>= 5.2.0)
-    dante (0.2.0)
-    datadog-ci (0.3.0)
-      msgpack
-    date (3.3.4)
-    ddtrace (1.16.2)
-      datadog-ci (~> 0.3.0)
-      debase-ruby_core_source (= 3.2.2)
-      libdatadog (~> 5.0.0.1.0)
-      libddwaf (~> 1.14.0.0.0)
-      msgpack
-    dead_end (4.0.0)
-    debase-ruby_core_source (3.2.2)
-    debug (1.9.1)
-      irb (~> 1.10)
-      reline (>= 0.3.8)
->>>>>>> upstream/main
     derailed_benchmarks (2.1.2)
       benchmark-ips (~> 2)
       dead_end
@@ -337,31 +206,19 @@ GEM
       rake (> 10, < 14)
       ruby-statistics (>= 2.1)
       thor (>= 0.19, < 2)
-<<<<<<< HEAD
     device_detector (1.1.0)
     devise (4.9.0)
-=======
-    device_detector (1.1.1)
-    devise (4.9.3)
->>>>>>> upstream/main
       bcrypt (~> 3.0)
       orm_adapter (~> 0.1)
       railties (>= 4.1.0)
       responders
       warden (~> 1.2.3)
-<<<<<<< HEAD
     devise_invitable (2.0.7)
       actionmailer (>= 5.0)
       devise (>= 4.6)
     diff-lcs (1.5.0)
-=======
-    devise_invitable (2.0.9)
-      actionmailer (>= 5.0)
-      devise (>= 4.6)
-    diff-lcs (1.5.1)
->>>>>>> upstream/main
     docile (1.4.0)
-    dogstatsd-ruby (5.6.1)
+    dogstatsd-ruby (4.8.3)
     domain_name (0.5.20190701)
       unf (>= 0.0.5, < 1.0.0)
     dotenv (2.8.1)
@@ -376,18 +233,13 @@ GEM
       activemodel
     emoji_regex (3.2.3)
     equalizer (0.0.11)
-<<<<<<< HEAD
     erb_lint (0.3.1)
-=======
-    erb_lint (0.5.0)
->>>>>>> upstream/main
       activesupport
       better_html (>= 2.0.1)
       parser (>= 2.7.1.4)
       rainbow
       rubocop
       smart_properties
-<<<<<<< HEAD
     errbase (0.2.2)
     erubi (1.12.0)
     et-orbi (1.2.7)
@@ -396,28 +248,15 @@ GEM
     execjs (2.8.1)
     exifr (1.3.10)
     factory_bot (6.2.1)
-=======
-    erubi (1.12.0)
-    et-orbi (1.2.7)
-      tzinfo
-    excon (0.104.0)
-    execjs (2.8.1)
-    exifr (1.4.0)
-    factory_bot (6.4.5)
->>>>>>> upstream/main
       activesupport (>= 5.0.0)
-    factory_bot_rails (6.4.3)
-      factory_bot (~> 6.4)
+    factory_bot_rails (6.2.0)
+      factory_bot (~> 6.2.0)
       railties (>= 5.0.0)
     faker (2.23.0)
       i18n (>= 1.8.11, < 2)
     fakeredis (0.8.0)
       redis (~> 4.1)
-<<<<<<< HEAD
     faraday (2.7.4)
-=======
-    faraday (2.7.6)
->>>>>>> upstream/main
       faraday-net_http (>= 2.0, < 3.1)
       ruby2_keywords (>= 0.0.4)
     faraday-cookie_jar (0.0.7)
@@ -430,26 +269,21 @@ GEM
     faraday-gzip (1.0.0)
       faraday (>= 1.0)
       zlib (~> 2.1)
-    faraday-http-cache (2.5.0)
+    faraday-http-cache (2.4.1)
       faraday (>= 0.8)
     faraday-net_http (3.0.2)
     faraday-retry (2.1.0)
       faraday (~> 2.0)
-    fastimage (2.2.7)
+    fastimage (2.2.6)
     fastly (3.0.2)
     feedjira (3.2.2)
       loofah (>= 2.3.1)
       sax-machine (>= 1.0)
-<<<<<<< HEAD
     ferrum (0.13)
-=======
-    ferrum (0.14)
->>>>>>> upstream/main
       addressable (~> 2.5)
       concurrent-ruby (~> 1.1)
       webrick (~> 1.7)
       websocket-driver (>= 0.6, < 0.8)
-<<<<<<< HEAD
     ffi (1.15.5)
     ffi-compiler (1.0.1)
       ffi (>= 1.0.0)
@@ -458,16 +292,6 @@ GEM
       activerecord (>= 5.2)
       browser (>= 2.0)
       railties (>= 5.2)
-=======
-    ffi (1.16.3)
-    ffi-compiler (1.0.1)
-      ffi (>= 1.0.0)
-      rake
-    field_test (0.6.0)
-      activerecord (>= 6.1)
-      browser (>= 2)
-      railties (>= 6.1)
->>>>>>> upstream/main
       rice (>= 4.0.2)
     flipper (0.25.4)
     flipper-active_record (0.25.4)
@@ -482,11 +306,7 @@ GEM
       rack (>= 1.4, < 3)
       rack-protection (>= 1.5.3, <= 4.0.0)
       sanitize (< 7)
-<<<<<<< HEAD
     fog-aws (3.18.0)
-=======
-    fog-aws (3.21.0)
->>>>>>> upstream/main
       fog-core (~> 2.1)
       fog-json (~> 1.1)
       fog-xml (~> 0.1)
@@ -503,23 +323,15 @@ GEM
       nokogiri (>= 1.5.11, < 2.0.0)
     formatador (1.1.0)
     front_matter_parser (1.0.1)
-<<<<<<< HEAD
     fugit (1.8.1)
       et-orbi (~> 1, >= 1.2.7)
       raabro (~> 1.4)
     gemoji (4.0.1)
-=======
-    fugit (1.9.0)
-      et-orbi (~> 1, >= 1.2.7)
-      raabro (~> 1.4)
-    gemoji (4.1.0)
->>>>>>> upstream/main
     get_process_mem (0.2.7)
       ffi (~> 1.0)
-    gibbon (3.5.0)
+    gibbon (3.4.4)
       faraday (>= 1.0)
       multi_json (>= 1.11.0)
-<<<<<<< HEAD
     globalid (1.1.0)
       activesupport (>= 5.0)
     google-protobuf (3.22.0)
@@ -527,15 +339,6 @@ GEM
     google-protobuf (3.22.0-x86_64-darwin)
     google-protobuf (3.22.0-x86_64-linux)
     guard (2.18.0)
-=======
-    globalid (1.2.1)
-      activesupport (>= 6.1)
-    google-protobuf (3.24.0)
-    google-protobuf (3.24.0-arm64-darwin)
-    google-protobuf (3.24.0-x86_64-darwin)
-    google-protobuf (3.24.0-x86_64-linux)
-    guard (2.18.1)
->>>>>>> upstream/main
       formatador (>= 0.2.4)
       listen (>= 2.7, < 4.0)
       lumberjack (>= 1.0.12, < 2.0)
@@ -553,11 +356,11 @@ GEM
       activerecord (>= 6.0, < 8)
       ruby2ruby (~> 2.4)
       ruby_parser (~> 3.10)
-    hashdiff (1.1.0)
+    hashdiff (1.0.1)
     hashie (5.0.0)
     heapy (0.2.0)
       thor
-    highline (2.1.0)
+    highline (2.0.3)
     hkdf (0.3.0)
     honeybadger (4.12.2)
     honeycomb-beeline (2.11.0)
@@ -583,22 +386,18 @@ GEM
     httpclient (2.8.3)
     hypershield (0.2.2)
       activerecord (>= 5)
-    i18n (1.14.1)
+    i18n (1.12.0)
       concurrent-ruby (~> 1.0)
     i18n-js (3.9.2)
       i18n (>= 0.6.6)
-<<<<<<< HEAD
     i18n-tasks (1.0.12)
-=======
-    i18n-tasks (1.0.13)
->>>>>>> upstream/main
       activesupport (>= 4.0.2)
       ast (>= 2.1.0)
       better_html (>= 1.0, < 3.0)
       erubi
       highline (>= 2.0.0)
       i18n
-      parser (>= 3.2.2.1)
+      parser (>= 2.2.3.0)
       rails-i18n
       rainbow (>= 2.2.2, < 4.0)
       terminal-table (>= 1.5.1)
@@ -607,21 +406,13 @@ GEM
       ruby-vips (>= 2.0.17, < 3)
     imgproxy (2.1.0)
       anyway_config (>= 2.0.0)
-    inline_svg (1.9.0)
+    inline_svg (1.8.0)
       activesupport (>= 3.0)
       nokogiri (>= 1.6)
-<<<<<<< HEAD
     io-console (0.6.0)
     irb (1.6.2)
       reline (>= 0.3.0)
     jaro_winkler (1.5.4)
-=======
-    io-console (0.7.1)
-    irb (1.11.0)
-      rdoc
-      reline (>= 0.3.8)
-    jaro_winkler (1.5.6)
->>>>>>> upstream/main
     jbuilder (2.11.5)
       actionview (>= 5.0.0)
       activesupport (>= 5.0.0)
@@ -629,17 +420,9 @@ GEM
       actionpack (>= 3.1)
       railties (>= 3.1)
       sass (>= 3.2)
-<<<<<<< HEAD
     js-routes (2.2.5)
       railties (>= 4)
     json (2.6.3)
-=======
-    js-routes (2.2.8)
-      railties (>= 4)
-    jsbundling-rails (1.2.1)
-      railties (>= 6.0.0)
-    json (2.7.1)
->>>>>>> upstream/main
     json-schema (2.8.1)
       addressable (>= 2.4)
     jsonapi-serializer (2.2.0)
@@ -659,36 +442,23 @@ GEM
     kaminari-core (1.2.2)
     katex (0.9.0)
       execjs (~> 2.7)
-<<<<<<< HEAD
     knapsack_pro (3.7.0)
-=======
-    knapsack_pro (5.7.0)
->>>>>>> upstream/main
       rake
     kramdown (2.4.0)
       rexml
     kramdown-parser-gfm (1.1.0)
       kramdown (~> 2.0)
-<<<<<<< HEAD
     launchy (2.5.2)
       addressable (~> 2.8)
     libdatadog (0.7.0.1.1)
     libdatadog (0.7.0.1.1-x86_64-linux)
     libddwaf (1.3.0.2.0)
-=======
-    language_server-protocol (3.17.0.3)
-    launchy (2.5.2)
-      addressable (~> 2.8)
-    libdatadog (5.0.0.1.0)
-    libdatadog (5.0.0.1.0-x86_64-linux)
-    libddwaf (1.14.0.0.0)
->>>>>>> upstream/main
       ffi (~> 1.0)
-    libddwaf (1.14.0.0.0-arm64-darwin)
+    libddwaf (1.3.0.2.0-arm64-darwin)
       ffi (~> 1.0)
-    libddwaf (1.14.0.0.0-x86_64-darwin)
+    libddwaf (1.3.0.2.0-x86_64-darwin)
       ffi (~> 1.0)
-    libddwaf (1.14.0.0.0-x86_64-linux)
+    libddwaf (1.3.0.2.0-x86_64-linux)
       ffi (~> 1.0)
     libhoney (2.2.0)
       addressable (~> 2.0)
@@ -698,17 +468,10 @@ GEM
     listen (3.8.0)
       rb-fsevent (~> 0.10, >= 0.10.3)
       rb-inotify (~> 0.9, >= 0.9.10)
-<<<<<<< HEAD
     loofah (2.19.1)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
     lumberjack (1.2.8)
-=======
-    loofah (2.22.0)
-      crass (~> 1.0.2)
-      nokogiri (>= 1.12.0)
-    lumberjack (1.2.9)
->>>>>>> upstream/main
     mail (2.8.1)
       mini_mime (>= 0.1.1)
       net-imap
@@ -719,56 +482,34 @@ GEM
     memoizable (0.4.2)
       thread_safe (~> 0.3, >= 0.3.1)
     memory_profiler (1.0.1)
-<<<<<<< HEAD
     metainspector (5.14.0)
       addressable (~> 2.8)
-=======
-    metainspector (5.15.0)
-      addressable (~> 2.8.4)
->>>>>>> upstream/main
       faraday (~> 2.5)
       faraday-cookie_jar (~> 0.0)
       faraday-encoding (~> 0.0)
       faraday-follow_redirects (~> 0.3)
       faraday-gzip (>= 0.1, < 2.0)
-<<<<<<< HEAD
       faraday-http-cache (~> 2.4)
-=======
-      faraday-http-cache (~> 2.5)
->>>>>>> upstream/main
       faraday-retry (~> 2.0)
       fastimage (~> 2.2)
       nesty (~> 1.0)
       nokogiri (~> 1.13)
     method_source (1.0.0)
-    mime-types (3.5.1)
+    mime-types (3.4.1)
       mime-types-data (~> 3.2015)
-<<<<<<< HEAD
     mime-types-data (3.2023.0218.1)
     mini_histogram (0.3.1)
     mini_magick (4.11.0)
     mini_mime (1.1.2)
     mini_portile2 (2.8.1)
     minitest (5.18.0)
-=======
-    mime-types-data (3.2023.1003)
-    mini_histogram (0.3.1)
-    mini_magick (4.12.0)
-    mini_mime (1.1.5)
-    mini_portile2 (2.8.5)
-    minitest (5.22.2)
->>>>>>> upstream/main
     modis (4.0.1)
       activemodel (>= 5.2)
       activesupport (>= 5.2)
       connection_pool (>= 2)
       msgpack (>= 0.5)
       redis (>= 3.0)
-<<<<<<< HEAD
     msgpack (1.6.0)
-=======
-    msgpack (1.7.2)
->>>>>>> upstream/main
     multi_json (1.15.0)
     multi_xml (0.6.0)
     multipart-post (2.2.3)
@@ -780,16 +521,11 @@ GEM
       connection_pool (~> 2.2)
     net-http2 (0.18.4)
       http-2 (~> 0.11)
-<<<<<<< HEAD
     net-imap (0.3.4)
-=======
-    net-imap (0.4.4)
->>>>>>> upstream/main
       date
       net-protocol
     net-pop (0.1.2)
       net-protocol
-<<<<<<< HEAD
     net-protocol (0.2.1)
       timeout
     net-smtp (0.3.3)
@@ -804,22 +540,6 @@ GEM
     nokogiri (1.14.2-x86_64-darwin)
       racc (~> 1.4)
     nokogiri (1.14.2-x86_64-linux)
-=======
-    net-protocol (0.2.2)
-      timeout
-    net-smtp (0.4.0)
-      net-protocol
-    netrc (0.11.0)
-    nio4r (2.7.0)
-    nokogiri (1.16.2)
-      mini_portile2 (~> 2.8.2)
-      racc (~> 1.4)
-    nokogiri (1.16.2-arm64-darwin)
-      racc (~> 1.4)
-    nokogiri (1.16.2-x86_64-darwin)
-      racc (~> 1.4)
-    nokogiri (1.16.2-x86_64-linux)
->>>>>>> upstream/main
       racc (~> 1.4)
     notiffany (0.1.3)
       nenv (~> 0.1)
@@ -835,14 +555,8 @@ GEM
     octokit (5.6.1)
       faraday (>= 1, < 3)
       sawyer (~> 0.9)
-<<<<<<< HEAD
     oj (3.14.2)
     omniauth (2.1.0)
-=======
-    oj (3.16.3)
-      bigdecimal (>= 3.0)
-    omniauth (2.1.2)
->>>>>>> upstream/main
       hashie (>= 3.4.6)
       rack (>= 2.2.3)
       rack-protection
@@ -872,7 +586,6 @@ GEM
       omniauth-oauth (~> 1.1)
       rack
     orm_adapter (0.5.0)
-<<<<<<< HEAD
     parallel (1.22.1)
     parser (3.2.1.0)
       ast (~> 2.4.1)
@@ -883,26 +596,12 @@ GEM
       activerecord (>= 5.2)
       activesupport (>= 5.2)
     pghero (3.3.1)
-=======
-    parallel (1.24.0)
-    parser (3.3.0.5)
-      ast (~> 2.4.1)
-      racc
-    pg (1.5.4)
-    pg_query (4.2.3)
-      google-protobuf (>= 3.22.3)
-    pg_search (2.3.6)
-      activerecord (>= 5.2)
-      activesupport (>= 5.2)
-    pghero (3.3.4)
->>>>>>> upstream/main
       activerecord (>= 6)
     pry (0.14.2)
       coderay (~> 1.1)
       method_source (~> 1.0)
     pry-rails (0.3.9)
       pry (>= 0.10.4)
-<<<<<<< HEAD
     public_suffix (5.0.1)
     puma (5.6.5)
       nio4r (~> 2.0)
@@ -915,27 +614,10 @@ GEM
     rack (2.2.6.4)
     rack-attack (6.6.1)
       rack (>= 1.0, < 3)
-=======
-    psych (5.1.2)
-      stringio
-    public_suffix (5.0.4)
-    puma (5.6.8)
-      nio4r (~> 2.0)
-    pundit (2.3.1)
-      activesupport (>= 3.0.0)
-    pundit-matchers (1.9.0)
-      rspec-rails (>= 3.0.0)
-    raabro (1.4.0)
-    racc (1.7.3)
-    rack (2.2.8)
-    rack-attack (6.7.0)
-      rack (>= 1.0, < 4)
->>>>>>> upstream/main
     rack-cors (1.1.1)
       rack (>= 2.0.0)
     rack-host-redirect (1.3.0)
       rack
-<<<<<<< HEAD
     rack-protection (3.0.3)
       rack
     rack-proxy (0.7.6)
@@ -968,46 +650,12 @@ GEM
     railties (7.0.4.3)
       actionpack (= 7.0.4.3)
       activesupport (= 7.0.4.3)
-=======
-    rack-protection (3.1.0)
-      rack (~> 2.2, >= 2.2.4)
-    rack-test (2.1.0)
-      rack (>= 1.3)
-    rack-timeout (0.6.3)
-    rails (7.0.7.2)
-      actioncable (= 7.0.7.2)
-      actionmailbox (= 7.0.7.2)
-      actionmailer (= 7.0.7.2)
-      actionpack (= 7.0.7.2)
-      actiontext (= 7.0.7.2)
-      actionview (= 7.0.7.2)
-      activejob (= 7.0.7.2)
-      activemodel (= 7.0.7.2)
-      activerecord (= 7.0.7.2)
-      activestorage (= 7.0.7.2)
-      activesupport (= 7.0.7.2)
-      bundler (>= 1.15.0)
-      railties (= 7.0.7.2)
-    rails-dom-testing (2.2.0)
-      activesupport (>= 5.0.0)
-      minitest
-      nokogiri (>= 1.6)
-    rails-html-sanitizer (1.6.0)
-      loofah (~> 2.21)
-      nokogiri (~> 1.14)
-    rails-i18n (7.0.8)
-      i18n (>= 0.7, < 2)
-      railties (>= 6.0.0, < 8)
-    railties (7.0.7.2)
-      actionpack (= 7.0.7.2)
-      activesupport (= 7.0.7.2)
->>>>>>> upstream/main
       method_source
       rake (>= 12.2)
       thor (~> 1.0)
       zeitwerk (~> 2.5)
     rainbow (3.1.1)
-    rake (13.1.0)
+    rake (13.0.6)
     ransack (3.2.1)
       activerecord (>= 6.1.5)
       activesupport (>= 6.1.5)
@@ -1015,15 +663,8 @@ GEM
     rb-fsevent (0.11.2)
     rb-inotify (0.10.1)
       ffi (~> 1.0)
-<<<<<<< HEAD
     recaptcha (5.12.3)
       json
-=======
-    rbs (2.8.4)
-    rdoc (6.6.2)
-      psych (>= 4.0.0)
-    recaptcha (5.16.0)
->>>>>>> upstream/main
     redcarpet (3.6.0)
     redis (4.7.1)
     redis-actionpack (5.3.0)
@@ -1035,21 +676,12 @@ GEM
       redis-store (>= 1.2, < 2)
     redis-store (1.9.1)
       redis (>= 4, < 5)
-<<<<<<< HEAD
     regexp_parser (2.7.0)
     reline (0.3.2)
       io-console (~> 0.5)
     request_store (1.5.1)
       rack (>= 1.4)
     responders (3.1.0)
-=======
-    regexp_parser (2.9.0)
-    reline (0.4.2)
-      io-console (~> 0.5)
-    request_store (1.5.1)
-      rack (>= 1.4)
-    responders (3.1.1)
->>>>>>> upstream/main
       actionpack (>= 5.2)
       railties (>= 5.2)
     rest-client (2.1.0)
@@ -1059,17 +691,10 @@ GEM
       netrc (~> 0.8)
     reverse_markdown (2.1.1)
       nokogiri
-<<<<<<< HEAD
     rexml (3.2.5)
     rice (4.0.4)
     rolify (6.0.1)
     rouge (3.30.0)
-=======
-    rexml (3.2.6)
-    rice (4.1.0)
-    rolify (6.0.1)
-    rouge (4.2.0)
->>>>>>> upstream/main
     rpush (7.0.1)
       activesupport (>= 5.2)
       jwt (>= 1.5.6)
@@ -1082,7 +707,6 @@ GEM
       webpush (~> 1.0)
     rpush-redis (1.2.0)
       modis (>= 3.0, < 5.0)
-<<<<<<< HEAD
     rspec (3.11.0)
       rspec-core (~> 3.11.0)
       rspec-expectations (~> 3.11.0)
@@ -1106,31 +730,6 @@ GEM
     rspec-retry (0.6.2)
       rspec-core (> 3.3)
     rspec-support (3.11.1)
-=======
-    rspec (3.12.0)
-      rspec-core (~> 3.12.0)
-      rspec-expectations (~> 3.12.0)
-      rspec-mocks (~> 3.12.0)
-    rspec-core (3.12.3)
-      rspec-support (~> 3.12.0)
-    rspec-expectations (3.12.4)
-      diff-lcs (>= 1.2.0, < 2.0)
-      rspec-support (~> 3.12.0)
-    rspec-mocks (3.12.7)
-      diff-lcs (>= 1.2.0, < 2.0)
-      rspec-support (~> 3.12.0)
-    rspec-rails (6.1.1)
-      actionpack (>= 6.1)
-      activesupport (>= 6.1)
-      railties (>= 6.1)
-      rspec-core (~> 3.12)
-      rspec-expectations (~> 3.12)
-      rspec-mocks (~> 3.12)
-      rspec-support (~> 3.12)
-    rspec-retry (0.6.2)
-      rspec-core (> 3.3)
-    rspec-support (3.12.2)
->>>>>>> upstream/main
     rspec_junit_formatter (0.6.0)
       rspec-core (>= 2, < 4, != 2.12.0)
     rss (0.2.9)
@@ -1139,15 +738,9 @@ GEM
       activesupport (>= 3.1, < 7.1)
       json-schema (~> 2.2)
       railties (>= 3.1, < 7.1)
-<<<<<<< HEAD
     rubocop (1.47.0)
-=======
-    rubocop (1.60.2)
->>>>>>> upstream/main
       json (~> 2.3)
-      language_server-protocol (>= 3.17.0)
       parallel (~> 1.10)
-<<<<<<< HEAD
       parser (>= 3.2.0.0)
       rainbow (>= 2.2.2, < 4.0)
       regexp_parser (>= 1.8, < 3.0)
@@ -1171,38 +764,9 @@ GEM
       rubocop-capybara (~> 2.17)
     ruby-next-core (0.15.2)
     ruby-prof (1.6.1)
-=======
-      parser (>= 3.3.0.2)
-      rainbow (>= 2.2.2, < 4.0)
-      regexp_parser (>= 1.8, < 3.0)
-      rexml (>= 3.2.5, < 4.0)
-      rubocop-ast (>= 1.30.0, < 2.0)
-      ruby-progressbar (~> 1.7)
-      unicode-display_width (>= 2.4.0, < 3.0)
-    rubocop-ast (1.30.0)
-      parser (>= 3.2.1.0)
-    rubocop-capybara (2.20.0)
-      rubocop (~> 1.41)
-    rubocop-factory_bot (2.25.1)
-      rubocop (~> 1.41)
-    rubocop-performance (1.20.2)
-      rubocop (>= 1.48.1, < 2.0)
-      rubocop-ast (>= 1.30.0, < 2.0)
-    rubocop-rails (2.23.1)
-      activesupport (>= 4.2.0)
-      rack (>= 1.1)
-      rubocop (>= 1.33.0, < 2.0)
-      rubocop-ast (>= 1.30.0, < 2.0)
-    rubocop-rspec (2.26.1)
-      rubocop (~> 1.40)
-      rubocop-capybara (~> 2.17)
-      rubocop-factory_bot (~> 2.22)
-    ruby-next-core (0.15.2)
-    ruby-prof (1.7.0)
->>>>>>> upstream/main
     ruby-progressbar (1.13.0)
     ruby-statistics (3.0.0)
-    ruby-vips (2.2.0)
+    ruby-vips (2.1.4)
       ffi (~> 1.12)
     ruby2_keywords (0.0.5)
     ruby2ruby (2.5.0)
@@ -1216,14 +780,9 @@ GEM
       jquery-fileupload-rails (~> 0.4.1)
       rails (>= 3.1)
       sass-rails (>= 3.1)
-<<<<<<< HEAD
     safely_block (0.3.0)
       errbase (>= 0.1.1)
     sanitize (6.0.1)
-=======
-    safely_block (0.4.0)
-    sanitize (6.0.2)
->>>>>>> upstream/main
       crass (~> 1.0.2)
       nokogiri (>= 1.12.0)
     sass (3.7.4)
@@ -1245,15 +804,11 @@ GEM
       addressable (>= 2.3.5)
       faraday (>= 0.17.3, < 3)
     sax-machine (1.3.2)
-<<<<<<< HEAD
     semantic_range (3.0.0)
-=======
->>>>>>> upstream/main
     sexp_processor (4.16.1)
     shellany (0.0.1)
     shoulda-matchers (5.3.0)
       activesupport (>= 5.2.0)
-<<<<<<< HEAD
     sidekiq (6.5.8)
       connection_pool (>= 2.2.5, < 3)
       rack (~> 2.0)
@@ -1263,17 +818,6 @@ GEM
       globalid (>= 1.0.1)
       sidekiq (>= 6)
     sidekiq-unique-jobs (7.1.29)
-=======
-    sidekiq (6.5.12)
-      connection_pool (>= 2.2.5, < 3)
-      rack (~> 2.0)
-      redis (>= 4.5.0, < 5)
-    sidekiq-cron (1.11.0)
-      fugit (~> 1.8)
-      globalid (>= 1.0.1)
-      sidekiq (>= 6)
-    sidekiq-unique-jobs (7.1.33)
->>>>>>> upstream/main
       brpoplpush-redis_script (> 0.1.1, <= 2.0.0)
       concurrent-ruby (~> 1.0, >= 1.0.5)
       redis (< 5.0)
@@ -1291,23 +835,18 @@ GEM
     snaky_hash (2.0.1)
       hashie
       version_gem (~> 1.1, >= 1.1.1)
-<<<<<<< HEAD
     solargraph (0.48.0)
-=======
-    solargraph (0.50.0)
->>>>>>> upstream/main
       backport (~> 1.2)
       benchmark
-      bundler (~> 2.0)
+      bundler (>= 1.17.2)
       diff-lcs (~> 1.4)
       e2mmap
       jaro_winkler (~> 1.5)
       kramdown (~> 2.3)
       kramdown-parser-gfm (~> 1.1)
       parser (~> 3.0)
-      rbs (~> 2.0)
-      reverse_markdown (~> 2.0)
-      rubocop (~> 1.38)
+      reverse_markdown (>= 1.0.5, < 3)
+      rubocop (>= 0.52)
       thor (~> 1.0)
       tilt (~> 2.0)
       yard (~> 0.9, >= 0.9.24)
@@ -1321,25 +860,16 @@ GEM
       actionpack (>= 5.2)
       activesupport (>= 5.2)
       sprockets (>= 3.0.0)
-<<<<<<< HEAD
     ssrf_filter (1.1.1)
     staccato (0.5.3)
     stackprof (0.2.23)
     sterile (1.0.23)
-=======
-    ssrf_filter (1.1.2)
-    staccato (0.5.3)
-    stackprof (0.2.26)
-    sterile (1.0.25)
->>>>>>> upstream/main
       nokogiri (>= 1.11.7)
-    stringio (3.1.0)
     stripe (5.55.0)
     stripe-ruby-mock (3.1.0.rc3)
       dante (>= 0.2.0)
       multi_json (~> 1.0)
       stripe (> 5, < 6)
-<<<<<<< HEAD
     strong_migrations (1.4.4)
       activerecord (>= 5.2)
     terminal-table (3.0.2)
@@ -1351,21 +881,6 @@ GEM
     tilt (2.1.0)
     timecop (0.9.6)
     timeout (0.3.2)
-=======
-    strong_migrations (1.5.0)
-      activerecord (>= 5.2)
-    terminal-table (3.0.2)
-      unicode-display_width (>= 1.1.1, < 3)
-    terser (1.1.20)
-      execjs (>= 0.3.0, < 3)
-    test-prof (1.3.1)
-    thor (1.3.0)
-    thread (0.2.2)
-    thread_safe (0.3.6)
-    tilt (2.3.0)
-    timecop (0.9.8)
-    timeout (0.4.1)
->>>>>>> upstream/main
     twitter (7.0.0)
       addressable (~> 2.3)
       buftok (~> 0.2.0)
@@ -1379,38 +894,29 @@ GEM
       simple_oauth (~> 0.3.0)
     tzinfo (2.0.6)
       concurrent-ruby (~> 1.0)
-    unaccent (0.4.0)
+    uglifier (4.2.0)
+      execjs (>= 0.3.0, < 3)
     unf (0.1.4)
       unf_ext
-<<<<<<< HEAD
     unf_ext (0.0.8.2)
     unicode-display_width (2.4.2)
-=======
-    unf_ext (0.0.9)
-    unicode-display_width (2.5.0)
->>>>>>> upstream/main
     uniform_notifier (1.16.0)
     validate_url (1.0.15)
       activemodel (>= 3.0.0)
       public_suffix
-    vault (0.18.1)
+    vault (0.17.0)
       aws-sigv4
-<<<<<<< HEAD
     vcr (6.1.0)
-=======
-    vcr (6.2.0)
->>>>>>> upstream/main
     version_gem (1.1.1)
     warden (1.2.9)
       rack (>= 2.0.9)
     warning (1.3.0)
     wcag_color_contrast (0.1.0)
-    web-console (4.2.1)
+    web-console (4.2.0)
       actionview (>= 6.0.0)
       activemodel (>= 6.0.0)
       bindex (>= 0.4.0)
       railties (>= 6.0.0)
-<<<<<<< HEAD
     webmock (3.18.1)
       addressable (>= 2.8.0)
       crack (>= 0.3.2)
@@ -1425,33 +931,19 @@ GEM
       jwt (~> 2.0)
     webrick (1.7.0)
     websocket-driver (0.7.5)
-=======
-    webmock (3.20.0)
-      addressable (>= 2.8.0)
-      crack (>= 0.3.2)
-      hashdiff (>= 0.4.0, < 2.0.0)
-    webpush (1.1.0)
-      hkdf (~> 0.2)
-      jwt (~> 2.0)
-    webrick (1.8.1)
-    websocket-driver (0.7.6)
->>>>>>> upstream/main
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.5)
-    with_model (2.1.7)
-      activerecord (>= 6.0)
+    with_model (2.1.6)
+      activerecord (>= 5.2)
     xpath (3.2.0)
       nokogiri (~> 1.8)
-    yard (0.9.34)
+    yard (0.9.28)
+      webrick (~> 1.7.0)
     yard-activerecord (0.0.16)
       yard (>= 0.8.3)
     yard-activesupport-concern (0.0.1)
       yard (>= 0.8)
-<<<<<<< HEAD
     zeitwerk (2.6.7)
-=======
-    zeitwerk (2.6.13)
->>>>>>> upstream/main
     zlib (2.1.1)
     zonebie (0.6.1)
 
@@ -1464,11 +956,11 @@ PLATFORMS
 
 DEPENDENCIES
   active_record_union (~> 1.3)
-  acts-as-taggable-on (~> 10.0)
+  acts-as-taggable-on (~> 9.0)
   acts_as_follower!
   addressable (~> 2.8)
-  ahoy_email (~> 2.2.0)
-  ahoy_matey (~> 5.0.2)
+  ahoy_email (~> 2.1.3)
+  ahoy_matey (~> 4.1)
   amazing_print (~> 1.4)
   ancestry (~> 4.2)
   better_errors (~> 2.9)
@@ -1480,22 +972,16 @@ DEPENDENCIES
   capybara (~> 3.37.1)
   carrierwave (~> 2.2)
   carrierwave-bombshelter (~> 0.2)
-  cgi (~> 0.3.6)
-  cld3 (~> 3.5)
   cloudinary (~> 1.23)
   counter_culture (~> 3.2)
-<<<<<<< HEAD
-=======
-  countries (~> 5.5)
->>>>>>> upstream/main
   cuprite (~> 0.13)
   cypress-rails (~> 0.5)
-  ddtrace (~> 1.16.2)
+  ddtrace (~> 1.3.0)
   debug (>= 1.0.0)
   derailed_benchmarks (~> 2.1)
   devise (~> 4.8)
   devise_invitable (~> 2.0.6)
-  dogstatsd-ruby (~> 5.6)
+  dogstatsd-ruby (~> 4.8)
   dotenv-rails (~> 2.8.1)
   easy_translate (~> 0.5.1)
   email_validator (~> 2.2)
@@ -1515,7 +1001,7 @@ DEPENDENCIES
   flipper-ui (~> 0.25.0)
   fog-aws (~> 3.14)
   front_matter_parser (~> 1.0)
-  gemoji (~> 4.1.0)
+  gemoji (~> 4.0.0.rc3)
   gibbon (~> 3.4)
   guard (~> 2.18)
   guard-rspec (~> 4.7)
@@ -1532,15 +1018,10 @@ DEPENDENCIES
   inline_svg (~> 1.8)
   jbuilder (~> 2.11)
   js-routes (~> 2.2)
-  jsbundling-rails (~> 1.2)
   jsonapi-serializer (~> 2.2)
   kaminari (~> 1.2)
   katex (~> 0.9.0)
-<<<<<<< HEAD
   knapsack_pro (~> 3.0)
-=======
-  knapsack_pro (~> 5.1)
->>>>>>> upstream/main
   launchy (~> 2.5)
   liquid (~> 5.4)
   listen (~> 3.7)
@@ -1567,15 +1048,11 @@ DEPENDENCIES
   puma (~> 5.6.4)
   pundit (~> 2.2)
   pundit-matchers (~> 1.7)
-  rack-attack (~> 6.7.0)
+  rack-attack (~> 6.6.1)
   rack-cors (~> 1.1)
   rack-host-redirect (~> 1.3)
   rack-timeout (~> 0.6)
-<<<<<<< HEAD
   rails (~> 7.0.4.1)
-=======
-  rails (~> 7.0.7.2)
->>>>>>> upstream/main
   ransack (~> 3.2)
   recaptcha (~> 5.10)
   redcarpet (~> 3.5)
@@ -1584,14 +1061,10 @@ DEPENDENCIES
   request_store (~> 1.5)
   reverse_markdown (~> 2.1)
   rolify (~> 6.0)
-  rouge (~> 4.2)
+  rouge (~> 3.30)
   rpush (~> 7.0)
   rpush-redis (~> 1.1)
-<<<<<<< HEAD
   rspec-rails (~> 6.0)
-=======
-  rspec-rails (~> 6.0, >= 6.0.3)
->>>>>>> upstream/main
   rspec-retry (~> 0.6)
   rspec_junit_formatter (~> 0.6)
   rss (~> 0.2.9)
@@ -1619,10 +1092,10 @@ DEPENDENCIES
   stripe (~> 5.55)
   stripe-ruby-mock (= 3.1.0.rc3)
   strong_migrations (~> 1.2)
-  terser (~> 1.1)
   test-prof (~> 1.0)
   timecop (~> 0.9)
   twitter (~> 7.0)
+  uglifier (~> 4.2)
   validate_url (~> 1.0)
   vault (~> 0.17)
   vcr (~> 6.1)
@@ -1630,14 +1103,15 @@ DEPENDENCIES
   wcag_color_contrast (~> 0.1)
   web-console (~> 4.2)
   webmock (~> 3.17)
-  with_model (~> 2.1.7)
+  webpacker (~> 5.4.3)
+  with_model (~> 2.1.6)
   yard (~> 0.9)
   yard-activerecord (~> 0.0)
   yard-activesupport-concern (~> 0.0)
   zonebie (~> 0.6.1)
 
 RUBY VERSION
-   ruby 3.2.0p0
+   ruby 3.0.2p107
 
 BUNDLED WITH
-   2.4.17
+   2.2.22

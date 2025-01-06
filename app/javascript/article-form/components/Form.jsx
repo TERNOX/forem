@@ -17,8 +17,6 @@ export const Form = ({
   onMainImageUrlChange,
   switchHelpContext,
   errors,
-  coverImageCrop,
-  coverImageHeight,
 }) => {
   return (
     <div className="crayons-article-form__content crayons-card">
@@ -33,8 +31,6 @@ export const Form = ({
           mainImage={mainImage}
           onMainImageUrlChange={onMainImageUrlChange}
           switchHelpContext={switchHelpContext}
-          coverImageCrop={coverImageCrop}
-          coverImageHeight={coverImageHeight}
         />
       )}
 
@@ -62,8 +58,6 @@ Form.propTypes = {
   onMainImageUrlChange: PropTypes.func.isRequired,
   switchHelpContext: PropTypes.func.isRequired,
   errors: PropTypes.object,
-  coverImageHeight: PropTypes.string.isRequired,
-  coverImageCrop: PropTypes.string.isRequired,
 };
 
 Form.displayName = 'Form';

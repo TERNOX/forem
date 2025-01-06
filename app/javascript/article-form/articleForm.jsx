@@ -65,8 +65,6 @@ export class ArticleForm extends Component {
     organizations: PropTypes.string,
     siteLogo: PropTypes.string.isRequired,
     schedulingEnabled: PropTypes.bool.isRequired,
-    coverImageHeight: PropTypes.string.isRequired,
-    coverImageCrop: PropTypes.string.isRequired,
   };
 
   static defaultProps = {
@@ -75,14 +73,7 @@ export class ArticleForm extends Component {
 
   constructor(props) {
     super(props);
-    const {
-      article,
-      version,
-      siteLogo,
-      schedulingEnabled,
-      coverImageHeight,
-      coverImageCrop,
-    } = this.props;
+    const { article, version, siteLogo, schedulingEnabled } = this.props;
     let { organizations } = this.props;
     this.article = JSON.parse(article);
     organizations = organizations ? JSON.parse(organizations) : null;
@@ -145,8 +136,6 @@ export class ArticleForm extends Component {
       updatedAt: this.article.updated_at,
       version,
       siteLogo,
-      coverImageHeight,
-      coverImageCrop,
       helpFor: null,
       helpPosition: null,
       isModalOpen: false,
@@ -346,7 +335,7 @@ export class ArticleForm extends Component {
     e.preventDefault();
     // eslint-disable-next-line no-alert
     const revert = window.confirm(
-      'Are you sure you want to revert to the previous save?',
+      'Ви впевнені, що хочете повернутися до попереднього збереження?',
     );
     if (!revert && navigator.userAgent !== 'DEV-Native-ios') return;
 
@@ -408,12 +397,11 @@ export class ArticleForm extends Component {
     }
   };
 
-  switchHelpContext = (event, override = null) => {
-    const id = override || event.target.id;
+  switchHelpContext = ({ target }) => {
     this.setState({
       ...this.setCommonProps({
-        helpFor: id,
-        helpPosition: event.target.getBoundingClientRect().y,
+        helpFor: target.id,
+        helpPosition: target.getBoundingClientRect().y,
       }),
     });
   };
@@ -443,8 +431,6 @@ export class ArticleForm extends Component {
       siteLogo,
       markdownLintErrors,
       formKey,
-      coverImageHeight,
-      coverImageCrop,
     } = this.state;
 
     return (
@@ -456,9 +442,7 @@ export class ArticleForm extends Component {
         className="crayons-article-form"
         onSubmit={this.onSubmit}
         onInput={this.toggleEdit}
-        coverImageHeight={coverImageHeight}
-        coverImageCrop={coverImageCrop}
-        aria-label="Edit post"
+        aria-label="Редагувати допис"
       >
         <Header
           onPreview={this.fetchPreview}
@@ -499,8 +483,6 @@ export class ArticleForm extends Component {
             onMainImageUrlChange={this.handleMainImageUrlChange}
             errors={errors}
             switchHelpContext={this.switchHelpContext}
-            coverImageHeight={coverImageHeight}
-            coverImageCrop={coverImageCrop}
           />
         )}
 
@@ -513,19 +495,18 @@ export class ArticleForm extends Component {
         {this.state.isModalOpen && (
           <Modal
             size="s"
-            title="You have unsaved changes"
+            title="У вас є незбережені зміни"
             onClose={() => this.showModal(false)}
           >
             <p>
-              You've made changes to your post. Do you want to navigate to leave
-              this page?
+              Ви внесли зміни до свого допису. Ви хочете вийти з цієї сторінки?
             </p>
             <div className="pt-4">
               <Button className="mr-2" variant="danger" url="/" tagName="a">
-                Yes, leave the page
+                Так, залишити сторінку
               </Button>
               <Button variant="secondary" onClick={() => this.showModal(false)}>
-                No, keep editing
+                Ні, продовжу редагувати
               </Button>
             </div>
           </Modal>
@@ -546,7 +527,6 @@ export class ArticleForm extends Component {
           onConfigChange={this.handleConfigChange}
           submitting={submitting}
           previewLoading={previewLoading}
-          switchHelpContext={this.switchHelpContext}
         />
 
         <KeyboardShortcuts

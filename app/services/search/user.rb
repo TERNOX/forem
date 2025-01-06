@@ -25,8 +25,6 @@ module Search
 
       relation = filter_suspended_users(relation)
 
-      relation = relation.registered
-
       relation = relation.search_by_name_and_username(term) if term.present?
 
       relation = relation.select(*ATTRIBUTES)

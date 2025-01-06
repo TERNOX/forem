@@ -6,12 +6,13 @@
   font-family: var(--ff-sans-serif);
   margin: 0.95em 0 1.2em;
   position: relative;
-  border: 1px solid var(--form-border);
-  box-shadow: var(--shadow-smooth);
-  border-radius: var(--radius-auto);
+  border: 1px solid var(--card-color-tertiary);
+  box-shadow: $shadow;
+  border-radius: 3px;
   width: auto;
   @media screen and (min-width: 760px) {
     margin: 0.95em auto;
+    max-width: 620px;
   }
 
   .details {
@@ -20,9 +21,9 @@
     height: 33px;
     border-top-left-radius: 3px;
     border-top-left-radius: 3px;
+    color: $dark-gray;
     display: flex;
-    font-size: var(--fs-base);
-    font-weight: 500;
+
     img {
       left: inherit;
     }
@@ -42,9 +43,7 @@
       margin-right: 0px;
       opacity: 0.7;
     }
-    .color-base-30 {
-      display: none;
-    }
+
     .comment-date {
       border: none;
       position: absolute;
@@ -54,9 +53,6 @@
       text-align: right;
       display: block;
       width: 100px;
-      :not(:first-child) {
-        display: none;
-      }
       a {
         color: var(--card-color-tertiary);
       }
@@ -67,7 +63,6 @@
       line-height: initial;
       align-self: center;
       margin-right: 6px;
-      text-decoration: none;
     }
 
     a:last-child {

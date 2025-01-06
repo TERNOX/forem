@@ -50,7 +50,7 @@ class Article < ApplicationRecord
   # all BIDI control marks (a part of them are expected to be removed during #normalize_title, but still)
   BIDI_CONTROL_CHARACTERS = /[\u061C\u200E\u200F\u202a-\u202e\u2066-\u2069]/
 
-  MAX_TAG_LIST_SIZE = 4
+  MAX_TAG_LIST_SIZE = 6
 
   # Filter out anything that isn't a word, space, punctuation mark,
   # recognized emoji, and other auxiliary marks.
@@ -123,9 +123,8 @@ class Article < ApplicationRecord
   has_many :mentions, as: :mentionable, inverse_of: :mentionable, dependent: :delete_all
   has_many :comments, as: :commentable, inverse_of: :commentable, dependent: :nullify
   has_many :context_notifications, as: :context, inverse_of: :context, dependent: :delete_all
-  has_many :context_notifications_published, -> { where(context_notifications_published: { action: "Published" }) },
+  has_many :context_notifications_published, -> { where(context_notifications: { action: "Published" }) },
            as: :context, inverse_of: :context, class_name: "ContextNotification"
-  has_many :feed_events, dependent: :delete_all
   has_many :notification_subscriptions, as: :notifiable, inverse_of: :notifiable, dependent: :delete_all
   has_many :notifications, as: :notifiable, inverse_of: :notifiable, dependent: :delete_all
   has_many :page_views, dependent: :delete_all
@@ -136,47 +135,10 @@ class Article < ApplicationRecord
   # `dependent: :destroy` because in RatingVote we're relying on
   #     counter_culture to do some additional tallies
   has_many :rating_votes, dependent: :destroy
-  has_many :tag_adjustments
   has_many :top_comments,
            lambda {
              where(comments: { score: 11.. }, ancestry: nil, hidden_by_commentable_user: false, deleted: false)
                .order("comments.score" => :desc)
-           },
-           as: :commentable,
-           inverse_of: :commentable,
-           class_name: "Comment"
-
-  has_many :more_inclusive_top_comments,
-           lambda {
-             where(comments: { score: 5.. }, ancestry: nil, hidden_by_commentable_user: false, deleted: false)
-               .order("comments.score" => :desc)
-           },
-           as: :commentable,
-           inverse_of: :commentable,
-           class_name: "Comment"
-
-  has_many :recent_good_comments,
-           lambda {
-             where(comments: { score: 8.. }, ancestry: nil, hidden_by_commentable_user: false, deleted: false)
-               .order("comments.created_at" => :desc)
-           },
-           as: :commentable,
-           inverse_of: :commentable,
-           class_name: "Comment"
-
-  has_many :more_inclusive_recent_good_comments,
-           lambda {
-             where(comments: { score: 5.. }, ancestry: nil, hidden_by_commentable_user: false, deleted: false)
-               .order("comments.created_at" => :desc)
-           },
-           as: :commentable,
-           inverse_of: :commentable,
-           class_name: "Comment"
-
-  has_many :most_inclusive_recent_good_comments,
-           lambda {
-             where(comments: { score: 3.. }, ancestry: nil, hidden_by_commentable_user: false, deleted: false)
-               .order("comments.created_at" => :desc)
            },
            as: :commentable,
            inverse_of: :commentable,
@@ -187,6 +149,7 @@ class Article < ApplicationRecord
     too_long: proc { I18n.t("models.article.is_too_long") }
   }
   validates :body_markdown, length: { minimum: 0, allow_nil: false }
+  validates :body_markdown, uniqueness: { scope: %i[user_id title] }
   validates :cached_tag_list, length: { maximum: 126 }
   validates :canonical_url,
             uniqueness: { allow_nil: true, scope: :published, message: unique_url_error },
@@ -214,7 +177,6 @@ class Article < ApplicationRecord
   validates :video_source_url, url: { allow_blank: true, schemes: ["https"] }
   validates :video_state, inclusion: { in: %w[PROGRESSING COMPLETED] }, allow_nil: true
   validates :video_thumbnail_url, url: { allow_blank: true, schemes: %w[https http] }
-  validates :clickbait_score, numericality: { greater_than_or_equal_to: 0.0, less_than_or_equal_to: 1.0 }
   validate :future_or_current_published_at, on: :create
   validate :correct_published_at?, on: :update, unless: :admin_update
 
@@ -230,21 +192,18 @@ class Article < ApplicationRecord
   before_validation :evaluate_markdown, :create_slug, :set_published_date
   before_validation :normalize_title
   before_validation :remove_prohibited_unicode_characters
-  before_validation :remove_invalid_published_at
   before_save :set_cached_entities
   before_save :set_all_dates
 
   before_save :calculate_base_scores
   before_save :fetch_video_duration
   before_save :set_caches
-  before_save :detect_language
   before_create :create_password
   before_destroy :before_destroy_actions, prepend: true
 
   after_save :create_conditional_autovomits
   after_save :bust_cache
   after_save :collection_cleanup
-  after_save :generate_social_image
 
   after_update_commit :update_notifications, if: proc { |article|
                                                    article.notifications.any? && !article.saved_changes.empty?
@@ -363,7 +322,7 @@ class Article < ApplicationRecord
            :video_thumbnail_url, :video_closed_caption_track_url,
            :experience_level_rating, :experience_level_rating_distribution, :cached_user, :cached_organization,
            :published_at, :crossposted_at, :description, :reading_time, :video_duration_in_seconds,
-           :last_comment_at, :main_image_height)
+           :last_comment_at)
   }
 
   scope :limited_columns_internal_select, lambda {
@@ -373,7 +332,7 @@ class Article < ApplicationRecord
            :video, :user_id, :organization_id, :video_source_url, :video_code,
            :video_thumbnail_url, :video_closed_caption_track_url, :social_image,
            :published_from_feed, :crossposted_at, :published_at, :created_at,
-           :body_markdown, :email_digest_eligible, :processed_html, :co_author_ids, :score)
+           :body_markdown, :email_digest_eligible, :processed_html, :co_author_ids)
   }
 
   scope :sorting, lambda { |value|
@@ -426,16 +385,6 @@ class Article < ApplicationRecord
                      }
 
   scope :eager_load_serialized_data, -> { includes(:user, :organization, :tags) }
-
-  scope :above_average, lambda {
-    order(:score).where("score >= ?", average_score)
-  }
-
-  def self.average_score
-    Rails.cache.fetch("article_average_score", expires_in: 1.day) do
-      unscoped { where(score: 0..).average(:score) } || 0.0
-    end
-  end
 
   def self.seo_boostable(tag = nil, time_ago = 18.days.ago)
     # Time ago sometimes returns this phrase instead of a date
@@ -492,7 +441,7 @@ class Article < ApplicationRecord
   end
 
   def body_text
-    ActionView::Base.full_sanitizer.sanitize(processed_html)[0..7000]
+    ActionView::Base.full_sanitizer.sanitize(processed_html)[0..8000]
   end
 
   def touch_by_reaction
@@ -516,7 +465,22 @@ class Article < ApplicationRecord
   end
 
   def has_frontmatter?
-    processed_content.has_front_matter?
+    if FeatureFlag.enabled?(:consistent_rendering, FeatureFlag::Actor[user])
+      processed_content.has_front_matter?
+    else
+      original_has_frontmatter?
+    end
+  end
+
+  def original_has_frontmatter?
+    fixed_body_markdown = MarkdownProcessor::Fixer::FixAll.call(body_markdown)
+    begin
+      parsed = FrontMatterParser::Parser.new(:md).call(fixed_body_markdown)
+      parsed.front_matter["title"].present?
+    rescue Psych::SyntaxError, Psych::DisallowedClass
+      # if frontmatter is invalid, still render editor with errors instead of 500ing
+      true
+    end
   end
 
   def class_name
@@ -576,7 +540,7 @@ class Article < ApplicationRecord
   def cloudinary_video_url
     return if video_thumbnail_url.blank?
 
-    Images::Optimizer.call(video_thumbnail_url, width: 880, quality: 80)
+    Images::Optimizer.call(video_thumbnail_url, width: 2200, quality: 80)
   end
 
   def video_duration_in_minutes
@@ -592,17 +556,11 @@ class Article < ApplicationRecord
   end
 
   def update_score
-    spam_adjustment = user.spam? ? -500 : 0
-    negative_reaction_adjustment = Reaction.where(reactable_id: user_id, reactable_type: "User").sum(:points)
-    self.score = reactions.sum(:points) + spam_adjustment + negative_reaction_adjustment
+    self.score = reactions.sum(:points) + Reaction.where(reactable_id: user_id, reactable_type: "User").sum(:points)
     update_columns(score: score,
                    privileged_users_reaction_points_sum: reactions.privileged_category.sum(:points),
                    comment_score: comments.sum(:score),
                    hotness_score: BlackBox.article_hotness_score(self))
-  end
-
-  def co_author_ids_list
-    co_author_ids.join(", ")
   end
 
   def co_author_ids_list=(list_of_co_author_ids)
@@ -636,22 +594,8 @@ class Article < ApplicationRecord
       (score < Settings::UserExperience.index_minimum_score &&
        user.comments_count < 1 &&
        !featured) ||
-      published_at.to_i < Settings::UserExperience.index_minimum_date.to_i ||
+      published_at.to_i < 1_500_000_000 ||
       score < -1
-  end
-
-  def privileged_reaction_counts
-    @privileged_reaction_counts ||= reactions.privileged_category.group(:category).count
-  end
-
-  def ordered_tag_adjustments
-    tag_adjustments.includes(:user).order(:created_at).reverse
-  end
-
-  def async_score_calc
-    return if !published? || destroyed?
-
-    Articles::ScoreCalcWorker.perform_async(id)
   end
 
   private
@@ -665,12 +609,6 @@ class Article < ApplicationRecord
 
     # Collection is empty
     collection.destroy
-  end
-
-  def detect_language
-    return unless title_changed? || body_markdown_changed?
-
-    self.language = Languages::Detection.call("#{title}. #{body_text}")
   end
 
   def search_score
@@ -718,15 +656,21 @@ class Article < ApplicationRecord
   end
 
   def evaluate_markdown
+    if FeatureFlag.enabled?(:consistent_rendering, FeatureFlag::Actor[user])
+      extracted_evaluate_markdown
+    else
+      original_evaluate_markdown
+    end
+  end
+
+  def extracted_evaluate_markdown
     content_renderer = processed_content
     return unless content_renderer
 
-    result = content_renderer.process_article
+    self.processed_html = content_renderer.process(calculate_reading_time: true)
+    self.reading_time = content_renderer.reading_time
 
-    self.processed_html = result.processed_html
-    self.reading_time = result.reading_time
-
-    front_matter = result.front_matter
+    front_matter = content_renderer.front_matter
 
     if front_matter.any?
       evaluate_front_matter(front_matter)
@@ -739,10 +683,34 @@ class Article < ApplicationRecord
     errors.add(:base, ErrorMessages::Clean.call(e.message))
   end
 
+  def original_evaluate_markdown
+    fixed_body_markdown = MarkdownProcessor::Fixer::FixAll.call(body_markdown || "")
+    parsed = FrontMatterParser::Parser.new(:md).call(fixed_body_markdown)
+    parsed_markdown = MarkdownProcessor::Parser.new(parsed.content, source: self, user: user)
+    self.reading_time = parsed_markdown.calculate_reading_time
+    self.processed_html = parsed_markdown.finalize
+
+    if parsed.front_matter.any?
+      evaluate_front_matter(parsed.front_matter)
+    elsif tag_list.any?
+      set_tag_list(tag_list)
+    end
+
+    self.description = processed_description if description.blank?
+  rescue StandardError => e
+    errors.add(:base, ErrorMessages::Clean.call(e.message))
+  end
+
   def set_tag_list(tags)
     self.tag_list = [] # overwrite any existing tag with those from the front matter
     tag_list.add(tags, parse: true)
     self.tag_list = tag_list.map { |tag| Tag.find_preferred_alias_for(tag) }
+  end
+
+  def async_score_calc
+    return if !published? || destroyed?
+
+    Articles::ScoreCalcWorker.perform_async(id)
   end
 
   def fetch_video_duration
@@ -815,20 +783,10 @@ class Article < ApplicationRecord
     published_at || date || Time.current
   end
 
-  # When an article is saved, it ensures that the tags that were adjusted by moderators and admins
-  # remain adjusted. We do not allow the author to add or remove tags that were previously added or
-  # removed by moderators and admins.
-  #
-  # This method is called before validation, so that the tag_list can be validated.
-  #
-  # @return [String] an array of tag names.
   def validate_tag
-    distinct_tag_adjustments = TagAdjustment.where(article_id: id, status: "committed")
-      .select('DISTINCT ON ("tag_id") *')
-      .order(:tag_id, updated_at: :desc, id: :desc)
-
-    remove_tag_adjustments_from_tag_list(distinct_tag_adjustments)
-    add_tag_adjustments_to_tag_list(distinct_tag_adjustments)
+    # remove adjusted tags
+    remove_tag_adjustments_from_tag_list
+    add_tag_adjustments_to_tag_list
 
     # check there are not too many tags
     return errors.add(:tag_list, I18n.t("models.article.too_many_tags")) if tag_list.size > MAX_TAG_LIST_SIZE
@@ -836,13 +794,14 @@ class Article < ApplicationRecord
     validate_tag_name(tag_list)
   end
 
-  def remove_tag_adjustments_from_tag_list(distinct_adjustments)
-    tags_to_remove = distinct_adjustments.select { |adj| adj.adjustment_type == "removal" }.pluck(:tag_name)
+  def remove_tag_adjustments_from_tag_list
+    tags_to_remove = TagAdjustment.where(article_id: id, adjustment_type: "removal",
+                                         status: "committed").pluck(:tag_name)
     tag_list.remove(tags_to_remove, parse: true) if tags_to_remove.present?
   end
 
-  def add_tag_adjustments_to_tag_list(distinct_adjustments)
-    tags_to_add = distinct_adjustments.select { |adj| adj.adjustment_type == "addition" }.pluck(:tag_name)
+  def add_tag_adjustments_to_tag_list
+    tags_to_add = TagAdjustment.where(article_id: id, adjustment_type: "addition", status: "committed").pluck(:tag_name)
     return if tags_to_add.blank?
 
     tag_list.add(tags_to_add, parse: true)
@@ -886,13 +845,13 @@ class Article < ApplicationRecord
 
   def future_or_current_published_at
     # allow published_at in the future or within 15 minutes in the past
-    return if !published || published_at.blank? || published_at > 15.minutes.ago
+    return if !published || published_at > 15.minutes.ago
 
     errors.add(:published_at, I18n.t("models.article.future_or_current_published_at"))
   end
 
   def correct_published_at?
-    return true unless changes["published_at"]
+    return unless changes["published_at"]
 
     # for drafts (that were never published before) or scheduled articles
     # => allow future or current dates, or no published_at
@@ -983,8 +942,27 @@ class Article < ApplicationRecord
   end
 
   def title_to_slug
-    "#{Sterile.sluggerize(title)}-#{rand(100_000).to_s(26)}"
+
+    ru = { 'а' => 'a', 'б' => 'b', 'в' => 'v', 'г' => 'h', 'д' => 'd', \
+    'е' => 'e', 'ё' => 'e', 'ж' => 'zh', 'з' => 'z', 'и' => 'y', \
+    'к' => 'k', 'л' => 'l', 'м' => 'm', 'н' => 'n', 'о' => 'o', \
+    'п' => 'p', 'р' => 'r', 'с' => 's', 'т' => 't', 'у' => 'u', \
+    'ф' => 'f', 'х' => 'h', 'ц' => 'c', 'ч' => 'ch', 'ш' => 'sh', \
+    'щ' => 'shch', 'ы' => 'y', 'э' => 'e', 'ю' => 'u', 'я' => 'ya', \
+    'й' => 'i', 'ъ' => '', 'ь' => '', 'ґ' => 'g', 'є' => 'ye', 'і' => 'i', 'ї' => 'yi'}
+
+    identifier = ''
+
+    title.downcase.each_char do |char|
+      identifier += ru[char] ? ru[char] : char
+    end
+
+    identifier.gsub!(/[^a-z0-9_]+/, '_'); # remaining non-alphanumeric => hyphen
+    identifier.gsub(/^[-_]*|[-_]*$/, ''); # remove hyphens/underscores and numbers at beginning and hyphens/underscores at end
+	
+	"#{identifier}-#{rand(100_000).to_s(26)}"
   end
+
 
   def touch_actor_latest_article_updated_at(destroying: false)
     return unless destroying || saved_changes.keys.intersection(%w[title cached_tag_list]).present?
@@ -1000,15 +978,6 @@ class Article < ApplicationRecord
     cache_bust.call("#{path}?preview=#{password}")
     async_bust
     touch_actor_latest_article_updated_at(destroying: destroying)
-  end
-
-  def generate_social_image
-    return if main_image.present?
-
-    change = saved_change_to_attribute?(:title) || saved_change_to_attribute?(:published_at)
-    return unless (change || social_image.blank?) && published
-
-    Images::SocialImageWorker.perform_async(id, self.class.name)
   end
 
   def calculate_base_scores
@@ -1028,7 +997,7 @@ class Article < ApplicationRecord
   end
 
   def enrich_image_attributes
-    return unless saved_change_to_attribute?(:processed_html) || saved_change_to_attribute?(:main_image)
+    return unless saved_change_to_attribute?(:processed_html)
 
     ::Articles::EnrichImageAttributesWorker.perform_async(id)
   end
@@ -1038,14 +1007,6 @@ class Article < ApplicationRecord
 
     bidi_stripped = title.gsub(BIDI_CONTROL_CHARACTERS, "")
     self.title = bidi_stripped if bidi_stripped.blank? # title only contains BIDI characters = blank title
-  end
-
-  # Sometimes published_at is set to a date *way way too far in the future*, likely a parsing mistake. Let's nullify.
-  # Do this instead of invlidating the record, because we want to allow the user to fix the date and publish as needed.
-  def remove_invalid_published_at
-    return if published_at.blank?
-
-    self.published_at = nil if published_at > 5.years.from_now
   end
 
   def record_field_test_event

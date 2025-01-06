@@ -1,11 +1,7 @@
 require "rails_helper"
 
 RSpec.describe "email_subscriptions/unsubscribe" do
-<<<<<<< HEAD
   it "works" do
-=======
-  it "has unsubscribed info" do
->>>>>>> upstream/main
     assign(:email_type, "#{Settings::Community.community_name} digest emails")
     render
     expect(rendered)

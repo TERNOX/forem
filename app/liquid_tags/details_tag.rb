@@ -12,7 +12,8 @@ class DetailsTag < Liquid::Block
     content = Nokogiri::HTML.parse(super)
     parsed_content = sanitize(
       content.xpath("//html/body").inner_html,
-      scrubber: RenderedMarkdownScrubber.new,
+      tags: MarkdownProcessor::AllowedTags::RENDERED_MARKDOWN_SCRUBBER,
+      attributes: MarkdownProcessor::AllowedAttributes::RENDERED_MARKDOWN_SCRUBBER,
     )
 
     ApplicationController.render(

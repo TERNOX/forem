@@ -20,7 +20,8 @@ fr:
       login:
         aria_label: Log in
         text: Se connecter
-        forgot: Forgot password?
+        continue: Continue
+        forgot: I forgot my password
       provider:
         text: "%{action} with %{provider}"
         login: Continue

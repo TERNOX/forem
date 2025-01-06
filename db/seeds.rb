@@ -18,7 +18,6 @@ puts "Seeding with multiplication factor: #{SEEDS_MULTIPLIER}\n\n"
 Settings::UserExperience.public = true
 Settings::General.waiting_on_first_user = false
 Settings::Authentication.providers = Authentication::Providers.available
-Settings::Authentication.allow_email_password_registration = true
 
 ##############################################################################
 
@@ -40,10 +39,7 @@ seeder.create_if_none(Organization) do
       name: Faker::Company.name,
       summary: Faker::Company.bs,
       profile_image: logo = Rails.root.join("app/assets/images/#{rand(1..40)}.png").open,
-<<<<<<< HEAD
       nav_image: logo,
-=======
->>>>>>> upstream/main
       url: Faker::Internet.url,
       slug: "org#{rand(10_000)}",
       github_username: "org#{rand(10_000)}",
@@ -59,7 +55,7 @@ end
 num_users = 10 * SEEDS_MULTIPLIER
 
 users_in_random_order = seeder.create_if_none(User, num_users) do
-  roles = %i[trusted]
+  roles = %i[trusted workshop_pass]
 
   num_users.times do |i|
     fname = Faker::Name.unique.first_name
@@ -216,24 +212,6 @@ Users::CreateMascotAccount.call unless Settings::General.mascot_user_id
 
 ##############################################################################
 
-seeder.create_if_none(Badge) do
-  5.times do
-    Badge.create!(
-      title: "#{Faker::Lorem.word} #{rand(100)}",
-      description: Faker::Lorem.sentence,
-      badge_image: Rails.root.join("app/assets/images/#{rand(1..40)}.png").open,
-    )
-  end
-
-  users_in_random_order.limit(10).each do |user|
-    user.badge_achievements.create!(
-      badge: Badge.order(Arel.sql("RANDOM()")).limit(1).take,
-      rewarding_context_message_markdown: Faker::Markdown.random,
-    )
-  end
-end
-##############################################################################
-
 seeder.create_if_none(Tag) do
   tags = %w[beginners career computerscience git go
             java javascript linux productivity python security webdev]
@@ -241,11 +219,9 @@ seeder.create_if_none(Tag) do
   tags.each do |tag_name|
     Tag.create!(
       name: tag_name,
-      short_summary: Faker::Lorem.sentence,
       bg_color_hex: Faker::Color.hex_color,
       text_color_hex: Faker::Color.hex_color,
       supported: true,
-      badge: Badge.order(Arel.sql("RANDOM()")).limit(1).take,
     )
   end
 end
@@ -278,7 +254,7 @@ seeder.create_if_none(Article, num_articles) do
 
     article = Article.create!(
       body_markdown: markdown,
-      featured: i.zero?, # only feature the first article,
+      featured: true,
       show_comments: true,
       user_id: User.order(Arel.sql("RANDOM()")).first.id,
     )
@@ -444,7 +420,6 @@ end
 
 ##############################################################################
 
-<<<<<<< HEAD
 seeder.create_if_none(Badge) do
   5.times do
     Badge.create!(
@@ -464,8 +439,6 @@ end
 
 ##############################################################################
 
-=======
->>>>>>> upstream/main
 seeder.create_if_none(FeedbackMessage) do
   mod = User.with_role(:trusted).take
 
@@ -581,30 +554,6 @@ seeder.create_if_none(Listing) do
       )
     end
   end
-end
-
-##############################################################################
-
-seeder.create_if_none(Billboard) do
-  Billboard::ALLOWED_PLACEMENT_AREAS.each do |placement_area|
-    Billboard.create!(
-      name: "#{Faker::Lorem.word} #{placement_area}",
-      body_markdown: Faker::Lorem.sentence,
-      published: true,
-      approved: true,
-      placement_area: placement_area,
-    )
-  end
-
-  segment = AudienceSegment.create!(type_of: :manual)
-  Billboard.create!(
-    name: "#{Faker::Lorem.word} (Manually Managed Audience)",
-    body_markdown: Faker::Lorem.sentence,
-    published: true,
-    approved: true,
-    placement_area: Billboard::ALLOWED_PLACEMENT_AREAS.sample,
-    audience_segment: segment,
-  )
 end
 
 ##############################################################################

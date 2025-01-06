@@ -1,4 +1,4 @@
-<%= javascript_include_tag "validateFileInputs", defer: true %>
+<%= javascript_packs_with_chunks_tag "validateFileInputs", defer: true %>
 
 <div class="crayons-card crayons-card--content-rows">
   <h2><%= t("views.settings.org.join.heading") %></h2>
@@ -61,6 +61,7 @@
     <div class="crayons-field">
       <%= f.label :url, class: "crayons-field__label" do |translation| %>
         <%= translation %>
+        <span class="crayons-field__required" title="<%= t("views.settings.org.create.required") %>">*</span>
       <% end %>
       <%= f.url_field :url, class: "crayons-textfield" %>
     </div>
@@ -68,18 +69,12 @@
     <div class="crayons-field">
       <%= f.label :summary, class: "crayons-field__label" do |translation| %>
         <%= translation %>
+        <span class="crayons-field__required" title="<%= t("views.settings.org.create.required") %>">*</span>
       <% end %>
       <%= f.text_area :summary, class: "crayons-textfield", rows: 3 %>
     </div>
 
-    <div class="crayons-field">
-      <%= f.label :proof, class: "crayons-field__label" do |translation| %>
-        <%= translation %>
-      <% end %>
-      <p class="crayons-field__description"><%= t("views.settings.org.create.proof") %></p>
-      <%= f.text_area :proof, class: "crayons-textfield" %>
-      <p class="crayons-field__description"><%= t("views.settings.org.create.notice") %></p>
-    </div>
+
 
     <button class="crayons-btn w-max" type="submit"><%= t("views.settings.org.create.submit") %></button>
   <% end %>

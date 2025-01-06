@@ -5,9 +5,7 @@ module Organizations
     sidekiq_options queue: :high_priority, retry: 10
 
     # operator_id - the user who deletes the organization
-    # deleted_by_org_admin - the organization can be deleted by either
-    # the admin of an organization or by the Forem Admin.
-    def perform(organization_id, operator_id, deleted_by_org_admin)
+    def perform(organization_id, operator_id)
       org = Organization.find_by(id: organization_id)
       return unless org
 
@@ -16,12 +14,11 @@ module Organizations
 
       Organizations::Delete.call(org)
 
-      if deleted_by_org_admin
-        user.touch(:organization_info_updated_at)
-        EdgeCache::BustUser.call(user)
+      user.touch(:organization_info_updated_at)
+      EdgeCache::BustUser.call(user)
 
-        NotifyMailer.with(name: user.name, org_name: org.name, email: user.email).organization_deleted_email.deliver_now
-      end
+      # notify user that the org was deleted
+      NotifyMailer.with(name: user.name, org_name: org.name, email: user.email).organization_deleted_email.deliver_now
 
       audit_log(org, user)
     rescue StandardError => e

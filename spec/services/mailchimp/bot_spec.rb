@@ -42,7 +42,7 @@ RSpec.describe Mailchimp::Bot, type: :service do
   end
 
   describe "#upsert" do
-    it "calls upsert" do
+    it "works" do
       described_class.new(user).upsert
       expect(my_gibbon_client).to have_received(:upsert)
     end

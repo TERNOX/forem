@@ -1,10 +1,8 @@
 class CommentDecorator < ApplicationDecorator
-  def low_quality
-    score < Comment::LOW_QUALITY_THRESHOLD
-  end
+  LOW_QUALITY_THRESHOLD = -75
 
-  def super_low_quality
-    score < Comment::HIDE_THRESHOLD
+  def low_quality
+    score < LOW_QUALITY_THRESHOLD
   end
 
   def published_timestamp

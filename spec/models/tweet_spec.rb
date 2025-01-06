@@ -1,10 +1,6 @@
 require "rails_helper"
 
-<<<<<<< HEAD
 RSpec.describe Tweet, vcr: true do
-=======
-RSpec.describe Tweet, :vcr do
->>>>>>> upstream/main
   let(:tweet_id) { "1018911886862057472" }
   let(:tweet_reply_id) { "1242938461784608770" }
   let(:retweet_id) { "1262395854469677058" }

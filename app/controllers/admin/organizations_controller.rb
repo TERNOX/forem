@@ -1,7 +1,6 @@
 module Admin
   class OrganizationsController < Admin::ApplicationController
     layout "admin"
-    PER_PAGE_MAX = 50
 
     CREDIT_ACTIONS = {
       add: :add_to,
@@ -9,8 +8,14 @@ module Admin
     }.with_indifferent_access.freeze
 
     def index
-      @organizations = Organization.simple_name_match(params[:search].presence)
-        .page(params[:page]).per(PER_PAGE_MAX)
+      @organizations = Organization.order(name: :desc).page(params[:page]).per(50)
+
+      return if params[:search].blank?
+
+      @organizations = @organizations.where(
+        "name ILIKE ?",
+        "%#{params[:search].strip}%",
+      )
     end
 
     def show
@@ -27,18 +32,6 @@ module Admin
 
       flash[:notice] = I18n.t("admin.organizations_controller.credit_updated")
       redirect_to admin_organization_path(org)
-    end
-
-    def destroy
-      organization = Organization.find_by(id: params[:id])
-      Organizations::DeleteWorker.perform_async(organization.id, current_user.id, false)
-
-      flash[:settings_notice] =
-        I18n.t("admin.organizations_controller.deletion_scheduled", organization_name: organization.name)
-      redirect_to admin_organization_url(params[:id])
-    rescue StandardError => e
-      flash[:error] = I18n.t("admin.organizations_controller.error", organization_name: organization.name, error: e)
-      redirect_to user_settings_path(:organization, id: organization.id)
     end
 
     private

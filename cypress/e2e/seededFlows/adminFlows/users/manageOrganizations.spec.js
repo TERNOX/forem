@@ -1,4 +1,4 @@
-import { verifyAndDismissFlashMessage } from '../shared/utilities';
+import { verifyAndDismissUserUpdatedMessage } from './userAdminUtilitites';
 
 // More on roles, https://admin.forem.com/docs/forem-basics/user-roles
 function openOrgModal(ctaText = 'Add organization') {
@@ -28,9 +28,8 @@ describe('Manage User Organziations', () => {
         cy.findByRole('button', { name: 'Add organization' }).click();
       });
 
-      verifyAndDismissFlashMessage(
+      verifyAndDismissUserUpdatedMessage(
         'User was successfully added to Bachmanity',
-        'flash-success',
       );
       cy.getModal().should('not.exist');
 
@@ -55,9 +54,8 @@ describe('Manage User Organziations', () => {
         cy.findByRole('button', { name: 'Add organization' }).click();
       });
 
-      verifyAndDismissFlashMessage(
+      verifyAndDismissUserUpdatedMessage(
         'User was successfully added to Bachmanity',
-        'flash-success',
       );
 
       openOrgModal('Add organization').within(() => {
@@ -65,9 +63,8 @@ describe('Manage User Organziations', () => {
         cy.findByRole('button', { name: 'Add organization' }).click();
       });
 
-      verifyAndDismissFlashMessage(
+      verifyAndDismissUserUpdatedMessage(
         'User was successfully added to Awesome Org',
-        'flash-success',
       );
       cy.getModal().should('not.exist');
 
@@ -104,9 +101,8 @@ describe('Manage User Organziations', () => {
         cy.findByRole('button', { name: 'Submit' }).click();
       });
 
-      verifyAndDismissFlashMessage(
+      verifyAndDismissUserUpdatedMessage(
         'User was successfully updated to admin',
-        'flash-success',
       );
       cy.getModal().should('not.exist');
     });
@@ -119,9 +115,8 @@ describe('Manage User Organziations', () => {
         cy.findByRole('button', { name: 'Add organization' }).click();
       });
 
-      verifyAndDismissFlashMessage(
+      verifyAndDismissUserUpdatedMessage(
         'User was successfully added to Bachmanity',
-        'flash-success',
       );
       cy.getModal().should('not.exist');
 
@@ -141,9 +136,8 @@ describe('Manage User Organziations', () => {
         name: 'Revoke Awesome Org organization membership',
       }).click();
 
-      verifyAndDismissFlashMessage(
+      verifyAndDismissUserUpdatedMessage(
         'User was successfully removed from Awesome Org',
-        'flash-success',
       );
     });
   });

@@ -1,6 +1,6 @@
 module Articles
   class PublishWorker
-    include Sidekiq::Job
+    include Sidekiq::Worker
 
     sidekiq_options queue: :medium_priority, lock: :until_executing
 

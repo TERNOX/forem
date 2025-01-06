@@ -1,4 +1,6 @@
-#!/usr/bin/env sh
-. "$(dirname -- "$0")/_/husky.sh"
+#!/bin/sh
+FILES=$(git diff --cached --name-only)
+[ -z "$FILES" ] && exit 0
 
-yarn lint-staged
+# Run lint-staged on all staged
+echo "$FILES" | yarn lint-staged

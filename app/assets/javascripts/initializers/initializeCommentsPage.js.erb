@@ -299,6 +299,7 @@ function handleCommentSubmit(event) {
           updateCommentsCount();
           initializeCommentsPage();
           initializeCommentDate();
+          initializeDateHelpers();
           activateRunkitTags();
         })
       } else {
@@ -415,9 +416,9 @@ function updateItemSummaryHtml(item) {
   }
   var itemUsername = usernames[0].textContent + number
   if (item.open) {
-    itemSummaryContent.textContent = "";
+    itemSummaryContent.innerHTML = "";
   } else {
-    itemSummaryContent.textContent = itemUsername;
+    itemSummaryContent.innerHTML = itemUsername;
   }
 }
 

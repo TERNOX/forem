@@ -17,9 +17,13 @@ class Podcast < ApplicationRecord
   validates :main_color_hex, :title, :feed_url, :image, presence: true
   validates :main_color_hex, format: /\A([a-fA-F]|[0-9#]){7}\Z/
   validates :feed_url, uniqueness: true, url: { schemes: %w[https http] }
+  validates :slug,
+            presence: true,
+            uniqueness: true,
+            format: { with: /\A[a-zA-Z0-9\-_]+\Z/ },
+            exclusion: { in: ReservedWords.all, message: I18n.t("models.podcast.slug_is_reserved") }
 
-  extend UniqueAcrossModels
-  unique_across_models :slug
+  validates :slug, unique_cross_model_slug: true, if: :slug_changed?
 
   after_save :bust_cache
 

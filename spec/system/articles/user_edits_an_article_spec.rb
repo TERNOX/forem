@@ -11,6 +11,7 @@ RSpec.describe "Editing with an editor", js: true do
     allow(Settings::General).to receive(:logo_png).and_return("https://dummyimage.com/800x600.png")
     allow(Settings::General).to receive(:mascot_image_url).and_return("https://dummyimage.com/800x600.jpg")
     allow(Settings::General).to receive(:suggested_tags).and_return("coding, beginners")
+    allow(Settings::General).to receive(:suggested_users).and_return("romagueramica")
     sign_in user
   end
 

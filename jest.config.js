@@ -3,12 +3,7 @@
 
 /* eslint-env node */
 
-<<<<<<< HEAD
 process.env.TZ = 'Kyiv';
-=======
-process.env.NODE_ENV = 'test';
-process.env.TZ = 'UTC';
->>>>>>> upstream/main
 
 module.exports = {
   setupFilesAfterEnv: ['./testSetup.js'],
@@ -18,7 +13,6 @@ module.exports = {
     // This exclusion avoids running coverage on Barrel files, https://twitter.com/housecor/status/981558704708472832
     '!app/javascript/**/index.js',
     '!app/javascript/packs/**/*.js', // avoids running coverage on webpacker pack files
-    'app/javascript/packs/dashboards/*.js', // try opting-in for jest coverage?
     '!**/__tests__/**',
     '!**/__stories__/**',
     '!app/javascript/storybook-static/**/*.js',
@@ -29,7 +23,6 @@ module.exports = {
     // Ignore Storybook configuration files
     '!app/javascript/.storybook/**/*.{js,jsx}',
   ],
-  coverageDirectory: 'coverage/jest',
   coverageThreshold: {
     global: {
       statements: 43,

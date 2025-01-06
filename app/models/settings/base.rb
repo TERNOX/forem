@@ -73,9 +73,7 @@ module Settings
           if result.nil? # we don't want to accidentally do this for "false"
             result ||= default.is_a?(Proc) ? default.call : default
           end
-
-          read_as_type = type == :markdown ? :string : type
-          result = __send__(:convert_string_to_value_type, read_as_type, result, separator: separator)
+          result = __send__(:convert_string_to_value_type, type, result, separator: separator)
 
           result
         end
@@ -85,17 +83,10 @@ module Settings
           var_name = key
 
           record = find_by(var: var_name) || new(var: var_name)
+          value = __send__(:convert_string_to_value_type, type, value, separator: separator)
 
-          if type == :markdown
-            processed = __send__(:convert_string_to_value_type, type, value)
-            record.value = value
-            record.save!
-            __send__(:"#{key}_processed_html=", processed)
-          else
-            value = __send__(:convert_string_to_value_type, type, value, separator: separator)
-            record.value = value
-            record.save!
-          end
+          record.value = value
+          record.save!
 
           value
         end
@@ -136,8 +127,6 @@ module Settings
           value.to_f
         when :big_decimal
           value.to_d
-        when :markdown
-          ContentRenderer.new(value).process.processed_html
         else
           value
         end
@@ -164,7 +153,7 @@ module Settings
 
     # get the setting's value, YAML decoded
     def value
-      YAML.unsafe_load(self[:value]) if self[:value].present?
+      YAML.load(self[:value]) if self[:value].present? # rubocop:disable Security/YAMLLoad
     end
 
     # set the settings's value, YAML encoded

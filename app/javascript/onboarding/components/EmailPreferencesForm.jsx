@@ -8,33 +8,29 @@ export class EmailPreferencesForm extends Component {
   constructor(props) {
     super(props);
 
+    this.handleChange = this.handleChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
+
     this.state = {
-      content: '<p>Loading...</p>'
+      email_newsletter: true,
+      email_digest_periodic: true,
     };
   }
 
   componentDidMount() {
-    fetch('/onboarding/newsletter')
-      .then((response) => response.json())
-      .then((json) => {
-        this.setState({ content: json['content'] });
-      });
-
     updateOnboarding('v2: email preferences form');
   }
 
   onSubmit() {
     const csrfToken = getContentOfToken('csrf-token');
-    const newsletterEl = document.getElementById('email_newsletter');
-    const newsletterChecked = newsletterEl ? newsletterEl.checked : false
-    fetch('/onboarding/notifications', {
+
+    fetch('/onboarding_notifications_checkbox_update', {
       method: 'PATCH',
       headers: {
         'X-CSRF-Token': csrfToken,
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ notifications: { email_newsletter: newsletterChecked } }),
+      body: JSON.stringify({ notifications: this.state }),
       credentials: 'same-origin',
     }).then((response) => {
       if (response.ok) {
@@ -45,7 +41,15 @@ export class EmailPreferencesForm extends Component {
     });
   }
 
+  handleChange(event) {
+    const { name } = event.target;
+    this.setState((currentState) => ({
+      [name]: !currentState[name],
+    }));
+  }
+
   render() {
+    const { email_newsletter, email_digest_periodic } = this.state;
     const { prev, slidesCount, currentSlideIndex } = this.props;
     return (
       <div
@@ -58,18 +62,54 @@ export class EmailPreferencesForm extends Component {
           aria-labelledby="title"
           aria-describedby="subtitle"
         >
-          <div
-            className="onboarding-content email-preferences-wrapper"
-            // eslint-disable-next-line react/no-danger
-            dangerouslySetInnerHTML={{ __html: this.state.content }}
-          />
-
           <Navigation
             prev={prev}
             next={this.onSubmit}
             slidesCount={slidesCount}
             currentSlideIndex={currentSlideIndex}
           />
+          <div className="onboarding-content terms-and-conditions-wrapper">
+            <header className="onboarding-content-header">
+              <h1 id="title" className="title">
+                Майже все!
+              </h1>
+              <h2 id="subtitle" className="subtitle">
+                Перегляньте свої налаштування електронної пошти, перш ніж ми продовжимо.
+              </h2>
+            </header>
+
+            <form>
+              <fieldset>
+                <legend>Email налаштування</legend>
+                <ul>
+                  <li className="checkbox-item">
+                    <label htmlFor="email_newsletter">
+                      <input
+                        type="checkbox"
+                        id="email_newsletter"
+                        name="email_newsletter"
+                        checked={email_newsletter}
+                        onChange={this.handleChange}
+                      />
+                      Я хочу отримувати (не)регулярну розсилку на електронну пошту.
+                    </label>
+                  </li>
+                  <li className="checkbox-item">
+                    <label htmlFor="email_digest_periodic">
+                      <input
+                        type="checkbox"
+                        id="email_digest_periodic"
+                        name="email_digest_periodic"
+                        checked={email_digest_periodic}
+                        onChange={this.handleChange}
+                      />
+                      Я хочу отримувати найкращі дописи згідно моїх теґів.
+                    </label>
+                  </li>
+                </ul>
+              </fieldset>
+            </form>
+          </div>
         </div>
       </div>
     );

@@ -6,7 +6,6 @@ export const LoadingArticle = ({ version }) => {
     <div className="crayons-story__cover">
       <div
         className="crayons-scaffold crayons-story__cover__image"
-        style={{paddingBottom: "42%"}}
         loading="lazy"
       />
     </div>

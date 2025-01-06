@@ -49,10 +49,11 @@ describe('<ListingFiltersCategories />', () => {
 
     it('should be "selected" when there is no category selected', () => {
       const propsWithoutCategory = { ...getProps(), category: '' };
-      const { queryByTestId } =
-        renderListingFilterCategories(propsWithoutCategory);
+      const { queryByTestId } = renderListingFilterCategories(
+        propsWithoutCategory,
+      );
 
-      expect(queryByTestId('selected')).toExist();
+      expect(queryByTestId('selected')).toBeDefined();
     });
   });
 

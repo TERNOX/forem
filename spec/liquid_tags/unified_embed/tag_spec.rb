@@ -22,7 +22,8 @@ RSpec.describe UnifiedEmbed::Tag, type: :liquid_tag do
         headers: {
           "Accept" => "*/*",
           "Accept-Encoding" => "gzip;q=1.0,deflate;q=0.6,identity;q=0.3",
-          "User-Agent" => "DEV(local) (http://forem.test)"
+          "Host" => "guides.rubyonrails.org",
+          "User-Agent" => "Ruby"
         },
       )
       .to_return(

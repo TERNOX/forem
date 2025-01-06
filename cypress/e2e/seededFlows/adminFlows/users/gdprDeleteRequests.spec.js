@@ -88,9 +88,9 @@ describe('GDPR Delete Requests', () => {
   const searchForMember = (searchTerm) => {
     cy.findByRole('textbox', {
       name: 'Search members by email or username',
-    }).as('textbox');
-    cy.get('@textbox').clear();
-    cy.get('@textbox').type(searchTerm);
+    })
+      .clear()
+      .type(searchTerm);
     cy.findByRole('button', { name: 'Search' }).click();
   };
 });

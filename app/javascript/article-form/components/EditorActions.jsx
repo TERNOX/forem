@@ -18,7 +18,6 @@ export const EditorActions = ({
   onConfigChange,
   submitting,
   previewLoading,
-  switchHelpContext,
 }) => {
   const isVersion1 = version === 'v1';
   const isVersion2 = version === 'v2';
@@ -61,17 +60,12 @@ export const EditorActions = ({
   }
 
   return (
-    <div
-      id="editor-actions"
-      className="crayons-article-form__footer"
-      onMouseEnter={switchHelpContext}
-    >
+    <div className="crayons-article-form__footer">
       <Button
         variant="primary"
         className="mr-2 whitespace-nowrap"
         onClick={onPublish}
         disabled={previewLoading}
-        onFocus={(event) => switchHelpContext(event, 'editor-actions')}
       >
         {saveButtonText}
       </Button>
@@ -81,7 +75,6 @@ export const EditorActions = ({
           className="mr-2 whitespace-nowrap"
           onClick={onSaveDraft}
           disabled={previewLoading}
-          onFocus={(event) => switchHelpContext(event, 'editor-actions')}
         >
           Зберегти <span className="hidden s:inline">чернетку</span>
         </Button>
@@ -94,7 +87,6 @@ export const EditorActions = ({
           onConfigChange={onConfigChange}
           onSaveDraft={onSaveDraft}
           previewLoading={previewLoading}
-          onFocus={(event) => switchHelpContext(event, 'editor-actions')}
         />
       )}
 
@@ -103,7 +95,6 @@ export const EditorActions = ({
           onClick={onClearChanges}
           className="whitespace-nowrap fw-normal fs-s"
           disabled={previewLoading}
-          onFocus={(event) => switchHelpContext(event, 'editor-actions')}
         >
           Відкатити <span className="hidden s:inline">нові зміни</span>
         </Button>

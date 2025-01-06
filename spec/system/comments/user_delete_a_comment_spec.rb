@@ -12,7 +12,7 @@ RSpec.describe "Deleting Comment", js: true do
     sign_in user
   end
 
-  it "returns to article page" do
+  it "works" do
     visit "/"
     visit "#{comment.path}/delete_confirm"
 

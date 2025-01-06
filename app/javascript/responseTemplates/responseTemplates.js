@@ -169,6 +169,7 @@ function fetchResponseTemplates(formId, onTemplateSelected) {
   })
     .then((response) => response.json())
     .then((response) => {
+      form.querySelector('img.loading-img').classList.toggle('hidden');
 
       let revealed;
       const topLevelData = document.getElementById('response-templates-data');
@@ -224,6 +225,7 @@ function copyData(responsesContainer) {
 }
 
 function loadData(form, onTemplateSelected) {
+  form.querySelector('img.loading-img').classList.toggle('hidden');
   fetchResponseTemplates(form.id, onTemplateSelected);
 }
 

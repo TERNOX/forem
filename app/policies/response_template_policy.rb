@@ -20,7 +20,7 @@ class ResponseTemplatePolicy < ApplicationPolicy
   end
 
   def moderator_index?
-    user_moderator? || user_trusted?
+    user_moderator?
   end
 
   alias create? index?
@@ -30,10 +30,9 @@ class ResponseTemplatePolicy < ApplicationPolicy
   end
 
   # comes from comments_controller
-  def use_template_for_moderator_comment?
-    mod_comment? && (user_moderator? || user_trusted?)
+  def moderator_create?
+    user_moderator? && mod_comment?
   end
-  alias moderator_create? use_template_for_moderator_comment?
 
   def modify?
     if user_owner?
@@ -47,7 +46,7 @@ class ResponseTemplatePolicy < ApplicationPolicy
   alias destroy? modify?
 
   def permitted_attributes_for_create
-    if user_moderator?
+    if user_trusted?
       PERMITTED_ATTRIBUTES + [:type_of]
     else
       PERMITTED_ATTRIBUTES

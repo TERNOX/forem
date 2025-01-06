@@ -76,6 +76,6 @@ describe('<CommentsList />', () => {
       />,
     );
 
-    expect(queryByTestId('see-all-comments')).toExist();
+    expect(queryByTestId('see-all-comments')).toBeDefined();
   });
 });

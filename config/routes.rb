@@ -44,43 +44,18 @@ Rails.application.routes.draw do
     namespace :api, defaults: { format: "json" } do
       scope module: :v1, constraints: ApiConstraints.new(version: 1, default: false) do
         # V1 only endpoints
+        put "/users/:id/suspend", to: "users#suspend", as: :user_suspend
         put "/articles/:id/unpublish", to: "articles#unpublish", as: :article_unpublish
         put "/users/:id/unpublish", to: "users#unpublish", as: :user_unpublish
-
-        get "/users/search", to: "users#search"
 
         post "/reactions", to: "reactions#create"
         post "/reactions/toggle", to: "reactions#toggle"
 
-        resources :recommended_articles_lists, only: %i[index show create update]
-
-        resources :billboards, only: %i[index show create update] do
+        resources :display_ads, only: %i[index show create update] do
           put "unpublish", on: :member
-        end
-        # temporary keeping both routes while transitioning (renaming) display_ads => billboards
-        resources :display_ads, only: %i[index show create update], controller: :billboards do
-          put "unpublish", on: :member
-        end
-
-        resources :segments, controller: "audience_segments", only: %i[index show create destroy] do
-          get "users", on: :member
-          put "add_users", on: :member
-          put "remove_users", on: :member
         end
 
         resources :pages, only: %i[index show create update destroy]
-
-        resources :organizations, only: %i[index create update destroy]
-
-        scope("/users/:id") do
-          constraints(role: /suspend|suspended|limited|spam|trusted/) do
-            put "/:role", to: "user_roles#update", as: "user_add_role"
-          end
-
-          constraints(role: /limited|spam|trusted/) do
-            delete "/:role", to: "user_roles#destroy", as: "user_remove_role"
-          end
-        end
 
         draw :api
       end
@@ -115,7 +90,7 @@ Rails.application.routes.draw do
       end
     end
     resources :comment_mutes, only: %i[update]
-    resources :users, only: %i[index show], defaults: { format: :json } do # internal API
+    resources :users, only: %i[index], defaults: { format: :json } do # internal API
       collection do
         resources :devices, only: %i[create destroy]
       end
@@ -139,6 +114,7 @@ Rails.application.routes.draw do
     resources :notifications, only: [:index]
     resources :tags, only: [:index] do
       collection do
+        get "/onboarding", to: "tags#onboarding"
         get "/suggest", to: "tags#suggest", defaults: { format: :json }
         get "/bulk", to: "tags#bulk", defaults: { format: :json }
       end
@@ -155,7 +131,6 @@ Rails.application.routes.draw do
     resources :tag_adjustments, only: %i[create destroy]
     resources :rating_votes, only: [:create]
     resources :page_views, only: %i[create update]
-    resources :feed_events, only: %i[create]
     resources :credits, only: %i[index new create] do
       get "purchase", on: :collection, to: "credits#new"
     end
@@ -163,9 +138,7 @@ Rails.application.routes.draw do
     resources :poll_votes, only: %i[show create]
     resources :poll_skips, only: [:create]
     resources :profile_pins, only: %i[create update]
-    # temporary keeping both routes while transitioning (renaming) display_ads => billboards
-    resources :display_ad_events, only: [:create], controller: :billboard_events
-    resources :billboard_events, only: [:create]
+    resources :display_ad_events, only: [:create]
     resources :badges, only: [:index]
     resources :user_blocks, param: :blocked_id, only: %i[show create destroy]
     resources :podcasts, only: %i[new create]
@@ -177,7 +150,6 @@ Rails.application.routes.draw do
         get "/subscribed", action: "subscribed"
       end
     end
-
     namespace :followings, defaults: { format: :json } do
       get :users
       get :tags
@@ -185,14 +157,9 @@ Rails.application.routes.draw do
       get :podcasts
     end
 
-    resource :onboarding, only: %i[show update] do
-      member do
-        patch :checkbox, defaults: { format: :json }
-        patch :notifications, defaults: { format: :json }
-        get :tags, defaults: { format: :json }
-        get :users_and_organizations, defaults: { format: :json }
-        get :newsletter, defaults: { format: :json }
-      end
+    scope module: "users" do
+      resource :onboarding, only: %i[show update]
+      patch "/onboarding_checkbox_update", to: "onboardings#onboarding_checkbox_update"
     end
 
     resources :profiles, only: %i[update]
@@ -211,6 +178,8 @@ Rails.application.routes.draw do
     get "/notifications/:filter/:org_id", to: "notifications#index", as: :notifications_filter_org
     get "/notification_subscriptions/:notifiable_type/:notifiable_id", to: "notification_subscriptions#show"
     post "/notification_subscriptions/:notifiable_type/:notifiable_id", to: "notification_subscriptions#upsert"
+    patch "/onboarding_notifications_checkbox_update",
+          to: "users/notification_settings#onboarding_notifications_checkbox_update"
     get "email_subscriptions/unsubscribe"
 
     get "/internal", to: redirect("/admin")
@@ -218,18 +187,8 @@ Rails.application.routes.draw do
 
     get "/social_previews/article/:id", to: "social_previews#article", as: :article_social_preview
 
-    get "/async_info/base_data", to: "async_info#base_data", defaults: { format: :json }
-    get "/async_info/navigation_links", to: "async_info#navigation_links"
-
-    # Billboards
-    scope "/:username/:slug" do
-      get "/billboards/:placement_area", to: "billboards#show", as: :article_billboard
-      # temporary keeping both routes while transitioning (renaming) display_ads => billboards
-      get "/display_ads/:placement_area", to: "billboards#show"
-    end
-    get "/billboards/:placement_area", to: "billboards#show", as: :billboard
-    # temporary keeping both routes while transitioning (renaming) display_ads => billboards
-    get "/display_ads/:placement_area", to: "billboards#show"
+    get "/async_info/base_data", controller: "async_info#base_data", defaults: { format: :json }
+    get "/async_info/navigation_links", controller: "async_info#navigation_links"
 
     # Settings
     post "users/join_org", to: "users#join_org"
@@ -263,11 +222,8 @@ Rails.application.routes.draw do
     get "/💸", to: redirect("t/hiring")
     get "/survey", to: redirect("https://dev.to/ben/final-thoughts-on-the-state-of-the-web-survey-44nn")
     get "/search", to: "stories/articles_search#index"
-    get "/:slug/members", to: "organizations#members", as: :organization_members
     post "articles/preview", to: "articles#preview"
     post "comments/preview", to: "comments#preview"
-    post "comments/subscribe", to: "notification_subscriptions#create"
-    post "subscription/unsubscribe", to: "notification_subscriptions#destroy"
 
     # These routes are required by links in the sites and will most likely to be replaced by a db page
     get "/about", to: "pages#about"
@@ -309,7 +265,6 @@ Rails.application.routes.draw do
     get "dashboard/following_users", to: "dashboards#following_users"
     get "dashboard/following_organizations", to: "dashboards#following_organizations"
     get "dashboard/following_podcasts", to: "dashboards#following_podcasts"
-    get "dashboard/hidden_tags", to: "dashboards#hidden_tags"
     get "/dashboard/subscriptions", to: "dashboards#subscriptions"
     get "/dashboard/:which", to: "dashboards#followers", constraints: { which: /user_followers/ }
     get "/dashboard/:which/:org_id", to: "dashboards#show",
@@ -394,15 +349,8 @@ Rails.application.routes.draw do
     get "/:username/:slug", to: "stories#show"
     get "/:sitemap", to: "sitemaps#show",
                      constraints: { format: /xml/, sitemap: /sitemap-.+/ }
-    get "/:username", to: "stories#index", as: "user_profile", # No txt format
-                      constraints: { format: /html/ }
-    get "/:slug", to: "pages#show",
-                  constraints: { format: /txt/ }
-    get "/:slug_0/:slug_1", to: "pages#show", as: :page_0_1
-    get "/:slug_0/:slug_1/:slug_2", to: "pages#show", as: :page_0_1_2
-    get "/:slug_0/:slug_1/:slug_2/:slug_3", to: "pages#show", as: :page_0_1_2_3
-    get "/:slug_0/:slug_1/:slug_2/:slug_3/:slug_4", to: "pages#show", as: :page_0_1_2_3_4
-    get "/:slug_0/:slug_1/:slug_2/:slug_3/:slug_4/:slug_5", to: "pages#show", as: :page_0_1_2_3_4_5
+    get "/:username", to: "stories#index", as: "user_profile"
+
     root "stories#index"
   end
 end

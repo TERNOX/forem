@@ -19,25 +19,9 @@ en:
           icon: Adjust tags
           add: Add tag
           add_placeholder: Add a tag
-          previous: Previous tag adjustments
-          history:
-            added_by: added by
-            removed_by: removed by
-          reason:
-            remove_tag: Reason to remove tag (optional)
-            add_tag: Reason to add tag (optional)
+          reason: Reason for tag adjustment (optional)
           remove: Remove tag
           submit: Submit
-          cancel: Cancel
-          maximum_tags:
-            icon: Info
-            text: A post can only have four tags.
-          add_tag:
-            header: Add new tag
-            button_text: Add new tag
-            icon: Add tag
-          cannot_remove_admin_adjusted_tag_html: Tag has been added by an Admin. You can't remove it now. If you feel that's a mistake, please contact us at <a href="mailto:%{contact_email}">%{contact_email}</a>.
-          cannot_add_admin_adjusted_tag_html: Tag has been removed by an Admin. You can't add it now. If you feel that's a mistake, please contact us at <a href="mailto:%{contact_email}">%{contact_email}</a>.
         approve:
           add: Mark as approved
           remove: Remove approval
@@ -75,8 +59,8 @@ en:
           subtitle: Moderating actions for %{user}
           aria_label: Open admin actions
           icon: Crown
-        flag_user: Flag %{username}
-        unflag_user: Unflag %{username}
+        flag: Flag %{username}
+        unflag: Unflag %{username}
         how: How does this work?
         hidden:
           subtitle: Hidden Comments
@@ -91,7 +75,6 @@ en:
             Use <b>Flag to Admins</b> for code of conduct violations (harassment, being a jerk, spam, etc.).
         other: Other things you can do
         add_reaction: Add a reaction
-        score: Score
         suspend:
           suspend_title: Suspend %{username}
           suspend_user: Suspend %{username}
@@ -101,7 +84,7 @@ en:
           unsuspend_user: Unsuspend %{username}
           unsuspend_modal_text: Once unsuspended, %{username} will be able to comment and publish posts again.
           unsuspend_modal_button: Submit & Unsuspend
-        flag: Flag
+        suspicious: Suspicious
         tag:
           subtitle: Tag Adjustments
           add: Add
@@ -134,41 +117,15 @@ en:
         unpublish_post:
           modal_text1: Once unpublished, this post will become invisible to the public and only accessible to %{username}.
           modal_text2: They can still re-publish the post if they are not suspended.
-        vomit: Valid and open flags
         vote_down: Low Quality
         flag_to_admins: Flag to Admins
         vote_up: High Quality
         featured_past_day:
           one: '%{count} post from the past day is featured.'
           other: '%{count} posts from the past day are featured.'
-      feed:
-        inbox_filter: Inbox
-        latest_filter: Latest
-        inbox_html: <strong>Inbox</strong> is a chronological list of posts which have not yet been scrutinized by multiple mods or members.
-        latest_html: <strong>Latest</strong> shows all posts in chronological order regardless of whether they have been scrutinized. 
-      article:
-        approved: Approved
-        author_id: Author ID
-        comments: comments
-        contains_video: Contains video
-        co_author_ids: Co-Author IDs
-        edit: Edit
-        featured: Featured
-        likes: likes
-        notes:
-          user_notes: user notes
-          view_all: View all
-        pinned: Pinned
-        pin_post: Pin post
-        published_at: Published at
-        save: Save
-        unpin_post: Unpin post
-        unplublished: Unplublished
-        user: User
-        user_warned: User warned
-        view_details: View details
+      all: All topics
       aside:
-        all: All tags
+        all: All topics
         code_of_conduct: Code of Conduct
         external: External link
         feedback:
@@ -182,9 +139,6 @@ en:
         terms_and_conditions: Terms & Conditions
         trusted: Trusted User Guide
       author: Author
-      comments:
-        view_comment: View Comment
-        view_details: View Details
       date: Date
       notice:
         subtitle: '%{community} Mods'
@@ -196,14 +150,3 @@ en:
         tag: Tag Moderation Guide
         trusted: Trusted User Guide
       post: Post
-      priviliged_actions:
-        description: All the moderator actions affect the score. The overall score is a combination of moderator actions and public reactions.
-        no_flags: Article has no flags.
-        no_quality_reactions: Article has no quality reactions by trusted users.
-        title: Moderator actions
-      members:
-        all: All
-        new: New
-        established: Established
-        filter: Filter by Members
-        label: 'Members'

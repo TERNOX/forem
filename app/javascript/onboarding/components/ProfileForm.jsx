@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 
 import { userData, updateOnboarding } from '../utilities';
 
-import { ProfileImage } from './ProfileForm/ProfileImage';
 import { Navigation } from './Navigation';
 import { TextArea } from './ProfileForm/TextArea';
 import { TextInput } from './ProfileForm/TextInput';
@@ -22,13 +21,9 @@ export class ProfileForm extends Component {
     this.user = userData();
     this.state = {
       groups: [],
-      formValues: {
-        username: this.user.username,
-        profile_image_90: this.user.profile_image_90,
-      },
+      formValues: { username: this.user.username },
       canSkip: false,
       last_onboarding_page: 'v2: personal info form',
-      profile_image_90: this.user.profile_image_90,
     };
   }
 
@@ -53,12 +48,12 @@ export class ProfileForm extends Component {
 
   async onSubmit() {
     const { formValues, last_onboarding_page } = this.state;
-    const { username, profile_image_90, ...newFormValues } = formValues;
+    const { username, ...newFormValues } = formValues;
     try {
       const response = await request('/onboarding', {
         method: 'PATCH',
         body: {
-          user: { last_onboarding_page, profile_image_90, username },
+          user: { last_onboarding_page, username },
           profile: { ...newFormValues },
         },
       });
@@ -68,7 +63,7 @@ export class ProfileForm extends Component {
       const { next } = this.props;
       next();
     } catch (error) {
-      Honeybadger.notify(error);
+      Honeybadger.notify(error.statusText);
       let errorMessage = 'Unable to continue, please try again.';
       if (error.status === 422) {
         // parse validation error messages from UsersController#onboarding
@@ -147,18 +142,10 @@ export class ProfileForm extends Component {
     }
   }
 
-  onProfileImageUrlChange = (url) => {
-    this.setState({ profile_image_90: url }, () => {
-      this.handleFieldChange({
-        target: { name: 'profile_image_90', value: url },
-      });
-    });
-  };
-
   render() {
     const { prev, slidesCount, currentSlideIndex, communityConfig } =
       this.props;
-    const { username, name } = this.user;
+    const { profile_image_90, username, name } = this.user;
     const { canSkip, groups = [], error, errorMessage } = this.state;
     const SUMMARY_MAXLENGTH = 200;
     const summaryCharacters = this.state?.formValues?.summary?.length || 0;
@@ -190,6 +177,13 @@ export class ProfileForm extends Component {
           aria-labelledby="title"
           aria-describedby="subtitle"
         >
+          <Navigation
+            prev={prev}
+            next={this.onSubmit}
+            canSkip={canSkip}
+            slidesCount={slidesCount}
+            currentSlideIndex={currentSlideIndex}
+          />
           {error && (
             <div role="alert" class="crayons-notice crayons-notice--danger m-2">
               An error occurred: {errorMessage}
@@ -198,37 +192,34 @@ export class ProfileForm extends Component {
           <div className="onboarding-content about">
             <header className="onboarding-content-header">
               <h1 id="title" className="title">
-                Build your profile
+                Налаштуйте свій профіль
               </h1>
               <h2
                 id="subtitle"
                 data-testid="onboarding-profile-subtitle"
                 className="subtitle"
               >
-                Tell us a little bit about yourself — this is how others will
-                see you on {communityConfig.communityName}. You’ll always be
-                able to edit this later in your Settings.
+                Розкажіть про себе трохи більше нашій спільноті! Ви завжди можете змінити цю інформацію пізніше у налаштуваннях.
               </h2>
             </header>
-            <div className="onboarding-profile-sub-section mt-8">
-              <ProfileImage
-                onMainImageUrlChange={this.onProfileImageUrlChange}
-                mainImage={this.state.profile_image_90}
-                userId={this.user.id}
-                name={name}
-              />
+            <div className="current-user-info">
+              <figure className="current-user-avatar-container">
+                <img
+                  className="current-user-avatar"
+                  alt="profile"
+                  src={profile_image_90}
+                />
+              </figure>
+              <h3>{name}</h3>
             </div>
             <div className="onboarding-profile-sub-section">
               <TextInput
                 field={{
                   attribute_name: 'username',
-                  label: 'Username',
+                  label: 'Юзернейм',
                   default_value: username,
                   required: true,
                   maxLength: 20,
-                  placeholder_text: 'johndoe',
-                  description: '',
-                  input_type: 'text',
                 }}
                 onFieldChange={this.handleFieldChange}
               />
@@ -237,12 +228,10 @@ export class ProfileForm extends Component {
               <TextArea
                 field={{
                   attribute_name: 'summary',
-                  label: 'Bio',
-                  placeholder_text: 'Tell us a little about yourself',
+                  label: 'Про вас',
+                  placeholder_text: 'Розкажіть щось про себе',
                   required: false,
                   maxLength: SUMMARY_MAXLENGTH,
-                  description: '',
-                  input_type: 'text_area',
                 }}
                 onFieldChange={this.handleFieldChange}
               />
@@ -261,14 +250,6 @@ export class ProfileForm extends Component {
 
             {sections}
           </div>
-          <Navigation
-            prev={prev}
-            next={this.onSubmit}
-            canSkip={canSkip}
-            slidesCount={slidesCount}
-            currentSlideIndex={currentSlideIndex}
-            hidePrev
-          />
         </div>
       </div>
     );

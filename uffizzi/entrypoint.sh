@@ -45,10 +45,6 @@ case "$@" in
   bootstrap)
     echo "Running rake app_initializer:setup..."
     bundle exec rake app_initializer:setup
-<<<<<<< HEAD
-=======
-    bundle exec rails db:seed
->>>>>>> upstream/main
     ;;
   *)
     echo "Running command:"
@@ -58,8 +54,4 @@ case "$@" in
 
 esac
 
-<<<<<<< HEAD
 bundle exec rails server -b 0.0.0.0 -p 3000
-=======
-bundle exec rails server -b 0.0.0.0 -p 3000
->>>>>>> upstream/main

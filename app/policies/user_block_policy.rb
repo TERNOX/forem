@@ -1,6 +1,6 @@
 class UserBlockPolicy < ApplicationPolicy
   def create?
-    !user.spam_or_suspended?
+    !user_suspended?
   end
 
   alias destroy? create?

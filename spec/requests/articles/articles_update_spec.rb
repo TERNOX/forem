@@ -25,15 +25,6 @@ RSpec.describe "ArticlesUpdate" do
     expect(article.reload.title).to eq(new_title)
   end
 
-  it "returns an unprocessable status with invalid params" do
-    put "/articles/#{article.id}", params: {
-      article: { title: "", body_markdown: "Hello World" },
-      format: :json
-    }
-
-    expect(response).to have_http_status(:unprocessable_entity)
-  end
-
   it "updates article with front matter params" do
     put "/articles/#{article.id}", params: {
       article: {
@@ -203,16 +194,12 @@ RSpec.describe "ArticlesUpdate" do
 
     # draft => scheduled
     it "sets published_at according to the timezone when updating draft => scheduled" do
-      draft = create(:unpublished_article, user_id: user.id, published_at: nil)
+      draft = create(:article, published: false, user_id: user.id, published_at: nil)
       attributes[:published] = true
       attributes[:timezone] = "America/Mexico_City"
       put "/articles/#{draft.id}", params: { article: attributes }
       draft.reload
-<<<<<<< HEAD
       published_at_utc = draft.published_at.in_time_zone("Kyiv").strftime("%m/%d/%Y %H:%M")
-=======
-      published_at_utc = draft.published_at.in_time_zone("UTC").strftime("%m/%d/%Y %H:%M")
->>>>>>> upstream/main
       draft.published_at.in_time_zone(attributes[:timezone])
       expected_time = "#{(tomorrow + 1.day).strftime('%m/%d/%Y')} 00:00"
       expect(published_at_utc).to eq(expected_time)

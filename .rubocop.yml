@@ -225,7 +225,6 @@ Lint/MissingSuper:
   Enabled: true
   Exclude:
     - 'app/components/**/*.rb'
-    - 'app/policies/**/*.rb'
 
 Lint/MixedRegexpCaptureTypes:
   Description: 'Do not mix named captures and numbered captures in a Regexp literal.'
@@ -940,7 +939,9 @@ RSpec/DescribedClassModuleWrapping:
 
 RSpec/ExampleLength:
   Description: Checks for long examples.
-  Enabled: false
+  Enabled: true
+  Max: 15
+  StyleGuide: https://www.rubydoc.info/gems/rubocop-rspec/RuboCop/Cop/RSpec/ExampleLength
 
 RSpec/IdenticalEqualityAssertion:
   Description: Checks for equality assertions with identical expressions on both sides.
@@ -974,6 +975,3 @@ RSpec/NoExpectationExample:
     - ^expect_
     - ^assert_
     - sidekiq_assert_
-
-RSpec/IndexedLet:
-  Enabled: false

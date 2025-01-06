@@ -8,7 +8,7 @@ fr:
     badge_achievements_controller:
       deleted: La réalisation du badge a été supprimée !
       rewarded: Les badges sont en train d'être récompensés. La tâche sera bientôt terminée.
-      congrats: Félicitations pour votre succès! 🎉 Et merci d'être une partie si essentielle de %{community} !
+      congrats: Félicitations !
       award: Veuillez choisir un badge à décerner
       wrong: Quelque chose a mal fonctionné.
     badges_controller:
@@ -19,16 +19,12 @@ fr:
       deleted: Le Broadcast a été supprimée !
       updated: Le Broadcast a été mise à jour !
       wrong: Quelque chose s'est mal passé avec la suppression du Broadcast.
-    bulk_assign_role_controller:
-      role_assigment: Role %{role} assigned to user.
-      role_blank: Please choose a role to add.
-      success_message: Roles are being added. The task will finish shortly.
     consumer_apps_controller:
       created: '%{app} a été créé !'
       deleted: '%{app} a été supprimé !'
       updated: '%{app} a été mis à jour !'
       wrong: Quelque chose s'est mal passé en supprimant %{app}.
-    billboards_controller:
+    display_ads_controller:
       created: L'annonce publicitaire a été créée !
       deleted: L'annonce a été supprimée !
       updated: L'annonce publicitaire a été mise à jour !
@@ -70,8 +66,6 @@ fr:
       updated: L'utilisateur a été mis à jour avec succès vers %{type}
     organizations_controller:
       credit_updated: Crédits actualisés avec succès
-      deletion_scheduled: 'Organization, "%{organization_name}", deletion is scheduled.'
-      error: 'Your organization, %{organization_name}, could not be deleted: %{error}.'
     pages_controller:
       updated: La page a été mise à jour avec succès.
       created: La page a été créée avec succès.

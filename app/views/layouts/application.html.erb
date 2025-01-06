@@ -18,12 +18,11 @@
       <% end %>
       <meta name="environment" content="<%= Rails.env %>">
       <%= render "layouts/styles", qualifier: "main" %>
-      <%= javascript_include_tag "base", "application", "baseInitializers", "Search", "baseTracking", defer: true %>
-      <% if Settings::UserExperience.show_mobile_app_banner %>
-        <%= javascript_include_tag "runtimeBanner", defer: true %>
-      <% end %>
+      <%= javascript_include_tag "base", defer: true %>
       <% if user_signed_in? %>
-        <%= javascript_include_tag "onboardingRedirectCheck", "contentDisplayPolicy", defer: true %>
+        <%= javascript_packs_with_chunks_tag "base", "baseInitializers", "Search", "runtimeBanner", "onboardingRedirectCheck", "contentDisplayPolicy", "baseTracking", defer: true %>
+      <% else %>
+        <%= javascript_packs_with_chunks_tag "base", "baseInitializers", "Search", "runtimeBanner", "baseTracking", defer: true %>
       <% end %>
       <%= yield(:page_meta) %>
       <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
@@ -44,7 +43,6 @@
       <meta property="forem:logo" content="<%= optimized_image_url(Settings::General.logo_png, width: 512, fetch_format: "png") %>" />
       <meta property="forem:domain" content="<%= Settings::General.app_domain %>" />
     <% end %>
-    <%= Settings::UserExperience.head_content.html_safe %>
   </head>
   <% unless internal_navigation? %>
     <% cache(release_adjusted_cache_key("top-html-and-config--#{user_signed_in?}")) do %>
@@ -57,17 +55,18 @@
         data-deployed-at="<%= j(ForemInstance.deployed_at) %>"
         data-latest-commit-id="<%= j(ForemInstance.latest_commit_id) %>"
         data-ga-tracking="<%= j(Settings::General.ga_tracking_id) %>"
-        data-cookie-banner-user-context="<%= j(Settings::General.cookie_banner_user_context) %>"
-        data-cookie-banner-platform-context="<%= j(Settings::General.coolie_banner_platform_context) %>"
-        data-ga4-tracking-id="<%= j(Settings::General.ga_analytics_4_id) %>">
+        data-ga4-tracking-id="<%= j(Settings::General.ga_analytics_4_id) %>"
+        >
         <%# Repeat of stylesheets in <head> to fix rendering glitch: https://github.com/forem/forem/issues/12377 %>
         <%= render "layouts/styles", qualifier: "secondary" %>
         <div id="body-styles">
           <style>
             :root {
+              --accent-brand-lighter-rgb2: <%= Color::CompareHex.new([Settings::UserExperience.primary_brand_color_hex]).brightness(1.55, only_values: true) %>;
               --accent-brand-lighter-rgb: <%= Color::CompareHex.new([Settings::UserExperience.primary_brand_color_hex]).brightness(1.35, only_values: true) %>;
               --accent-brand-rgb: <%= Color::CompareHex.new([Settings::UserExperience.primary_brand_color_hex]).brightness(1, only_values: true) %>;
-              --accent-brand-darker-rgb: <%= Color::CompareHex.new([Settings::UserExperience.primary_brand_color_hex]).brightness(0.8, only_values: true) %>;
+              --accent-brand-darker-rgb: <%= Color::CompareHex.new([Settings::UserExperience.primary_brand_color_hex]).brightness(0.7, only_values: true) %>;
+              --accent-brand-darker-rgb: <%= Color::CompareHex.new([Settings::UserExperience.primary_brand_color_hex]).brightness(0.5, only_values: true) %>;
             }
           </style>
         </div>
@@ -92,8 +91,7 @@
   <% end %>
   <div id="page-content-inner">
     <div id="page-route-change" class="screen-reader-only" aria-live="polite" aria-atomic="true"></div>
-
-    <% if @hero_html && @hero_billboard.blank? %>
+    <% if @hero_html %>
       <aside id="hero-html-wrapper" aria-label="Campaign banner" class="overflow-x-hidden" data-name="<%= @hero_area.name %>">
         <script>
           // Make sure html variant element has id hero-html-wrapper and data-name as its name
@@ -112,11 +110,8 @@
   <% cache("footer-and-signup-modal-#{user_signed_in?}-#{ForemInstance.deployed_at}-#{Settings::General.admin_action_taken_at&.rfc3339}", expires_in: 24.hours) do %>
     <%= render "layouts/footer" %>
     <%= render "layouts/signup_modal" unless user_signed_in? %>
-    <div id="cookie-consent"></div>
   <% end %>
   <div id="i18n-translations" data-translations="<%= { I18n.locale.to_sym => { core: I18n::JS.translations[I18n.locale.to_sym][:core] } }.to_json %>"></div>
-  <%= render "articles/reaction_category_resources" %>
-  <%= Settings::UserExperience.bottom_of_body_content.html_safe %>
   </body>
   </html>
 <% end %>

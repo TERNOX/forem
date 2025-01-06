@@ -17,19 +17,11 @@ describe('Adjust post tags', () => {
 
       cy.getIframeBody('.actions-panel-iframe').within(() => {
         cy.findByRole('button', { name: 'Open adjust tags section' }).click();
-        cy.findByTestId('add-tag-button').click();
         cy.findByPlaceholderText('Add a tag').type('tag2');
-<<<<<<< HEAD
         cy.findByPlaceholderText('Reason for tag adjustment (optional)').type(
           'testing',
         );
         cy.findByRole('button', { name: 'Submit' }).click();
-=======
-        cy.findByPlaceholderText('Reason to add tag (optional)').type(
-          'testing',
-        );
-        cy.findByRole('button', { name: 'Add tag' }).click();
->>>>>>> upstream/main
       });
 
       cy.getIframeBody('.article-iframe').within(() => {
@@ -45,23 +37,13 @@ describe('Adjust post tags', () => {
       });
 
       cy.getIframeBody('.actions-panel-iframe').within(() => {
-<<<<<<< HEAD
         cy.findByRole('button', { name: 'Open adjust tags section' }).click();
         cy.findByPlaceholderText('Reason for tag adjustment (optional)').type(
           'testing',
         );
         cy.findByRole('button', { name: '#tag1 Remove tag' }).click();
-=======
-        cy.findByRole('button', { name: 'Open adjust tags section' }).click({
-          force: true,
-        });
-        cy.findByText('tag1').click();
-        cy.findByPlaceholderText('Reason to remove tag (optional)').type(
-          'testing',
-        );
->>>>>>> upstream/main
 
-        cy.findByRole('button', { name: 'Remove tag' }).click();
+        cy.findByRole('button', { name: 'Submit' }).click();
       });
 
       cy.getIframeBody('.article-iframe').within(() => {
@@ -69,79 +51,6 @@ describe('Adjust post tags', () => {
         cy.findByRole('link', { name: /# tag1/ }).should('not.exist');
       });
     });
-<<<<<<< HEAD
-=======
-
-    // Helper function for pipe command
-    const click = ($el) => $el.click();
-
-    // Disabling for now as the flake rate from timeouts and missed elements is affecting
-    // the pace of reviewing and merging other work.
-    it.skip('should show previous tag adjustments', () => {
-      cy.intercept('/tag_adjustments').as('tagAdjustmentRequest');
-      cy.findByRole('heading', { name: 'Tag test article' }).click();
-      // cy.findByRole('main').as('main');
-
-      cy.getIframeBody('.actions-panel-iframe').within(() => {
-        // Click listeners are attached async so we use pipe() to retry click until condition met
-        cy.findByRole('button', {
-          name: 'Open adjust tags section',
-        })
-          .pipe(click)
-          .should('have.attr', 'aria-expanded', 'true');
-
-        cy.findByTestId('add-tag-button').click();
-        cy.findByPlaceholderText('Add a tag').type('tag2');
-        cy.findByPlaceholderText('Reason to add tag (optional)').type(
-          'testing',
-        );
-        cy.findByRole('button', { name: 'Add tag' }).click();
-      });
-
-      cy.wait('@tagAdjustmentRequest');
-
-      cy.getIframeBody('.actions-panel-iframe').within(() => {
-        cy.findByRole('button', {
-          name: 'Open adjust tags section',
-        })
-          .pipe(click)
-          .should('have.attr', 'aria-expanded', 'true');
-
-        cy.findByText('tag1').click();
-        cy.get('#tag-removal-reason-tag1').type('testing');
-
-        cy.findByRole('button', { name: 'Remove tag' }).click();
-      });
-
-      cy.wait('@tagAdjustmentRequest');
-      // these reloads 'make the test work for now' but inconsistently,
-      // which may be contributing to flaky timeouts and missed/uninteractive elements as cy runs
-      cy.reload();
-      cy.findByRole('heading', { name: 'Tag test article' }).click();
-
-      cy.getIframeBody('.actions-panel-iframe').within(() => {
-        cy.findByRole('button', {
-          name: 'Open adjust tags section',
-        })
-          .pipe(click)
-          .should('have.attr', 'aria-expanded', 'true');
-
-        cy.findByRole('heading', {
-          name: 'Previous tag adjustments',
-        }).scrollIntoView();
-        cy.get('#tag-moderation-history')
-          .find('.tag-adjustment')
-          .should(($div) => {
-            expect($div[0].innerText).to.contain(
-              '# tag1 removed by Admin McAdmin\ntesting',
-            );
-            expect($div[1].innerText).to.contain(
-              '# tag2 added by Admin McAdmin\ntesting',
-            );
-          });
-      });
-    });
->>>>>>> upstream/main
   });
 
   describe('from /mod/tagname page', () => {
@@ -162,19 +71,11 @@ describe('Adjust post tags', () => {
 
       cy.getIframeBody('.actions-panel-iframe').within(() => {
         cy.findByRole('button', { name: 'Open adjust tags section' }).click();
-        cy.findByTestId('add-tag-button').click();
         cy.findByPlaceholderText('Add a tag').type('tag2');
-<<<<<<< HEAD
         cy.findByPlaceholderText('Reason for tag adjustment (optional)').type(
           'testing',
         );
         cy.findByRole('button', { name: 'Submit' }).click();
-=======
-        cy.findByPlaceholderText('Reason to add tag (optional)').type(
-          'testing',
-        );
-        cy.findByRole('button', { name: 'Add tag' }).click();
->>>>>>> upstream/main
       });
 
       cy.getIframeBody('.article-iframe').within(() => {
@@ -190,97 +91,18 @@ describe('Adjust post tags', () => {
       });
 
       cy.getIframeBody('.actions-panel-iframe').within(() => {
-<<<<<<< HEAD
         cy.findByRole('button', { name: 'Open adjust tags section' }).click();
         cy.findByPlaceholderText('Reason for tag adjustment (optional)').type(
           'testing',
         );
         cy.findByRole('button', { name: '#tag1 Remove tag' }).click();
-=======
-        cy.findByRole('button', { name: 'Open adjust tags section' }).click({
-          force: true,
-        });
->>>>>>> upstream/main
 
-        cy.findByText('tag1').click();
-        cy.findByPlaceholderText('Reason to remove tag (optional)').type(
-          'testing',
-        );
-
-        cy.findByRole('button', { name: 'Remove tag' }).click();
+        cy.findByRole('button', { name: 'Submit' }).click();
       });
 
       cy.getIframeBody('.article-iframe').within(() => {
         cy.findByText('The #tag1 tag was removed.');
         cy.findByRole('link', { name: /# tag1/ }).should('not.exist');
-      });
-    });
-
-    // Helper function for pipe command
-    const click = ($el) => $el.click();
-
-    // Disabling these for now as the flake rate from timeouts and missed elements is affecting
-    // the pace of reviewing and merging other work.
-    it.skip('should show previous tag adjustments', () => {
-      cy.intercept('/tag_adjustments').as('tagAdjustmentRequest');
-      cy.findByRole('heading', { name: 'Tag test article' }).click();
-      // cy.findByRole('main').as('main');
-
-      cy.getIframeBody('.actions-panel-iframe').within(() => {
-        // Click listeners are attached async so we use pipe() to retry click until condition met
-        cy.findByRole('button', {
-          name: 'Open adjust tags section',
-        })
-          .pipe(click)
-          .should('have.attr', 'aria-expanded', 'true');
-
-        cy.findByTestId('add-tag-button').click();
-        cy.findByPlaceholderText('Add a tag').type('tag2');
-        cy.findByPlaceholderText('Reason to add tag (optional)').type(
-          'testing',
-        );
-        cy.findByRole('button', { name: 'Add tag' }).click();
-      });
-
-      cy.wait('@tagAdjustmentRequest');
-
-      cy.getIframeBody('.actions-panel-iframe').within(() => {
-        cy.findByRole('button', {
-          name: 'Open adjust tags section',
-        })
-          .pipe(click)
-          .should('have.attr', 'aria-expanded', 'true');
-
-        cy.findByText('tag1').click();
-        cy.get('#tag-removal-reason-tag1').type('testing');
-
-        cy.findByRole('button', { name: 'Remove tag' }).click();
-      });
-
-      cy.wait('@tagAdjustmentRequest');
-      cy.visit('/mod/tag2');
-      cy.findByRole('heading', { name: 'Tag test article' }).click();
-
-      cy.getIframeBody('.actions-panel-iframe').within(() => {
-        cy.findByRole('button', {
-          name: 'Open adjust tags section',
-        })
-          .pipe(click)
-          .should('have.attr', 'aria-expanded', 'true');
-
-        cy.findByRole('heading', {
-          name: 'Previous tag adjustments',
-        }).scrollIntoView();
-        cy.get('#tag-moderation-history')
-          .find('.tag-adjustment')
-          .should(($div) => {
-            expect($div[0].innerText).to.contain(
-              '# tag1 removed by Admin McAdmin\ntesting',
-            );
-            expect($div[1].innerText).to.contain(
-              '# tag2 added by Admin McAdmin\ntesting',
-            );
-          });
       });
     });
   });
@@ -313,19 +135,11 @@ describe('Adjust post tags', () => {
           .pipe(click)
           .should('have.attr', 'aria-expanded', 'true');
 
-        cy.findByTestId('add-tag-button').click();
         cy.findByPlaceholderText('Add a tag').type('tag2');
-<<<<<<< HEAD
         cy.findByPlaceholderText('Reason for tag adjustment (optional)').type(
           'testing',
         );
         cy.findByRole('button', { name: 'Submit' }).click();
-=======
-        cy.findByPlaceholderText('Reason to add tag (optional)').type(
-          'testing',
-        );
-        cy.findByRole('button', { name: 'Add tag' }).click();
->>>>>>> upstream/main
       });
 
       cy.get('@main').within(() => {
@@ -348,94 +162,16 @@ describe('Adjust post tags', () => {
           .pipe(click)
           .should('have.attr', 'aria-expanded', 'true');
 
-<<<<<<< HEAD
         cy.findByPlaceholderText('Reason for tag adjustment (optional)').type(
           'testing',
         );
         cy.findByRole('button', { name: '#tag1 Remove tag' }).click();
-=======
-        cy.findByText('tag1').click();
-        cy.findByPlaceholderText('Reason to remove tag (optional)').type(
-          'testing',
-        );
->>>>>>> upstream/main
 
-        cy.findByRole('button', { name: 'Remove tag' }).click();
+        cy.findByRole('button', { name: 'Submit' }).click();
       });
 
       cy.get('@main').within(() => {
         cy.findByRole('link', { name: /# tag1/ }).should('not.exist');
-      });
-    });
-
-    // Disabling these for now as the flake rate from timeouts and missed elements is affecting
-    // the pace of reviewing and merging other work.
-    it.skip('should show previous tag adjustments', () => {
-      cy.intercept('/tag_adjustments').as('tagAdjustmentRequest');
-      cy.findByRole('heading', { name: 'Tag test article' });
-
-      cy.findByRole('button', { name: 'Moderation' }).click();
-      cy.getIframeBody('#mod-container').within(() => {
-        // Click listeners are attached async so we use pipe() to retry click until condition met
-        cy.findByRole('button', {
-          name: 'Open adjust tags section',
-        })
-          .pipe(click)
-          .should('have.attr', 'aria-expanded', 'true');
-
-        cy.findByTestId('add-tag-button').click();
-        cy.findByPlaceholderText('Add a tag').type('tag2');
-        cy.findByPlaceholderText('Reason to add tag (optional)').type(
-          'testing',
-        );
-        cy.findByRole('button', { name: 'Add tag' }).click();
-      });
-
-      cy.wait('@tagAdjustmentRequest');
-      //  Manually reloading here to clear up async race conditions in cypress as the page is reloaded.
-      // Currently, we manually reload the page as an adjustment occurs, which seems to cause
-      // indeterminate waits for the javascript to be present on the reloaded page,
-      // so some elements end up existing but not interactive on click.
-      cy.reload();
-
-      cy.findByRole('button', { name: 'Moderation' }).click();
-      cy.getIframeBody('#mod-container').within(() => {
-        cy.findByRole('button', {
-          name: 'Open adjust tags section',
-        })
-          .pipe(click)
-          .should('have.attr', 'aria-expanded', 'true');
-
-        cy.findByText('tag1').click();
-        cy.get('#tag-removal-reason-tag1').type('testing');
-
-        cy.findByRole('button', { name: 'Remove tag' }).click();
-      });
-
-      cy.wait('@tagAdjustmentRequest');
-      cy.reload();
-
-      cy.findByRole('button', { name: 'Moderation' }).click();
-      cy.getIframeBody('#mod-container').within(() => {
-        cy.findByRole('button', {
-          name: 'Open adjust tags section',
-        })
-          .pipe(click)
-          .should('have.attr', 'aria-expanded', 'true');
-
-        cy.findByRole('heading', {
-          name: 'Previous tag adjustments',
-        }).scrollIntoView();
-        cy.get('#tag-moderation-history')
-          .find('.tag-adjustment')
-          .should(($div) => {
-            expect($div[0].innerText).to.contain(
-              '# tag1 removed by Admin McAdmin\ntesting',
-            );
-            expect($div[1].innerText).to.contain(
-              '# tag2 added by Admin McAdmin\ntesting',
-            );
-          });
       });
     });
   });

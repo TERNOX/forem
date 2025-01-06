@@ -385,6 +385,7 @@ export const AutocompleteTriggerTextArea = forwardRef(
           {...inputProps}
           {...comboboxProps}
           id={id}
+          data-gramm_editor="false"
           ref={mergeInputRefs([inputRef, forwardedRef])}
           onChange={(e) => {
             onChange?.(e);

@@ -43,7 +43,6 @@ export function useDragAndDrop({ onDragOver, onDragExit, onDrop }) {
     element.addEventListener('dragover', onDragOver);
     element.addEventListener('dragexit', onDragExit);
     element.addEventListener('dragleave', onDragExit);
-    element.addEventListener('dragend', onDragExit);
     element.addEventListener('drop', onDrop);
 
     return () => {
@@ -53,7 +52,6 @@ export function useDragAndDrop({ onDragOver, onDragExit, onDrop }) {
       element.removeEventListener('dragover', onDragOver);
       element.removeEventListener('dragexit', onDragExit);
       element.removeEventListener('dragleave', onDragExit);
-      element.removeEventListener('dragend', onDragExit);
       element.removeEventListener('drop', onDrop);
     };
   }, [element, onDragOver, onDragExit, onDrop]);

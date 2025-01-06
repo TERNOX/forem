@@ -165,9 +165,9 @@
       color: var(--base-100);
 
       @media (min-width: $breakpoint-s) {
-        background: var(--link-bg-current);
+        background: var(--base-inverted);
         &:hover {
-          background: var(--link-bg-current);
+          background: var(--base-inverted);
         }
       }
     }

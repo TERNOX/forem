@@ -27,6 +27,7 @@ RSpec.describe Settings::SMTP do
                                              })
     end
 
+    # rubocop:disable RSpec/ExampleLength
     it "uses Settings::SMTP config if address is provided" do
       from_email_address = "hello@forem.com"
       reply_to_email_address = "reply@forem.com"

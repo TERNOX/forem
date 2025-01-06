@@ -1,14 +1,9 @@
-import { verifyAndDismissFlashMessage } from '../shared/utilities';
+import { verifyAndDismissUserUpdatedMessage } from './userAdminUtilitites';
 
 function openUserOptions(callback) {
-  cy.findByRole('button', { name: 'Options' }).as('options');
-  cy.get('@options').should('have.attr', 'aria-haspopup', 'true');
-  cy.get('@options').should('have.attr', 'aria-expanded', 'false');
-  // Can't find a better way to get to the aria-controls attribute at the moment
-  // Might be possible if we use pipe(click) with the helper method used in AdjustPostTags spec,
-  // instead of the .then syntax... but skipping the linter may be safest of all.
-  /* eslint-disable-next-line cypress/unsafe-to-chain-command */
-  cy.get('@options')
+  cy.findByRole('button', { name: 'Options' })
+    .should('have.attr', 'aria-haspopup', 'true')
+    .should('have.attr', 'aria-expanded', 'false')
     .click()
     .then(([button]) => {
       expect(button.getAttribute('aria-expanded')).to.equal('true');
@@ -37,9 +32,8 @@ describe('Manage User Options', () => {
         cy.findByRole('button', { name: 'Export to Admin' }).click();
       });
 
-      verifyAndDismissFlashMessage(
+      verifyAndDismissUserUpdatedMessage(
         'Data exported to the admin. The job will complete momentarily.',
-        'flash-success',
       );
     });
 
@@ -52,9 +46,8 @@ describe('Manage User Options', () => {
         cy.findByRole('button', { name: 'Export to User' }).click();
       });
 
-      verifyAndDismissFlashMessage(
+      verifyAndDismissUserUpdatedMessage(
         'Data exported to the user. The job will complete momentarily.',
-        'flash-success',
       );
     });
 
@@ -78,9 +71,8 @@ describe('Manage User Options', () => {
         cy.findByRole('button', { name: 'Banish Trusted User 1 \\:/' }).click();
       });
 
-      verifyAndDismissFlashMessage(
+      verifyAndDismissUserUpdatedMessage(
         'This user is being banished in the background. The job will complete soon.',
-        'flash-success',
       );
     });
 
@@ -95,9 +87,8 @@ describe('Manage User Options', () => {
         }).click();
       });
 
-      verifyAndDismissFlashMessage(
+      verifyAndDismissUserUpdatedMessage(
         '@trusted_user_1 (email: trusted-user-1@forem.local, user_id: 2) has been fully deleted. If this is a GDPR delete, delete them from Mailchimp & Google Analytics and confirm on the page.',
-        'flash-success',
       );
     });
 

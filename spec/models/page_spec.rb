@@ -32,12 +32,11 @@ RSpec.describe Page do
   end
 
   describe "#validations" do
-    it "requires either body_markdown, body_html, body_json or body_css" do
+    it "requires either body_markdown, body_html, or body_json" do
       page = build(:page)
       page.body_html = nil
       page.body_markdown = nil
       page.body_json = nil
-      page.body_css = nil
       expect(page).not_to be_valid
     end
 
@@ -66,22 +65,6 @@ RSpec.describe Page do
       page = build(:page, slug: "sitemap-hey")
       expect(page).not_to be_valid
       expect(page.errors[:slug].to_s.include?("taken")).to be true
-    end
-
-    it "circumnavigates ReservedWords check" do
-      page = build(:page, slug: "code-of-conduct")
-      expect(page).to be_valid
-    end
-
-    it "allows / in slug" do
-      page = build(:page, slug: "heyhey/hey")
-      expect(page).to be_valid
-    end
-
-    it "disallows 6+ directories via /" do
-      page = build(:page, slug: "heyhey/hey/hey/hey/hey/hey/hey")
-      expect(page).not_to be_valid
-      expect(page.errors[:slug].to_s.include?("subdirectories")).to be true
     end
   end
 

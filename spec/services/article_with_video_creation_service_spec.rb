@@ -8,7 +8,7 @@ RSpec.describe ArticleWithVideoCreationService, type: :service do
   end
 
   describe "#create!" do
-    it "creates a correct article" do
+    it "works" do
       Timecop.travel(3.weeks.ago)
       user = create(:user)
       user.setting.update(editor_version: "v1")

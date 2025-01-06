@@ -58,11 +58,7 @@ module Articles
           user: @user,
           days_since_published: config.max_days_since_published,
         )
-        @query_parameters = {
-          oldest_published_at: oldest_published_at,
-          conditional_lookback: oldest_published_at - 12.hours,
-          conditional_comment_timeframe: 6.hours.ago
-        }
+        @query_parameters = { oldest_published_at: oldest_published_at }
         configure!
       end
 
@@ -90,7 +86,7 @@ module Articles
       #    puts strategy.call.to_sql
       #
       # rubocop:disable Layout/LineLength
-      def call(only_featured: false, must_have_main_image: false, limit: default_limit, offset: default_offset, omit_article_ids: [], comments_variant: default_comments_variant)
+      def call(only_featured: false, must_have_main_image: false, limit: default_limit, offset: default_offset, omit_article_ids: [])
         # rubocop:enable Layout/LineLength
 
         # These are the variables we'll pass to the SQL statement.
@@ -134,31 +130,11 @@ module Articles
         # This sub-query allows us to take the hard work of the hand-coded unsanitized sql and
         # create a sub-query that we can use to help ensure that we can use all of the ActiveRecord
         # goodness of scopes (e.g., limited_column_select) and eager includes.
-        scope = Article.joins(join_fragment)
+        Article.joins(join_fragment)
           .limited_column_select
+          .includes(top_comments: :user)
           .includes(:distinct_reaction_categories)
           .order(config.order_by.to_sql)
-
-        scope = case comments_variant
-                when "top_comments"
-                  scope.includes(top_comments: :user)
-                when "more_inclusive_top_comments"
-                  scope.includes(more_inclusive_top_comments: :user)
-                when "recent_good_comments"
-                  scope.includes(recent_good_comments: :user)
-                when "more_inclusive_recent_good_comments"
-                  scope.includes(more_inclusive_recent_good_comments: :user)
-                when "most_inclusive_recent_good_comments"
-                  scope.includes(most_inclusive_recent_good_comments: :user)
-                else
-                  scope.includes(top_comments: :user) # fallback default
-                end
-
-        if @user.present? && (hidden_tags = @user.cached_antifollowed_tag_names).any?
-          scope = scope.not_cached_tagged_with_any(hidden_tags)
-        end
-
-        scope
       end
 
       alias more_comments_minimal_weight_randomized call
@@ -279,13 +255,14 @@ module Articles
       end
 
       def build_sql_with_where_clauses(only_featured:, must_have_main_image:, omit_article_ids:)
-        # Hardcode the values for lookback_hours and comment_hours.
-        where_clauses = "articles.published = true"
+        where_clauses = "articles.published = true AND articles.published_at > :oldest_published_at"
+        # See Articles.published scope discussion regarding the query planner
         where_clauses += " AND articles.published_at < :now"
-        where_clauses += " AND articles.score >= 0"
-        where_clauses += " AND ((articles.published_at > :oldest_published_at)
-          OR (articles.published_at > :conditional_lookback
-          AND articles.last_comment_at > :conditional_comment_timeframe))"
+        where_clauses += " AND articles.score >= 0" # We only want positive values here.
+
+        # Without the compact, if we have `omit_article_ids: [nil]` we
+        # have the following SQL clause: `articles.id NOT IN (NULL)`
+        # which will immediately omit EVERYTHING from the query.
         where_clauses += " AND articles.id NOT IN (:omit_article_ids)" unless omit_article_ids.compact.empty?
         where_clauses += " AND articles.featured = true" if only_featured
         where_clauses += " AND articles.main_image IS NOT NULL" if must_have_main_image
@@ -315,13 +292,9 @@ module Articles
       end
 
       def default_offset
-        return 0 if @page.zero?
+        return 0 if @page == 1
 
-        (@page.to_i - 1) * default_limit
-      end
-
-      def default_comments_variant
-        "top_comments"
+        @page.to_i - (1 * default_limit)
       end
 
       # We want to ensure that we're not randomizing someone's feed all the time; and instead aiming

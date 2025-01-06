@@ -5,10 +5,6 @@ require "rails_helper"
 RSpec.describe HairTrigger do
   describe ".migrations_current?" do
     it "is always true" do
-<<<<<<< HEAD
-=======
-      skip "This test is failing on CI, but not locally. Skipping for now."
->>>>>>> upstream/main
       # work-around empty AR::Base descendants array caused by with_model cleanup
       # HairTrigger uses AR::Base to get database triggers (and compare against the schema)
       if ActiveRecord::Base.descendants.blank?

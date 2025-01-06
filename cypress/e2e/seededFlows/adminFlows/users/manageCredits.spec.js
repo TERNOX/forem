@@ -1,4 +1,4 @@
-import { verifyAndDismissFlashMessage } from '../shared/utilities';
+import { verifyAndDismissUserUpdatedMessage } from './userAdminUtilitites';
 
 // More on roles, https://admin.forem.com/docs/forem-basics/user-roles
 function openCreditsModal() {
@@ -34,7 +34,7 @@ describe('Manage User Credits', () => {
       });
 
       cy.getModal().should('not.exist');
-      verifyAndDismissFlashMessage('Credits have been added!', 'flash-success');
+      verifyAndDismissUserUpdatedMessage('Credits have been added!');
       cy.findByTestId('user-credits').should('have.text', '210');
     });
 
@@ -53,10 +53,7 @@ describe('Manage User Credits', () => {
       });
 
       cy.getModal().should('not.exist');
-      verifyAndDismissFlashMessage(
-        'Credits have been removed.',
-        'flash-success',
-      );
+      verifyAndDismissUserUpdatedMessage('Credits have been removed.');
       cy.findByTestId('user-credits').should('have.text', '89');
     });
 

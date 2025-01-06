@@ -99,7 +99,7 @@ RSpec.describe "Sitemaps" do
     context "with tags in param" do
       before do
         create_list(:tag, 8)
-        Tag.find_each do |tag|
+        Tag.all.each do |tag|
           tag.update_column(:hotness_score, rand(100_000))
         end
       end
@@ -133,7 +133,7 @@ RSpec.describe "Sitemaps" do
     context "with users in param" do
       before do
         create_list(:user, 8)
-        User.find_each do |user|
+        User.all.each do |user|
           user.update_column(:comments_count, rand(100_000))
         end
       end

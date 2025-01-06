@@ -19,25 +19,9 @@ fr:
           icon: Ajuster les étiquettes
           add: Ajouter une étiquette
           add_placeholder: Ajouter une étiquette
-          previous: Ajustements des étiquettes précédents
-          history:
-            added_by: ajouté par
-            removed_by: supprimé par
-          reason:
-            remove_tag: Raison de supprimer la balise
-            add_tag: Raison d'ajouter la balise (optionnel)
+          reason: Raison de l'ajustement de l'étiquette (optionnel)
           remove: Retirer l'étiquette
           submit: Soumettre
-          cancel: Annuler
-          maximum_tags:
-            icon: Info
-            text: Une publication ne peut avoir que quatre balises.
-          add_tag:
-            header: Ajouter une nouvelle balise
-            button_text: Ajouter une nouvelle balise
-            icon: Ajouter une étiquette
-        cannot_add_admin_adjusted_tag_html: La balise aurait ajoutée par l'Admin. Vous pouvez pas la supprimer maintenant. Si vous pensez que c'est une erreur, veuillez nous contacter à %{support_email}.
-        cannot_remove_admin_adjusted_tag_html: La balise aurait supprimée par l'Admin. Vous pouvez pas l'ajouter maintenant. Si vous pensez que c'est une erreur, veuillez nous contacter à %{support_email}.
         approve:
           add: Marquer comme approuvé
           remove: Retirer l'approbation
@@ -75,8 +59,8 @@ fr:
           subtitle: Actions de modération pour %{user}
           aria_label: Ouvrir les actions d'administration
           icon: Couronne
-        flag_user: Signaler %{username}
-        unflag_user: Retirer le signalement de %{username}
+        flag: Signaler %{username}
+        unflag: Retirer le signalement de %{username}
         how: Comment cela fonctionne-t-il ?
         hidden:
           subtitle: Commentaires cachés
@@ -90,7 +74,6 @@ fr:
             <br />
             Utilisez <b>Signaler aux admins</b> pour les violations du code de conduite (harcèlement, être un abruti, spam, etc.).
         other: Autres choses que vous pouvez faire
-        score: Score
         suspend:
           suspend_title: Suspendre %{username}
           suspend_user: Suspendre %{username}
@@ -100,7 +83,7 @@ fr:
           unsuspend_user: Retirer la suspension %{username}
           unsuspend_modal_text: Une fois la suspension levée, %{username} pourra à nouveau commenter et publier des messages.
           unsuspend_modal_button: Soumettre et lever la suspension
-        flag: Signaler
+        suspicious: Suspicieux
         tag:
           subtitle: Ajustements des étiquettes
           add: Ajouter
@@ -133,39 +116,13 @@ fr:
         unpublish_post:
           modal_text1: Une fois dépublié, cet article sera invisible pour le public et accessible uniquement à %{username}.
           modal_text2: Ils peuvent toujours republier l'article tant qu'ils ne sont pas suspendus.
-        vomit: Drapeaux valides et ouverts
         vote_down: Faible qualité
         flag_to_admins: Signaler aux admins
         vote_up: Haute qualité
         featured_past_day:
           one: '%{count} des articles de la journée précédente sont mis en avant.'
           other: '%{count} des articles de la journée précédente sont mis en avant.'
-      feed:
-        inbox_filter: Inbox
-        latest_filter: Récent
-        inbox_html: <strong>Inbox</strong> est une liste chronologique des publications qui n'ont pas encore été examinées par plusieurs modérateurs ou membres.
-        latest_html: <strong>Récent</strong> montre tous les posts dans l'ordre chronologique, indépendamment de s'ils ont été examinés ou non.
-      article:
-        approved: Approuvée
-        author_id: Identifiant de l'auteur
-        comments: commentaires
-        contains_video: Contient une vidéo
-        co_author_ids: ID de co-auteur
-        edit: Modifier
-        featured: Mis en exergue
-        likes: aime
-        notes:
-          user_notes: notes d'utilisateur
-          view_all: Voir tout
-        pinned: Épinglé
-        pin_post: Épingler la publication
-        published_at: Publié à
-        save: Sauvegarder
-        unpin_post: Détacher la publication
-        unplublished: Inédit
-        user: Utilisateur
-        user_warned: Utilisateur averti
-        view_details: Voir les détails
+      all: Tous les sujets
       aside:
         all: Tous les sujets
         code_of_conduct: Code de conduite
@@ -181,9 +138,6 @@ fr:
         terms_and_conditions: Conditions générales d'utilisation
         trusted: Guide de l'utilisateur de confiance
       author: Auteur
-      comments:
-        view_comment: Voir le commentaire
-        view_details: Voir les détails
       date: Date
       notice:
         subtitle: '%{community} Mods'
@@ -195,15 +149,3 @@ fr:
         tag: Guide de modération des étiquettes
         trusted: Guide de l'utilisateur de confiance
       post: Article
-      priviliged_actions:
-        description: Toutes les actions du modérateur affectent le score. Le score global est une combinaison des actions des modérateurs et des réactions du public.
-        no_flags: L'article n'a pas de drapeaux.
-        no_quality_reactions: L'article n'a pas de réactions de qualité par des utilisateurs de confiance
-        title: Actions privilégiées
-      members:
-        all: Tous les membres
-        new: Nouveaux membres
-        established: Membres établis
-        filter: Filtrer par membres
-        label: 'Membres'
-

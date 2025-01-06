@@ -16,8 +16,7 @@ describe('<Onboarding />', () => {
         communityConfig={{
           communityName: 'Community Name',
           communityLogo: '/x.png',
-          communityBackgroundColor: '#e6d800',
-          communityBackgroundColor2: '#999000',
+          communityBackground: '/y.jpg',
           communityDescription: 'Some community description',
         }}
       />,
@@ -37,29 +36,6 @@ describe('<Onboarding />', () => {
     document.body.setAttribute('data-user', getUserData());
     const csrfToken = 'this-is-a-csrf-token';
     global.getCsrfToken = async () => csrfToken;
-
-    // Mock localStorage
-    const localStorageMock = (function () {
-      let store = {};
-      return {
-        getItem(key) {
-          return store[key] || null;
-        },
-        setItem(key, value) {
-          store[key] = value.toString();
-        },
-        removeItem(key) {
-          delete store[key];
-        },
-        clear() {
-          store = {};
-        },
-      };
-    })();
-
-    Object.defineProperty(window, 'localStorage', {
-      value: localStorageMock,
-    });
   });
 
   it('should have no a11y violations', async () => {
@@ -68,48 +44,23 @@ describe('<Onboarding />', () => {
     expect(results).toHaveNoViolations();
   });
 
-  it('should record billboard conversion correctly', async () => {
-    const fakeBillboardData = {
-      billboard_event: { someData: 'test', category: 'signup' },
-    };
-    window.localStorage.setItem(
-      'last_interacted_billboard',
-      JSON.stringify(fakeBillboardData),
-    );
-
-    fetch.mockResponseOnce(() => Promise.resolve(JSON.stringify({}))); // Mock for the billboard event
-    fetch.mockResponseOnce(() => Promise.resolve(JSON.stringify({}))); // Mock for any subsequent fetch calls, if necessary
-
-    renderOnboarding();
-
-    await waitFor(() => {
-      expect(fetch).toHaveBeenCalledWith(
-        '/billboard_events',
-        expect.objectContaining({
-          method: 'POST',
-          headers: expect.objectContaining({
-            'Content-Type': 'application/json',
-            'X-CSRF-Token': expect.any(String),
-          }),
-          body: JSON.stringify(fakeBillboardData),
-        }),
-      );
-    });
-
-    // Cleanup
-    window.localStorage.clear();
-    fetch.resetMocks();
-  });
-
-  it('should render the ProfileForm first', () => {
+  it('should render the IntroSlide first', () => {
     const { queryByTestId } = renderOnboarding();
 
-    expect(queryByTestId('onboarding-profile-form')).toExist();
+    expect(queryByTestId('onboarding-intro-slide')).toBeDefined();
   });
 
   it('should allow the modal to move forward and backward a step where relevant', async () => {
     // combined back and forward into one test to avoid a long test running time
     const { getByTestId, findByText, findByTestId } = renderOnboarding();
+
+    getByTestId('onboarding-intro-slide');
+
+    fetch.mockResponseOnce({});
+    const codeOfConductCheckbox = getByTestId('checked-code-of-conduct');
+    codeOfConductCheckbox.click();
+    const termsCheckbox = getByTestId('checked-terms-and-conditions');
+    termsCheckbox.click();
 
     // click to next step
     const nextButton = await findByText(/continue/i);
@@ -126,14 +77,22 @@ describe('<Onboarding />', () => {
     const backButton = getByTestId('back-button');
     backButton.click();
 
-    // we should be on the Profile Form Slide step
-    const introSlide = await findByTestId('onboarding-profile-form');
+    // we should be on the Intro Slide step
+    const introSlide = await findByTestId('onboarding-intro-slide');
 
-    expect(introSlide).toExist();
+    expect(introSlide).toBeDefined();
   });
 
   it("should skip the step when 'Skip for now' is clicked", async () => {
-    const { getByText, findByText, findByTestId } = renderOnboarding();
+    const { getByTestId, getByText, findByText, findByTestId } =
+      renderOnboarding();
+    getByTestId('onboarding-intro-slide');
+
+    fetch.mockResponseOnce({});
+    const codeOfConductCheckbox = getByTestId('checked-code-of-conduct');
+    codeOfConductCheckbox.click();
+    const termsCheckbox = getByTestId('checked-terms-and-conditions');
+    termsCheckbox.click();
 
     // click to next step
     const nextButton = await findByText(/continue/i);
@@ -145,26 +104,31 @@ describe('<Onboarding />', () => {
     // we should be on the Follow tags step
     const followTagsStep = await findByTestId('onboarding-follow-tags');
 
-    expect(followTagsStep).toExist();
+    expect(followTagsStep).toBeDefined();
 
     // click on skip for now
     const skipButton = getByText(/Skip for now/i);
     skipButton.click();
 
     // we should be on the Profile Form step
-    const profileStep = await findByTestId('onboarding-follow-users');
+    const profileStep = await findByTestId('onboarding-profile-form');
 
-    expect(profileStep).toExist();
+    expect(profileStep).toBeDefined();
   });
 
   it('should redirect the users to the correct steps every time', async () => {
     const { getByTestId, getByText, findByText, findByTestId } =
       renderOnboarding();
+    getByTestId('onboarding-intro-slide');
 
-    getByTestId('onboarding-profile-form');
+    fetch.mockResponseOnce({});
+    const codeOfConductCheckbox = getByTestId('checked-code-of-conduct');
+    codeOfConductCheckbox.click();
+    const termsCheckbox = getByTestId('checked-terms-and-conditions');
+    termsCheckbox.click();
 
     // click to next step
-    const nextButton = await findByText(/continue/i);
+    let nextButton = await findByText(/continue/i);
     await waitFor(() => expect(nextButton).not.toHaveAttribute('disabled'));
 
     fetch.mockResponse(fakeEmptyResponse);
@@ -176,6 +140,14 @@ describe('<Onboarding />', () => {
     // click on skip for now
     let skipButton = getByText(/Skip for now/i);
     skipButton.click();
+
+    // we should be on the Profile Form step
+    await findByTestId('onboarding-profile-form');
+
+    // click on continue without adjusting form fields
+    nextButton = getByText(/Continue/i);
+    fetch.mockResponse(fakeEmptyResponse);
+    nextButton.click();
 
     // we should be on the Follow Users step
     await findByTestId('onboarding-follow-users');

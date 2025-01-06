@@ -1,5 +1,6 @@
 class TagAdjustment < ApplicationRecord
-  validates :tag_name, presence: true
+  validates :tag_name, presence: true,
+                       uniqueness: { scope: :article_id, message: I18n.t("models.tag_adjustment.unique") }
   validates :adjustment_type, inclusion: { in: %w[removal addition] }, presence: true
   validates :status, inclusion: { in: %w[committed pending committed_and_resolvable resolved] }, presence: true
   has_many :notifications, as: :notifiable, inverse_of: :notifiable, dependent: :delete_all

@@ -15,11 +15,7 @@ RSpec.describe HtmlVariant do
     end
   end
 
-<<<<<<< HEAD
   it "prefixes an image with cloudinary", cloudinary: true do
-=======
-  it "prefixes an image with cloudinary", :cloudinary do
->>>>>>> upstream/main
     html = "<div><img src='https://devimages.com/image.jpg' /></div>"
     html_variant.update(approved: false, html: html)
     cloudinary_string = "/c_limit%2Cf_auto%2Cfl_progressive%2Cq_auto%2Cw_420/https://devimages.com/image.jpg"

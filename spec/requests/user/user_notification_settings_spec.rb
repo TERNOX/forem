@@ -35,7 +35,6 @@ RSpec.describe "UserNotificationSettings" do
       put users_notification_settings_path(user.notification_setting.id),
           params: { users_notification_setting: { tab: "notifications", welcome_notifications: 1 } }
       expect(user.notification_setting.reload.subscribed_to_welcome_notifications?).to be(true)
-<<<<<<< HEAD
     end
   end
 
@@ -74,8 +73,6 @@ RSpec.describe "UserNotificationSettings" do
         patch onboarding_notifications_checkbox_update_path(format: :json),
               params: { notifications: { tab: "notifications", email_digest_periodic: 0 } }
       end.to change { user.notification_setting.reload.email_digest_periodic }.from(true).to(false)
-=======
->>>>>>> upstream/main
     end
   end
 end

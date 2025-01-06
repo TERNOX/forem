@@ -8,9 +8,9 @@
 
 <%= render "shared/webcomponents_loader_script" %>
 <% if user_signed_in? %>
-  <%= javascript_include_tag "webShare", "articlePage", "articleModerationTools", "commentDropdowns", defer: true %>
+  <%= javascript_packs_with_chunks_tag "webShare", "articlePage", "articleModerationTools", "commentDropdowns", defer: true %>
 <% else %>
-  <%= javascript_include_tag "webShare", "articlePage", "commentDropdowns", defer: true %>
+  <%= javascript_packs_with_chunks_tag "webShare", "articlePage", "commentDropdowns", defer: true %>
 <% end %>
 
 <% cache("content-related-optional-scripts-#{@article.id}-#{@article.updated_at}-#{internal_navigation?}-#{user_signed_in?}", expires_in: 30.hours) do %>
@@ -91,19 +91,14 @@
         data-pinned-article-id="<%= @pinned_article_id %>"
         data-published="<%= @article.published? %>"
         data-scheduled="<%= @article.scheduled? %>"
-        <%= @article.language? ? "lang=#{@article.language}" : " " %>
         <%= @article.pinned? ? "data-pinned" : " " %>>
         <header class="crayons-article__header" id="main-title">
           <% if @article.video.present? %>
             <%= render "articles/video_player", meta_tags: true, article: @article %>
           <% elsif @article.main_image.present? %>
-            <a class="crayons-article__cover" href="<%= cloud_cover_url(@article.main_image) %>">
-              <img
-                src="<%= cloud_cover_url(@article.main_image) %>"
-                style="aspect-ratio: auto 1000 / <%= @article.main_image_height %>;"
-                width="1000" height="<%= @article.main_image_height %>"
-                class="crayons-article__cover__image" alt="Cover image for <%= @article.title %>">
-            </a>
+            <div class="crayons-article__cover" style=" padding-top: 0;">
+              <img src="<%= cloud_cover_url(@article.main_image) %>" width="1280"  style="object-fit: contain;max-height: 1100px;position: inherit;background-color:<%= @article.main_image_background_hex_color %>;" class="crayons-article__cover__image" alt="Обкладинка для допису <%= @article.title %>">
+            </div>
           <% end %>
 
           <div class="crayons-article__header__meta">
@@ -127,7 +122,7 @@
                           start: tag("span", { class: "color-base-60" }, true),
                           end: "</span>".html_safe,
                           org: tag.a(@organization.name, href: @organization.path, class: "crayons-link")) %>
-                  <% end %>
+                  <% end %> 
                   <p class="fs-xs color-base-60">
                     <% if @article.published_timestamp.present? %>
                       <%= t("views.articles.#{@article.current_state}_html", date: local_date(@article.published_timestamp, show_year: @article.displayable_published_at.year != Time.current.year)) %>
@@ -155,7 +150,7 @@
               </div>
             </div>
 
-            <%= render "articles/multiple_engagements" unless @article.public_reactions_count.zero? %>
+            <%= render "articles/multiple_engagements" if FeatureFlag.enabled?(:multiple_reactions) && @article.public_reactions_count? %>
 
             <h1 class="fs-3xl m:fs-4xl l:fs-5xl fw-bold s:fw-heavy lh-tight mb-2 <%= @article.title_length_classification %>">
               <% if @article.search_optimized_title_preamble.present? && !user_signed_in? %>
@@ -197,9 +192,18 @@
 
       </article>
 
-      <div class="pb-4 crayons-layout__comments-billboard">
-        <div class="js-billboard-container pb-4 crayons-layout__comments-billboard" data-async-url="<%= article_billboard_path(username: @article.username, slug: @article.slug, placement_area: :post_comments) %>"></div>
-      </div>
+      <% cache("article-bottom-content-#{rand(5)}-#{@article.id}-#{user_signed_in?}-#{(@organization || @user).latest_article_updated_at}", expires_in: 15.minutes) do %>
+        <% @display_ad = DisplayAd.for_display(area: "post_comments",
+                                               user_signed_in: user_signed_in?,
+                                               organization_id: @article.organization_id,
+                                               permit_adjacent_sponsors: @article.decorate.permit_adjacent_sponsors?,
+                                               article_tags: @article.decorate.cached_tag_list_array) %>
+        <% if @display_ad %>
+          <div class="pb-4 crayons-layout__comments-display-ad">
+            <%= render partial: "shared/display_ad", locals: { display_ad: @display_ad, data_context_type: DisplayAdEvent::CONTEXT_TYPE_ARTICLE } %>
+          </div>
+        <% end %>
+      <% end %>
 
       <% cache("article-bottom-content-#{@article.id}-#{user_signed_in?}-#{(@organization || @user).latest_article_updated_at}", expires_in: 18.hours) do %>
         <% suggested_articles = Articles::Suggest.call(@article, max: 4) %>
@@ -236,13 +240,14 @@
 <%= render "moderations/modals/unflag_user_modal" %>
 
 <div class="fullscreen-code js-fullscreen-code"></div>
-<%= javascript_include_tag "followButtons", "billboard", "localizeArticleDates", "articleReactions", defer: true %>
+<%= javascript_packs_with_chunks_tag "followButtons", defer: true %>
 
-<script>
-  <%# we consider these scripts safe for embedding as they come from our code %>
-  <%== PodcastTag.script %>
-  <%== PollTag.script %>
-  <%== RunkitTag.script %>
-  <%== TweetTag.script %>
-</script>
-<div class="js-billboard-container pb-4 crayons-layout__comments-billboard" data-async-url="<%= article_billboard_path(username: @article.username, slug: @article.slug, placement_area: :post_fixed_bottom) %>"></div>
+<% cache("article-show-scripts", expires_in: 8.hours) do %>
+  <script>
+    <%# we consider these scripts safe for embedding as they come from our code %>
+    <%== PodcastTag.script %>
+    <%== PollTag.script %>
+    <%== RunkitTag.script %>
+    <%== TweetTag.script %>
+  </script>
+<% end %>

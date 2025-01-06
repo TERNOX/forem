@@ -7,7 +7,6 @@ import { axe } from 'jest-axe';
 import { ProfileForm } from '../ProfileForm';
 
 global.fetch = fetch;
-global.Honeybadger = { notify: jest.fn() };
 
 describe('ProfileForm', () => {
   const renderProfileForm = () =>
@@ -20,7 +19,7 @@ describe('ProfileForm', () => {
         communityConfig={{
           communityName: 'Community Name',
           communityLogo: '/x.png',
-          communityBackgroundColor: '#FFF000',
+          communityBackground: '/y.jpg',
           communityDescription: 'Some community description',
         }}
         previousLocation={null}
@@ -103,71 +102,11 @@ describe('ProfileForm', () => {
     );
   });
 
-  it('should render TextInput with placeholder text', () => {
-    const { getByPlaceholderText } = render(
-      <ProfileForm
-        prev={jest.fn()}
-        next={jest.fn()}
-        slidesCount={3}
-        currentSlideIndex={1}
-        communityConfig={{ communityName: 'Community' }}
-      />,
-    );
-
-    const usernameInput = getByPlaceholderText('johndoe');
-    expect(usernameInput).toBeInTheDocument();
-  });
-
-  it('should render TextArea with placeholder text', () => {
-    const { getByPlaceholderText } = render(
-      <ProfileForm
-        prev={jest.fn()}
-        next={jest.fn()}
-        slidesCount={3}
-        currentSlideIndex={1}
-        communityConfig={{ communityName: 'Community' }}
-      />,
-    );
-
-    const bioTextArea = getByPlaceholderText('Tell us a little about yourself');
-    expect(bioTextArea).toBeInTheDocument();
-  });
-
-  it('should render TextInput with input type "text"', () => {
-    const { getByPlaceholderText } = render(
-      <ProfileForm
-        prev={jest.fn()}
-        next={jest.fn()}
-        slidesCount={3}
-        currentSlideIndex={1}
-        communityConfig={{ communityName: 'Community' }}
-      />,
-    );
-
-    const usernameInput = getByPlaceholderText('johndoe');
-    expect(usernameInput.type).toBe('text');
-  });
-
-  it('should render TextArea with description text', () => {
-    const { getByText } = render(
-      <ProfileForm
-        prev={jest.fn()}
-        next={jest.fn()}
-        slidesCount={3}
-        currentSlideIndex={1}
-        communityConfig={{ communityName: 'Community' }}
-      />,
-    );
-
-    const bioDescription = getByText('Bio');
-    expect(bioDescription).toBeInTheDocument();
-  });
-
   it('should show the correct name and username', () => {
     const { queryByText } = renderProfileForm();
 
     expect(queryByText('username')).toBeDefined();
-    expect(queryByText('firstname lastname')).toExist();
+    expect(queryByText('firstname lastname')).toBeDefined();
   });
 
   it('should show the correct profile picture', () => {
@@ -207,40 +146,18 @@ describe('ProfileForm', () => {
   it('should render a stepper', () => {
     const { queryByTestId } = renderProfileForm();
 
-    expect(queryByTestId('stepper')).toExist();
+    expect(queryByTestId('stepper')).toBeDefined();
   });
 
   it('should show the back button', () => {
     const { queryByTestId } = renderProfileForm();
 
-    expect(queryByTestId('back-button')).toExist();
+    expect(queryByTestId('back-button')).toBeDefined();
   });
 
   it('should not be skippable', async () => {
     const { getByText } = renderProfileForm();
 
     expect(getByText(/continue/i)).toBeInTheDocument();
-  });
-
-  it('should render an error message if the request failed', async () => {
-    const { getByRole, findByText } = render(
-      <ProfileForm
-        prev={jest.fn()}
-        next={jest.fn()}
-        slidesCount={3}
-        currentSlideIndex={1}
-        communityConfig={{ communityName: 'Community' }}
-      />,
-    );
-    fetch.mockResponse(async () => {
-      const body = JSON.stringify({ errors: 'Fake Error' });
-      return new Response(body, { status: 422 });
-    });
-
-    const submitButton = getByRole('button', { name: 'Continue' });
-    submitButton.click();
-
-    const errorMessage = await findByText('An error occurred: Fake Error');
-    expect(errorMessage).toBeInTheDocument();
   });
 });

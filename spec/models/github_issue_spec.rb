@@ -1,10 +1,6 @@
 require "rails_helper"
 
-<<<<<<< HEAD
 RSpec.describe GithubIssue, vcr: true do
-=======
-RSpec.describe GithubIssue, :vcr do
->>>>>>> upstream/main
   let(:url_issue) { "https://api.github.com/repos/forem/forem/issues/7434" }
   let(:url_pull_request) { "https://api.github.com/repos/forem/forem/pulls/7653" }
   let(:url_comment) { "https://api.github.com/repos/forem/forem/issues/comments/621043602" }

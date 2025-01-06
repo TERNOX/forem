@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 export class Navigation extends Component {
   /**
    * A function to render the progress stepper within the `Navigation` component.
+   * By default, it does not show the stepper for the first slide (the `IntroSlide` component).
    * It builds a list of `<span>` elements corresponding to the slides, and adds an "active"
    * class to any slide that has already been seen or is currently being seen.
    *
@@ -11,9 +12,14 @@ export class Navigation extends Component {
    */
   createStepper() {
     const { currentSlideIndex, slidesCount } = this.props;
+    if (currentSlideIndex === 0) {
+      return '';
+    }
+
     const stepsList = [];
 
-    for (let i = 0; i < slidesCount; i += 1) {
+    // We do not show the stepper on the IntroSlide so we start with `i = 1`.
+    for (let i = 1; i < slidesCount; i += 1) {
       const active = i <= currentSlideIndex;
 
       stepsList.push(<span class={`dot ${active ? 'active' : ''}`} />);
@@ -59,25 +65,27 @@ export class Navigation extends Component {
             className && className.length > 0 ? ` ${className}` : ''
           }`}
         >
-          <div class={`back-button-container ${hidePrev ? `hide-button` : ''}`}>
-            <button
-              onClick={prev}
-              data-testid="back-button"
-              class="back-button"
-              type="button"
-              aria-label="Back to previous onboarding step"
-            >
-              <svg
-                width="24"
-                height="24"
-                fill="none"
-                class="crayons-icon"
-                xmlns="http://www.w3.org/2000/svg"
+          {!hidePrev && (
+            <div class="back-button-container">
+              <button
+                onClick={prev}
+                data-testid="back-button"
+                class="back-button"
+                type="button"
+                aria-label="Back to previous onboarding step"
               >
-                <path d="M7.828 11H20v2H7.828l5.364 5.364-1.414 1.414L4 12l7.778-7.778 1.414 1.414L7.828 11z" />
-              </svg>
-            </button>
-          </div>
+                <svg
+                  width="24"
+                  height="24"
+                  fill="none"
+                  class="crayons-icon"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path d="M7.828 11H20v2H7.828l5.364 5.364-1.414 1.414L4 12l7.778-7.778 1.414 1.414L7.828 11z" />
+                </svg>
+              </button>
+            </div>
+          )}
 
           {this.createStepper()}
 

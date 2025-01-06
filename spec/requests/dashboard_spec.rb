@@ -54,14 +54,6 @@ RSpec.describe "Dashboards" do
         expect(response.body).to include "Scheduled"
       end
 
-      it "renders the detected language if an article has it" do
-        article
-        article.update_column(:language, :es)
-        get "/dashboard"
-        expect(response.body).to include "Language:"
-        expect(response.body).to include "Spanish"
-      end
-
       it "renders the delete button for scheduled article" do
         scheduled_article
         get "/dashboard"
@@ -233,59 +225,23 @@ RSpec.describe "Dashboards" do
       end
     end
 
-    context "when dealing with tags" do
-      let(:first_followed_tag) { create(:tag, name: "tagone") }
-      let(:antifollowed_tag) { create(:tag, name: "tagtwo") }
-      let(:second_followed_tag) { create(:tag, name: "tagthree") }
+    describe "followed tags section" do
+      let(:tag) { create(:tag) }
 
       before do
         sign_in user
-        first_followed = user.follow(first_followed_tag)
-        first_followed.update explicit_points: 5
-
-        antifollowed = user.follow(antifollowed_tag)
-        antifollowed.update explicit_points: -5
-
-        second_followed = user.follow(second_followed_tag)
-        second_followed.update explicit_points: 0
+        user.follow tag
         user.reload
+        get "/dashboard/following_tags"
       end
 
-      # rubocop:disable RSpec/NestedGroups
-      describe "followed tags section" do
-        before do
-          get "/dashboard/following_tags"
-        end
-
-        it "renders followed tags count" do
-          expect(response.body).to include "Following tags (2)"
-        end
-
-        it "lists followed tags" do
-          expect(response.body).to include first_followed_tag.name
-          expect(response.body).to include second_followed_tag.name
-
-          expect(response.body).not_to include antifollowed_tag.name
-        end
+      it "renders followed tags count" do
+        expect(response.body).to include "Following tags (1)"
       end
 
-      describe "hidden tags section" do
-        before do
-          get "/dashboard/hidden_tags"
-        end
-
-        it "renders hidden tags count" do
-          expect(response.body).to include "Hidden tags (1)"
-        end
-
-        it "lists hidden tags" do
-          expect(response.body).not_to include first_followed_tag.name
-          expect(response.body).not_to include second_followed_tag.name
-
-          expect(response.body).to include antifollowed_tag.name
-        end
+      it "lists followed tags" do
+        expect(response.body).to include tag.name
       end
-      # rubocop:enable RSpec/NestedGroups
     end
 
     describe "followed organizations section" do
@@ -336,21 +292,11 @@ RSpec.describe "Dashboards" do
     end
 
     context "when logged in" do
-      let(:spam_user) { create(:user, :spam) }
-      let(:suspended_user) { create(:user, :suspended) }
-
-      before do
+      it "renders the current user's followers" do
         second_user.follow user
-        spam_user.follow user
-        suspended_user.follow user
         sign_in user
-      end
-
-      it "only includes good standing users as followers (not spam or suspended)", :aggregated_failures do
         get "/dashboard/user_followers"
         expect(response.body).to include CGI.escapeHTML(second_user.name)
-        expect(response.body).not_to include CGI.escapeHTML(spam_user.name)
-        expect(response.body).not_to include CGI.escapeHTML(suspended_user.name)
       end
     end
   end

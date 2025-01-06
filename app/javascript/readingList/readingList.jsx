@@ -7,7 +7,6 @@ import {
   performInitialSearch,
   search,
   selectTag,
-  checkForPersistedTag,
   clearSelectedTags,
 } from '../searchableItemList/searchableItemList';
 import { addSnackbarItem } from '../Snackbar';
@@ -70,20 +69,12 @@ export class ReadingList extends Component {
     this.clearSelectedTags = clearSelectedTags.bind(this);
   }
 
-  async componentDidMount() {
+  componentDidMount() {
     const { statusView } = this.state;
 
-    await this.performInitialSearch({
+    this.performInitialSearch({
       searchOptions: { status: `${statusView}` },
     });
-
-    const persistedTag = checkForPersistedTag();
-    if (persistedTag) {
-      this.selectTag({
-        target: { value: persistedTag },
-        preventDefault(){},
-      });
-    }
   }
 
   toggleStatusView = (event) => {

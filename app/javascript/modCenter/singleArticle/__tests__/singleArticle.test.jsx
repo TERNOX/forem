@@ -14,7 +14,6 @@ const getTestArticle = () => ({
     articles_count: 1,
     name: 'hello',
   },
-  nthPublishedByAuthor: 1,
 });
 
 describe('<SingleArticle />', () => {
@@ -95,7 +94,7 @@ describe('<SingleArticle />', () => {
     expect(text).toContain(getTestArticle().user.name);
   });
 
-  it("renders the hand wave emoji if the article is the author's first, second or third", () => {
+  it('renders the hand wave emoji if the author has less than 3 articles', () => {
     const { container } = render(
       <Fragment>
         <SingleArticle {...getTestArticle()} toggleArticle={jest.fn()} />

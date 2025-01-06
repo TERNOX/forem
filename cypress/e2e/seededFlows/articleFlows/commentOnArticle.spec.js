@@ -191,12 +191,12 @@ describe('Comment on articles', () => {
 
         cy.get('@commentTextArea').type('Some text @se');
         verifyComboboxMode();
-        cy.get('@commentTextArea').type('{backspace}{backspace}{backspace}');
+        cy.get('@commentTextArea').type('{backspace}{backspace}');
       });
 
       cy.findByRole('option', { name: /@search_user_1/ }).should('not.exist');
 
-      cy.get('@commentTextArea').type('@se');
+      cy.get('@commentTextArea').type('se');
       cy.findByRole('option', { name: /@search_user_1/ }).should('exist');
     });
 
@@ -332,11 +332,9 @@ describe('Comment on articles', () => {
     cy.findByRole('main').within(() => {
       cy.findByRole('heading', { name: 'Top comments (0)' });
 
-      cy.findByRole('textbox', {
-        name: /^Add a comment to the discussion$/i,
-      }).as('textbox');
-      cy.get('@textbox').focus(); // Focus activates the Submit button and mini toolbar below a comment textbox
-      cy.get('@textbox').type('this is a comment');
+      cy.findByRole('textbox', { name: /^Add a comment to the discussion$/i })
+        .focus() // Focus activates the Submit button and mini toolbar below a comment textbox
+        .type('this is a comment');
 
       cy.findByRole('textbox', {
         name: /^Add a comment to the discussion$/i,
@@ -405,11 +403,9 @@ describe('Comment on articles', () => {
   it('should show rate limit modal', () => {
     cy.intercept('POST', '/comments', { statusCode: 429, body: {} });
     cy.findByRole('main').within(() => {
-      cy.findByRole('textbox', {
-        name: /^Add a comment to the discussion$/i,
-      }).as('textbox');
-      cy.get('@textbox').focus(); // Focus activates the Submit button and mini toolbar below a comment textbox
-      cy.get('@textbox').type('this is a comment');
+      cy.findByRole('textbox', { name: /^Add a comment to the discussion$/i })
+        .focus() // Focus activates the Submit button and mini toolbar below a comment textbox
+        .type('this is a comment');
 
       cy.findByRole('button', { name: /^Submit$/i }).click();
     });
@@ -433,11 +429,9 @@ describe('Comment on articles', () => {
       body: { error: 'Test error' },
     });
     cy.findByRole('main').within(() => {
-      cy.findByRole('textbox', {
-        name: /^Add a comment to the discussion$/i,
-      }).as('textbox');
-      cy.get('@textbox').focus(); // Focus activates the Submit button and mini toolbar below a comment textbox
-      cy.get('@textbox').type('this is a comment');
+      cy.findByRole('textbox', { name: /^Add a comment to the discussion$/i })
+        .focus() // Focus activates the Submit button and mini toolbar below a comment textbox
+        .type('this is a comment');
 
       cy.findByRole('button', { name: /^Submit$/i }).click();
     });
@@ -462,11 +456,9 @@ describe('Comment on articles', () => {
       statusCode: 503,
     });
     cy.findByRole('main').within(() => {
-      cy.findByRole('textbox', {
-        name: /^Add a comment to the discussion$/i,
-      }).as('textbox');
-      cy.get('@textbox').focus(); // Focus activates the Submit button and mini toolbar below a comment textbox
-      cy.get('@textbox').type('this is a comment');
+      cy.findByRole('textbox', { name: /^Add a comment to the discussion$/i })
+        .focus() // Focus activates the Submit button and mini toolbar below a comment textbox
+        .type('this is a comment');
 
       cy.findByRole('button', { name: /^Submit$/i }).click();
     });
@@ -502,11 +494,9 @@ describe('Comment on articles', () => {
   it('should provide a dropdown of options', () => {
     cy.findByRole('main').within(() => {
       // Add a comment
-      cy.findByRole('textbox', {
-        name: /^Add a comment to the discussion$/i,
-      }).as('textbox');
-      cy.get('@textbox').focus(); // Focus activates the Submit button and mini toolbar below a comment textbox
-      cy.get('@textbox').type('this is a comment');
+      cy.findByRole('textbox', { name: /^Add a comment to the discussion$/i })
+        .focus() // Focus activates the Submit button and mini toolbar below a comment textbox
+        .type('this is a comment');
 
       cy.findByRole('button', { name: /^Submit$/i }).click();
 
@@ -537,11 +527,9 @@ describe('Comment on articles', () => {
 
   it('should close the comment dropdown on Escape press, returning focus', () => {
     // Add a comment
-    cy.findByRole('textbox', { name: /^Add a comment to the discussion$/i }).as(
-      'textbox',
-    );
-    cy.get('@textbox').focus(); // Focus activates the Submit button and mini toolbar below a comment textbox
-    cy.get('@textbox').type('this is a comment');
+    cy.findByRole('textbox', { name: /^Add a comment to the discussion$/i })
+      .focus() // Focus activates the Submit button and mini toolbar below a comment textbox
+      .type('this is a comment');
     cy.findByRole('button', { name: /^Submit$/i }).click();
 
     cy.findByRole('button', { name: /^Toggle dropdown menu$/i }).as(
@@ -560,11 +548,9 @@ describe('Comment on articles', () => {
   });
 
   it('should show dropdown options on comment index page', () => {
-    cy.findByRole('textbox', { name: /^Add a comment to the discussion$/i }).as(
-      'textbox',
-    );
-    cy.get('@textbox').focus(); // Focus activates the Submit button and mini toolbar below a comment textbox
-    cy.get('@textbox').type('this is a comment');
+    cy.findByRole('textbox', { name: /^Add a comment to the discussion$/i })
+      .focus() // Focus activates the Submit button and mini toolbar below a comment textbox
+      .type('this is a comment');
     cy.findByRole('button', { name: /^Submit$/i }).click();
 
     cy.findByRole('button', { name: /^Toggle dropdown menu$/i }).click();

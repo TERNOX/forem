@@ -30,11 +30,13 @@ describe('Profile User Actions Menu', () => {
       cy.fixture('users/adminUser.json').as('user');
 
       cy.get('@user').then((user) => {
-        cy.loginAndVisit(user, '/article_editor_v1_user');
+        cy.loginAndVisit(user, '/');
       });
     });
 
     it("should show a dropdown menu when a user views another user's profile", () => {
+      cy.visit('/article_editor_v1_user');
+
       // Make sure the dropdown has initialized
       cy.get('[data-dropdown-initialized]');
 
@@ -71,6 +73,8 @@ describe('Profile User Actions Menu', () => {
       // Always accept the confirmation that pops up
       cy.on('window:confirm', () => true);
 
+      cy.visit('/article_editor_v1_user');
+
       // Make sure the dropdown has initialized
       cy.get('[data-dropdown-initialized]');
 
@@ -90,6 +94,9 @@ describe('Profile User Actions Menu', () => {
     it('should flag and unflag a user', () => {
       // Always accept the confirmation that pops up
       cy.on('window:confirm', () => true);
+
+      cy.visit('/article_editor_v1_user');
+
       // Make sure the dropdown has initialized
       cy.get('[data-dropdown-initialized]');
 
@@ -97,8 +104,8 @@ describe('Profile User Actions Menu', () => {
       cy.findByRole('link', { name: 'Flag @article_editor_v1_user' }).click();
 
       // Check that the menu option has updated
-      cy.findByRole('link', { name: 'Unflag @article_editor_v1_user' }).should(
-        'exist',
+      cy.findByRole('link', { name: 'Flag @article_editor_v1_user' }).should(
+        'not.exist',
       );
       cy.findByRole('link', { name: 'Unflag @article_editor_v1_user' }).click();
 

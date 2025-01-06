@@ -5,16 +5,8 @@
 </div>
 <br>
 <p align="center">
-<<<<<<< HEAD
   <a href="https://github.com/forem/forem/actions/workflows/ci-cd.yml">
     <img src="https://github.com/forem/forem/actions/workflows/ci-cd.yml/badge.svg" alt="Build Status">
-=======
-  <a href="https://github.com/forem/forem/actions/workflows/ci.yml">
-    <img src="https://github.com/forem/forem/actions/workflows/ci.yml/badge.svg" alt="Build Status">
-  </a>
-  <a href="https://github.com/forem/forem/actions/workflows/cd.yml">
-    <img src="https://github.com/forem/forem/actions/workflows/cd.yml/badge.svg" alt="Build Status">
->>>>>>> upstream/main
   </a>
   <img src="https://img.shields.io/github/commit-activity/w/forem/forem" alt="GitHub commit activity">
   <a href="https://github.com/forem/forem/issues?q=is%3Aissue+is%3Aopen+label%3A%22ready+for+dev%22">
@@ -52,8 +44,12 @@ within our community. ❤️
 - [Community](#community)
 - [Contributing](#contributing)
 - [Getting Started](#getting-started)
+  - [Prerequisites](#prerequisites)
+    - [Local](#local)
+    - [Containers](#containers)
   - [Installation Documentation](#installation-documentation)
 - [Developer Documentation](#developer-documentation)
+- [Core team](#core-team)
 - [Vulnerability disclosure](#vulnerability-disclosure)
 - [Acknowledgements](#acknowledgements)
 - [License](#license)
@@ -87,18 +83,40 @@ A more complete overview of our stack is available in
 To **launch Forem in Gitpod**, navigate to
 [https://gitpod.io/#https://github.com/{your_github_username}/forem](https://gitpod.io/#https://github.com/{your_github_username}/forem).
 
+### Prerequisites
+
+#### Local
+
+- [Ruby](https://www.ruby-lang.org/en/): we recommend using
+  [rbenv](https://github.com/rbenv/rbenv) to install the Ruby version listed on
+  the badge.
+- [Yarn](https://yarnpkg.com/) 1.x: please refer to their
+  [installation guide](https://classic.yarnpkg.com/en/docs/install).
+- [PostgreSQL](https://www.postgresql.org/) 11 or higher.
+- [ImageMagick](https://imagemagick.org/): please refer to ImageMagick's
+  [installation instructions](https://imagemagick.org/script/download.php).
+- [Redis](https://redis.io/) 4 or higher.
+
+#### Containers
+
+**Linux**
+
+- [Podman](https://github.com/containers/libpod) 1.9.2 or higher
+- [Podman Compose](https://github.com/containers/podman-compose) 0.1.5 or higher
+
+**OS X**
+
+- [Docker Desktop for Mac](https://docs.docker.com/docker-for-mac/install/)
+
 ### Installation Documentation
 
-Please see our installation guides:
-
-- [MacOS, without containers](https://developers.forem.com/getting-started/installation/mac)
-- [Linux, without containers](https://developers.forem.com/getting-started/installation/linux)
+Please see our installation guides, such as the
+[one for macOS](https://developers.forem.com/getting-started/installation/mac).
 
 ## Developer Documentation
 
 [Check out our dedicated docs page for more technical documentation](https://developers.forem.com).
 
-<<<<<<< HEAD
 ## Core team
 
 - [@benhalpern](https://dev.to/ben)
@@ -111,8 +129,6 @@ Please see our installation guides:
 - [@jaw6](https://dev.to/jaw6)
 - [@lboogie2004](https://dev.to/lboogie2004)
 
-=======
->>>>>>> upstream/main
 ## Vulnerability disclosure
 
 Forem is the open source software which powers [DEV](https://dev.to).
@@ -124,9 +140,6 @@ We welcome security research on DEV under the terms of our
 
 Thank you to the [Twemoji project](https://github.com/twitter/twemoji) for the
 usage of their emojis.
-
-Thank you to [Uffizzi](https://www.uffizzi.com) for providing ephemeral
-environments to preview pull requests.
 
 ## License
 
@@ -155,4 +168,4 @@ Any questions, please refer to our
   <strong>Happy Coding</strong> ❤️
 </p>
 
-[⬆ Back to Top](#table-of-contents)
+[⬆ Back to Top](#Table-of-contents)

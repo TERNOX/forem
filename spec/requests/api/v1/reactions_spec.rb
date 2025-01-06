@@ -58,7 +58,8 @@ RSpec.describe "Api::V1::Reactions" do
     context "when toggled unsuccessfully" do
       let(:result) do
         ReactionHandler::Result.new.tap do |bad_result|
-          allow(bad_result).to receive_messages(success?: false, errors_as_sentence: "Stuff was bad")
+          allow(bad_result).to receive(:success?).and_return(false)
+          allow(bad_result).to receive(:errors_as_sentence).and_return("Stuff was bad")
         end
       end
 
@@ -110,7 +111,8 @@ RSpec.describe "Api::V1::Reactions" do
     context "when created unsuccessfully" do
       let(:result) do
         ReactionHandler::Result.new.tap do |bad_result|
-          allow(bad_result).to receive_messages(success?: false, errors_as_sentence: "Stuff was bad")
+          allow(bad_result).to receive(:success?).and_return(false)
+          allow(bad_result).to receive(:errors_as_sentence).and_return("Stuff was bad")
         end
       end
 

@@ -1,12 +1,7 @@
 import { h, render } from 'preact';
 import ahoy from 'ahoy.js';
 import { TagsFollowed } from '../leftSidebar/TagsFollowed';
-import {
-  observeBillboards,
-  initializeBillboardVisibility,
-} from '../packs/billboardAfterRenderActions';
-import { observeFeedElements } from '../packs/feedEvents';
-import { setupBillboardInteractivity } from '@utilities/billboardInteractivity';
+import { setupDisplayAdDropdown } from '@utilities/displayAdDropdown';
 import { trackCreateAccountClicks } from '@utilities/ahoy/trackEvents';
 
 /* global userData */
@@ -63,13 +58,9 @@ function trackTagCogIconClicks() {
     });
 }
 
-function removeLocalePath(pathname) {
-  return pathname.replace(/^\/locale\/[a-zA-Z-]+\/?/, '/');
-}
-
 function renderSidebar() {
   const sidebarContainer = document.getElementById('sidebar-wrapper-right');
-  const pathname = removeLocalePath(window.location.pathname);
+  const { pathname } = window.location;
 
   // If the screen's width is less than 640 we don't need this extra data.
   if (
@@ -82,7 +73,7 @@ function renderSidebar() {
       .then((res) => res.text())
       .then((response) => {
         sidebarContainer.innerHTML = response;
-        setupBillboardInteractivity();
+        setupDisplayAdDropdown();
       });
   }
 }
@@ -102,14 +93,8 @@ if (!document.getElementById('featured-story-marker')) {
         return;
       }
       import('./homePageFeed').then(({ renderFeed }) => {
-        const callback = () => {
-          initializeBillboardVisibility();
-          observeBillboards();
-          setupBillboardInteractivity();
-          observeFeedElements();
-        };
-
-        renderFeed(feedTimeFrame, callback);
+        // We have user data, render followed tags.
+        renderFeed(feedTimeFrame);
 
         InstantClick.on('change', () => {
           const { userStatus: currentUserStatus } = document.body.dataset;
@@ -125,14 +110,7 @@ if (!document.getElementById('featured-story-marker')) {
             return;
           }
 
-          const callback = () => {
-            initializeBillboardVisibility();
-            observeBillboards();
-            setupBillboardInteractivity();
-            observeFeedElements();
-          };
-
-          renderFeed(changedFeedTimeFrame, callback);
+          renderFeed(changedFeedTimeFrame);
         });
       });
 
@@ -154,3 +132,4 @@ InstantClick.on('change', () => {
 InstantClick.init();
 
 trackCreateAccountClicks('sidebar-wrapper-left');
+trackCreateAccountClicks('authentication-feed-actions');

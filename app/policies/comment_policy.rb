@@ -1,6 +1,6 @@
 class CommentPolicy < ApplicationPolicy
   def edit?
-    return false if user.spam_or_suspended?
+    return false if user_suspended?
 
     user_author?
   end
@@ -10,7 +10,7 @@ class CommentPolicy < ApplicationPolicy
   end
 
   def create?
-    !user.spam_or_suspended? && !user.comment_suspended?
+    !user_suspended? && !user.comment_suspended?
   end
 
   alias new? create?
@@ -25,14 +25,6 @@ class CommentPolicy < ApplicationPolicy
     true
   end
 
-  def subscribe?
-    true
-  end
-
-  def unsubscribe?
-    true
-  end
-
   def moderate?
     return true if user.trusted?
 
@@ -40,11 +32,12 @@ class CommentPolicy < ApplicationPolicy
   end
 
   def moderator_create?
-    Authorizer.for(user: user).accesses_mod_response_templates?
+    # NOTE: Here, when we say "moderator", we mean "tag_moderator"
+    user_moderator? || user_any_admin?
   end
 
   def hide?
-    user_commentable_author? && !record.by_staff_account?
+    user_commentable_author?
   end
 
   alias unhide? hide?
@@ -59,14 +52,6 @@ class CommentPolicy < ApplicationPolicy
 
   def permitted_attributes_for_preview
     %i[body_markdown]
-  end
-
-  def permitted_attributes_for_subscribe
-    %i[subscription_id comment_id article_id]
-  end
-
-  def permitted_attributes_for_unsubscribe
-    %i[subscription_id]
   end
 
   def permitted_attributes_for_create

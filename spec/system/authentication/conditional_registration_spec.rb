@@ -35,6 +35,7 @@ RSpec.describe "Conditional registration (ForemWebView)" do
       visit sign_up_path
       expect(page).to have_text("Continue with Apple")
       expect(page).to have_text("Continue with GitHub")
+      expect(page).to have_text("Have a password? Continue with your email address")
     end
 
     it "renders the social providers when all providers except Apple are enabled" do
@@ -49,6 +50,7 @@ RSpec.describe "Conditional registration (ForemWebView)" do
       visit sign_up_path
       expect(page).not_to have_text("Continue with Apple")
       expect(page).to have_text("Continue with GitHub")
+      expect(page).to have_text("Have a password? Continue with your email address")
     end
   end
 
@@ -67,6 +69,7 @@ RSpec.describe "Conditional registration (ForemWebView)" do
       visit sign_up_path
       expect(page).to have_text("Continue with Apple")
       expect(page).to have_text("Continue with GitHub")
+      expect(page).to have_text("Have a password? Continue with your email address")
     end
 
     it "doesn't render social providers if Apple Auth isn't enabled" do
@@ -81,6 +84,7 @@ RSpec.describe "Conditional registration (ForemWebView)" do
       visit sign_up_path
       expect(page).not_to have_text("Continue with Apple")
       expect(page).not_to have_text("Continue with GitHub")
+      expect(page).to have_text("Have a password? Continue with your email address")
     end
 
     context "when Apple Auth and email registration aren't enabled" do
@@ -103,6 +107,7 @@ RSpec.describe "Conditional registration (ForemWebView)" do
         visit sign_up_path
         expect(page).not_to have_text("Continue with Apple")
         expect(page).not_to have_text("Continue with GitHub")
+        expect(page).to have_text("Have a password? Continue with your email address")
       end
 
       it "doesn't render the fallback because Forem Auth is enabled" do
@@ -119,6 +124,7 @@ RSpec.describe "Conditional registration (ForemWebView)" do
         expect(page).not_to have_text("Continue with Apple")
         expect(page).not_to have_text("Continue with GitHub")
         expect(page).to have_text("Continue with Forem")
+        expect(page).to have_text("Have a password? Continue with your email address")
       end
     end
   end

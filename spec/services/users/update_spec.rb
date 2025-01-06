@@ -51,7 +51,6 @@ RSpec.describe Users::Update, type: :service do
   end
 
   it "returns an error if Profile image is too large" do
-    stub_const("ProfileImageUploader::MAX_FILE_SIZE", 2.megabytes)
     profile_image = fixture_file_upload("large_profile_img.jpg", "image/jpeg")
     service = described_class.call(user, profile: {}, user: { profile_image: profile_image })
 

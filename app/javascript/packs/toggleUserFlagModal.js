@@ -134,14 +134,8 @@ const modalContents = new Map();
  */
 const getModalContents = (modalContentSelector) => {
   if (!modalContents.has(modalContentSelector)) {
-    let documentModal = window.parent.document;
-    const articleInIframe = documentModal.querySelector('.article-iframe');
-
-    if (articleInIframe) {
-      documentModal = articleInIframe.contentDocument || articleInIframe.contentWindow.document 
-    }
-    
-    const modalContentElement = documentModal.querySelector(modalContentSelector);
+    const modalContentElement =
+      window.parent.document.querySelector(modalContentSelector);
     const modalContent = modalContentElement.innerHTML;
 
     modalContentElement.remove();

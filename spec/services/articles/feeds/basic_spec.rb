@@ -1,6 +1,7 @@
 require "rails_helper"
 
 RSpec.describe Articles::Feeds::Basic, type: :service do
+  let(:user) { create(:user) }
   let(:second_user) { create(:user) }
   let(:unique_tag_name) { "foo" }
   let!(:article) { create(:article, hotness_score: 10) }
@@ -11,10 +12,8 @@ RSpec.describe Articles::Feeds::Basic, type: :service do
   let!(:low_scoring_article) { create(:article, score: -1000) }
   let!(:month_old_story) { create(:article, :past, past_published_at: 1.month.ago) } # rubocop:disable RSpec/LetSetup
 
-  let(:feed) { described_class.new(user: user, number_of_articles: 100, page: 1) }
-
   context "without a user" do
-    let(:user) { nil }
+    let(:feed) { described_class.new(user: nil, number_of_articles: 100, page: 1) }
 
     it "returns articles with score above 0 in order of hotness score" do
       result = feed.feed
@@ -26,7 +25,7 @@ RSpec.describe Articles::Feeds::Basic, type: :service do
   end
 
   context "with a user" do
-    let(:user) { create(:user) }
+    let(:feed) { described_class.new(user: user, number_of_articles: 100, page: 1) }
 
     it "returns articles with score above 0 sorted by user preference scores" do
       user.follow(old_story.user)
@@ -44,24 +43,6 @@ RSpec.describe Articles::Feeds::Basic, type: :service do
       create(:user_block, blocker: user, blocked: second_user, config: "default")
       result = feed.feed
       expect(result).not_to include(hot_story)
-    end
-
-    context "when user has hidden tags" do
-      let!(:hidden) { create(:article, tags: "notme") }
-      let!(:visible) { create(:article, tags: "surewhynot") }
-
-      before do
-        antitag = ActsAsTaggableOn::Tag.find_by(name: "notme") || create(:tag, name: "notme")
-        user
-          .follows_by_type("ActsAsTaggableOn::Tag")
-          .create! followable: antitag, explicit_points: -5.0
-      end
-
-      it "does not return articles with tags the user has hidden" do
-        result = feed.feed
-        expect(result).not_to include(hidden)
-        expect(result).to include(visible)
-      end
     end
   end
 end

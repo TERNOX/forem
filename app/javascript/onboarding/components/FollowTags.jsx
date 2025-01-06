@@ -8,19 +8,17 @@ export class FollowTags extends Component {
   constructor(props) {
     super(props);
 
-    this.handleChange = this.handleChange.bind(this);
     this.handleClick = this.handleClick.bind(this);
     this.handleComplete = this.handleComplete.bind(this);
 
     this.state = {
       allTags: [],
       selectedTags: [],
-      email_digest_periodic: false,
     };
   }
 
   componentDidMount() {
-    fetch('/onboarding/tags')
+    fetch('/tags/onboarding')
       .then((response) => response.json())
       .then((data) => {
         this.setState({ allTags: data });
@@ -40,31 +38,6 @@ export class FollowTags extends Component {
     });
   }
 
-  handleContainerClick = () => {
-    const checkbox = document.getElementById('email_digest_periodic');
-    checkbox.checked = !checkbox.checked;
-
-    const event = new Event('change', { bubbles: true });
-    checkbox.dispatchEvent(event);
-
-    this.setState({ email_digest_periodic: checkbox.checked });
-  };
-
-  handleContainerKeyDown = (event) => {
-    if (event.key === 'Enter' || event.key === ' ') {
-      this.handleContainerClick();
-    }
-  };
-
-  handleCheckboxClick = (event) => {
-    event.stopPropagation();
-  };
-
-  handleChange = (event) => {
-    const { name, checked } = event.target;
-    this.setState({ [name]: checked });
-  };
-
   handleClick(tag) {
     let { selectedTags } = this.state;
     if (!selectedTags.includes(tag)) {
@@ -83,7 +56,7 @@ export class FollowTags extends Component {
 
   handleComplete() {
     const csrfToken = getContentOfToken('csrf-token');
-    const { selectedTags, email_digest_periodic } = this.state;
+    const { selectedTags } = this.state;
 
     Promise.all(
       selectedTags.map((tag) =>
@@ -101,48 +74,31 @@ export class FollowTags extends Component {
           credentials: 'same-origin',
         }),
       ),
-    )
-      .then(() => {
-        if (email_digest_periodic) {
-          return fetch('/onboarding/notifications', {
-            method: 'PATCH',
-            headers: {
-              'X-CSRF-Token': csrfToken,
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              notifications: {
-                email_digest_periodic: this.state.email_digest_periodic,
-              },
-            }),
-            credentials: 'same-origin',
-          });
-        }
-        return Promise.resolve();
-      })
-      .then((response) => {
-        if (!email_digest_periodic || response.ok) {
-          const { next } = this.props;
-          next();
-        }
-      });
+    ).then((_) => {
+      const { next } = this.props;
+      next();
+    });
   }
 
   renderFollowCount() {
     const { selectedTags } = this.state;
     let followingStatus;
     if (selectedTags.length === 1) {
-      followingStatus = `${selectedTags.length} tag selected`;
+      followingStatus = `${selectedTags.length} теґ обрано`;
     } else {
-      followingStatus = `${selectedTags.length} tags selected`;
+      followingStatus = `${selectedTags.length} теґа(ів) обрано`;
     }
 
-    return <p className="color-base-60 fs-base">{followingStatus}</p>;
+    const classStyle =
+      selectedTags.length > 0
+        ? 'fw-bold color-base-60 fs-base'
+        : 'color-base-60 fs-base';
+    return <p className={classStyle}>{followingStatus}</p>;
   }
 
   render() {
     const { prev, currentSlideIndex, slidesCount } = this.props;
-    const { selectedTags, allTags, email_digest_periodic } = this.state;
+    const { selectedTags, allTags } = this.state;
     const canSkip = selectedTags.length === 0;
 
     return (
@@ -156,13 +112,20 @@ export class FollowTags extends Component {
           aria-labelledby="title"
           aria-describedby="subtitle"
         >
-          <div className="onboarding-content onboarding-content__tags toggle-bottom ">
+          <Navigation
+            prev={prev}
+            next={this.handleComplete}
+            canSkip={canSkip}
+            slidesCount={slidesCount}
+            currentSlideIndex={currentSlideIndex}
+          />
+          <div className="onboarding-content toggle-bottom">
             <header className="onboarding-content-header">
               <h1 id="title" className="title">
-                What are you interested in?
+                Що вам цікаво?
               </h1>
               <h2 id="subtitle" className="subtitle">
-                Follow tags to customize your feed
+                Підпишіться на цікаві вам теґи, щоб підлаштувати стрічку під себе
               </h2>
               {this.renderFollowCount()}
             </header>
@@ -171,92 +134,55 @@ export class FollowTags extends Component {
                 const selected = selectedTags.includes(tag);
                 return (
                   <div
-                    data-testid={`onboarding-tag-item-${tag.id}`}
                     className={`onboarding-tags__item ${
-                      selected ? 'onboarding-tags__item--selected' : ''
+                      selected && 'onboarding-tags__item--selected'
                     }`}
-                    aria-label={`Follow ${tag.name}`}
-                    key={tag.id}
-                    onClick={() => this.handleClick(tag)}
-                    onKeyDown={(event) => {
-                      // Trigger for enter (13) and space (32) keys
-                      if (event.keyCode === 13 || event.keyCode === 32) {
-                        this.handleClick(tag);
-                      }
+                    style={{
+                      boxShadow: selected
+                        ? `inset 0 0 0 100px ${tag.bg_color_hex}`
+                        : `inset 0 0 0 0px ${tag.bg_color_hex}`,
+                      color: selected ? tag.text_color_hex : '',
                     }}
-                    tabIndex={0}
-                    role="button"
+                    key={tag.id}
                   >
                     <div className="onboarding-tags__item__inner">
-                      <div className="onboarding-tags__item__inner__content">
-                        <div className="onboarding-tags__item__inner__content-name">
-                          #{tag.name}
-                        </div>
-                        <div className="onboarding-tags__item__inner__content-count">
-                          {tag.taggings_count === 1
-                            ? '1 post'
-                            : `${tag.taggings_count} posts`}
-                        </div>
-                      </div>
-                      <input
-                        class="crayons-checkbox"
-                        type="checkbox"
-                        checked={selected}
-                        tabindex="-1"
-                      />
+                      #{tag.name}
+                      <button
+                        type="button"
+                        onClick={() => this.handleClick(tag)}
+                        className={`onboarding-tags__button  ${
+                          selected &&
+                          'onboarding-tags__button--selected crayons-btn--icon-left'
+                        }`}
+                        aria-pressed={selected}
+                        aria-label={`Follow ${tag.name}`}
+                        style={{
+                          backgroundColor: selected
+                            ? tag.text_color_hex
+                            : tag.bg_color_hex,
+                          color: selected
+                            ? tag.bg_color_hex
+                            : tag.text_color_hex,
+                        }}
+                      >
+                        {selected && (
+                          <svg
+                            width="24"
+                            height="24"
+                            xmlns="http://www.w3.org/2000/svg"
+                            className="crayons-icon"
+                          >
+                            <path d="M9.99999 15.172L19.192 5.979L20.607 7.393L9.99999 18L3.63599 11.636L5.04999 10.222L9.99999 15.172Z" />
+                          </svg>
+                        )}
+                        {selected ? 'Підписано' : 'Підписатися'}
+                      </button>
                     </div>
                   </div>
                 );
               })}
             </div>
           </div>
-          <span class="onboarding-content-separator" />
-          <div
-            class="onboarding-email-digest"
-            onClick={this.handleContainerClick}
-            onKeyDown={this.handleContainerKeyDown}
-            role="button"
-            tabIndex="0"
-          >
-            <span class="onboarding-email-digest__rectangle" />
-            <div class="flex items-start my-4 ml-1 mr-4">
-              <form>
-                <fieldset>
-                  <ul>
-                    <li className="checkbox-item">
-                      <label htmlFor="email_digest_periodic">
-                        <input
-                          type="checkbox"
-                          id="email_digest_periodic"
-                          name="email_digest_periodic"
-                          checked={email_digest_periodic}
-                          onChange={this.handleChange}
-                          onClick={this.handleCheckboxClick}
-                          tabIndex="-1"
-                        />
-                      </label>
-                    </li>
-                  </ul>
-                </fieldset>
-              </form>
-              <div class="flex flex-col items-start">
-                <p class="crayons-subtitle-3 fw-medium">
-                  Get a Periodic Digest of Top Posts
-                </p>
-                <p class="fs-s fw-normal lh-base color-secondary">
-                  We'll email you with a curated selection of top posts based on
-                  the tags you follow.
-                </p>
-              </div>
-            </div>
-          </div>
-          <Navigation
-            prev={prev}
-            next={this.handleComplete}
-            canSkip={canSkip}
-            slidesCount={slidesCount}
-            currentSlideIndex={currentSlideIndex}
-          />
         </div>
       </div>
     );

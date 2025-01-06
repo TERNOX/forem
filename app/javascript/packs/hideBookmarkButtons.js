@@ -1,6 +1,6 @@
-import { getUserDataAndCsrfTokenSafely } from '@utilities/getUserDataAndCsrfToken';
+import { getUserDataAndCsrfToken } from '@utilities/getUserDataAndCsrfToken';
 
-getUserDataAndCsrfTokenSafely().then(({ currentUser }) => {
+getUserDataAndCsrfToken().then(({ currentUser }) => {
   const currentUserId = currentUser && currentUser.id;
 
   document.querySelectorAll('.bookmark-button').forEach((button) => {

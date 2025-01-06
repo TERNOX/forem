@@ -19,16 +19,6 @@ fr:
     report_abuse: Signaler un abus
     search: Recherche
     success_settings: Successfully updated settings.
-    counted_organization:
-      one: "%{count} organisation"
-      other: "%{count} organisations"
-    counted_user:
-      one: "%{count} personne"
-      other: "%{count} personnes"
-    not_following: "Vous ne suivez personne"
-    following_everyone: "Vous suivez %{details} (toutes)"
-    you_are_following: "Vous suivez"
-    and: "et"
   date:
     abbr_month_names:
     -
@@ -160,17 +150,12 @@ fr:
         one: Expire dans 1 an
         other: Expire dans %{count} ans
   display_ad:
-  billboard:
     promoted: Promu
     menu:
       aria_label: Basculer le menu déroulant
       icon: Menu déroulant
       manage_preferences: Gérer les préférences
       what_is_a_billboard: Qu'est-ce qu'un panneau publicitaire?
-      close: Fermer
-      manage_preferences: Gérer les préférences
-      what_is_a_billboard: Qu'est-ce qu'un panneau publicitaire?
-      report_billboard: Report billboard
   errors:
     messages:
       accepted: doit être accepté
@@ -231,3 +216,4 @@ fr:
       short_with_yy: "%-e %b '%y"
       short_with_year: "%-e %b, %Y"
       stackexchange: "%b %e '%y"
+      tweet: "%H:%M %p - %d %b %Y"

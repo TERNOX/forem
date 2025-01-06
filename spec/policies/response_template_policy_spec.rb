@@ -56,15 +56,4 @@ RSpec.describe ResponseTemplatePolicy, type: :policy do
 
     it { is_expected.to permit_actions(%i[moderator_index create moderator_create update destroy]) }
   end
-<<<<<<< HEAD
-=======
-
-  context "when user is trusted" do
-    let(:user) { create(:user, :trusted) }
-    let(:response_template) { create(:response_template, type_of: "mod_comment", user: nil) }
-
-    it { is_expected.to permit_actions(%i[moderator_index moderator_create]) }
-    it { is_expected.to forbid_actions(%i[admin_create update destroy]) }
-  end
->>>>>>> upstream/main
 end

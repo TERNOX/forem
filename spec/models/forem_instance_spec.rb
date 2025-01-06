@@ -83,7 +83,9 @@ RSpec.describe ForemInstance do
     end
 
     it "returns true if provided_minimum_settings?" do
-      allow(Settings::SMTP).to receive_messages(address: "address", user_name: "something", password: "something")
+      allow(Settings::SMTP).to receive(:address).and_return("address")
+      allow(Settings::SMTP).to receive(:user_name).and_return("something")
+      allow(Settings::SMTP).to receive(:password).and_return("something")
 
       expect(described_class.smtp_enabled?).to be(true)
     end
@@ -112,9 +114,9 @@ RSpec.describe ForemInstance do
       let(:reply_to_email_address) { "custom_reply@forem.com" }
 
       before do
+        allow(Settings::SMTP).to receive(:reply_to_email_address).and_return(reply_to_email_address)
         allow(described_class).to receive(:email).and_return("noreply@forem.com")
-        allow(Settings::SMTP).to receive_messages(reply_to_email_address: reply_to_email_address,
-                                                  provided_minimum_settings?: true)
+        allow(Settings::SMTP).to receive(:provided_minimum_settings?).and_return(true)
       end
 
       it "returns the correct email address" do
@@ -127,9 +129,9 @@ RSpec.describe ForemInstance do
       let(:default_email_address) { "noreply@forem.com" }
 
       before do
+        allow(Settings::SMTP).to receive(:reply_to_email_address).and_return(reply_to_email_address)
         allow(described_class).to receive(:email).and_return(default_email_address)
-        allow(Settings::SMTP).to receive_messages(reply_to_email_address: reply_to_email_address,
-                                                  provided_minimum_settings?: false)
+        allow(Settings::SMTP).to receive(:provided_minimum_settings?).and_return(false)
       end
 
       it "returns the correct email address" do
@@ -143,9 +145,9 @@ RSpec.describe ForemInstance do
       let(:from_email_address) { "custom_noreply@forem.com" }
 
       before do
+        allow(Settings::SMTP).to receive(:from_email_address).and_return(from_email_address)
         allow(described_class).to receive(:email).and_return("noreply@forem.com")
-        allow(Settings::SMTP).to receive_messages(from_email_address: from_email_address,
-                                                  provided_minimum_settings?: true)
+        allow(Settings::SMTP).to receive(:provided_minimum_settings?).and_return(true)
       end
 
       it "returns the correct email address" do
@@ -158,9 +160,9 @@ RSpec.describe ForemInstance do
       let(:default_email_address) { "noreply@forem.com" }
 
       before do
+        allow(Settings::SMTP).to receive(:from_email_address).and_return(from_email_address)
         allow(described_class).to receive(:email).and_return(default_email_address)
-        allow(Settings::SMTP).to receive_messages(from_email_address: from_email_address,
-                                                  provided_minimum_settings?: false)
+        allow(Settings::SMTP).to receive(:provided_minimum_settings?).and_return(false)
       end
 
       it "returns the correct email address" do
@@ -171,7 +173,9 @@ RSpec.describe ForemInstance do
 
   describe ".only_sendgrid_enabled?" do
     it "returns false when the minimum SMTP settings are provided" do
-      allow(Settings::SMTP).to receive_messages(user_name: "something", password: "something", address: "something")
+      allow(Settings::SMTP).to receive(:user_name).and_return("something")
+      allow(Settings::SMTP).to receive(:password).and_return("something")
+      allow(Settings::SMTP).to receive(:address).and_return("something")
 
       expect(described_class.only_sendgrid_enabled?).to be(false)
     end
@@ -184,7 +188,9 @@ RSpec.describe ForemInstance do
     it "returns true if Sendgrid is enabled and the minimum SMTP settings are not provided" do
       allow(described_class).to receive(:sendgrid_enabled?).and_return(true)
 
-      allow(Settings::SMTP).to receive_messages(user_name: nil, password: nil, address: nil)
+      allow(Settings::SMTP).to receive(:user_name).and_return(nil)
+      allow(Settings::SMTP).to receive(:password).and_return(nil)
+      allow(Settings::SMTP).to receive(:address).and_return(nil)
 
       expect(described_class.only_sendgrid_enabled?).to be(true)
     end
