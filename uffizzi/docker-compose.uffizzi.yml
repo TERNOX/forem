@@ -73,7 +73,7 @@ services:
           memory: 500M
 
   db:
-    image: postgres:11-alpine
+    image: postgres:13-alpine
     container_name: forem_postgresql
     environment:
       POSTGRES_USER: forem
